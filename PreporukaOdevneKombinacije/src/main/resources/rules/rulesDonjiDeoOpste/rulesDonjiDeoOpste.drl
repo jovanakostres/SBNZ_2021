@@ -1,0 +1,130 @@
+declare TipTelaIzabran
+	tipTela: TipTela
+end
+
+declare TipSuknjeIzabran
+    tipSuknje : List<TipSuknje>
+end
+
+declare KoeficijentPreporuke
+	bodovi: double
+	komad: DonjiDeo
+end
+
+declare IzabranaDuzina
+    duzinaSuknje: DuzinaDonjegDela
+end
+
+declare IzabranaDubina
+    dubinaSuknje: List<Dubina>
+end
+
+declare MaterijalIzabran
+	materijal: List<Materijal>
+end
+
+declare IntenzitetBojeIzabran
+    intezitet : BojaIntenzitet
+end
+
+rule "A1 - Tip tela - trougao"
+    when
+        $user : User(kukovi >= ramena + 5/100 * kukovi);
+    then
+    	insert(new TipTelaIzabran(TipTela.TROUGAO));
+        System.out.println("Tip tela - trougao");
+end
+
+rule "B1 - Tip donjeg dela ako je tip tela trougao"
+	no-loop
+    when
+        $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
+        $donjiDeo : DonjiDeo( tip == DonjiDeoEnum.SUKNJA )
+    then
+        insert(new TipSuknjeIzabran(new ArrayList() {{  add(TipSuknje.TULIP); add(TipSuknje.ALINE); add(TipSuknje.PENCIL); add(TipSuknje.STRAIGHT); }}));
+        insert(new KoeficijentPreporuke(10, $donjiDeo));
+        System.out.println("tip suknje")
+end
+
+rule "C1 - Duzina suknje ako je visina manje od 165"
+	no-loop
+    when
+        $user : User(visina < 165)
+        $donjiDeo : DonjiDeo( duzina == DuzinaDonjegDela.MINI )
+    then
+        insert(new IzabranaDuzina(DuzinaDonjegDela.MINI));
+        insert(new KoeficijentPreporuke(10, $donjiDeo));
+        System.out.println("Biranje duzine suknje na osnovu visine")
+end
+
+rule "D1 - Dubina suknje ako je visina manje od 165"
+	no-loop
+    when
+        $user : User(visina < 165)
+        $donjiDeo : DonjiDeo( dubina == Dubina.MAXI || Dubina.MIDI )
+    then
+        insert(new IzabranaDuzina(Dubina.MAXI || Dubina.MIDI));
+        insert(new KoeficijentPreporuke(10, $donjiDeo));
+        System.out.println("Biranje dubine suknje na osnovu visine")
+end
+
+
+rule "E1 - Biranje materijala ako je temperatura veća od 20 stepeni, suvo je vreme, dress code je ležeran i donji deo je suknja aline kroja"
+	no-loop
+    when
+        $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
+        $tipOdece : TipSuknjeIzabran( $tipSuknje : tipSuknje contains TipSuknje.ALINE);
+        $donjiDeo : DonjiDeo( materijal == Materijal.SVILA || Materijal.PAMUK));
+    then
+        insert(new MaterijalIzabran(new ArrayList() {{  add(Materijal.SVILA); add(Materijal.PAMUK); }}));
+        insert(new KoeficijentPreporuke(20, $donjiDeo));
+        System.out.println("Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip suknje je Aline");
+end
+
+rule "F1 - Izbor boje suknje ako je korisnik svetle puti, ima tip tela trougao i nizak je"
+    no-loop
+    when
+        $user : User(bojaKoze == BojaKoze.SUMMER || BojaKoze.SPRING || BojaKoze.AUTUMN || BojaKoze.WINTER)
+        $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
+        $user : User(visina < 165)
+    then
+        insert(new IntenzitetBojeIzabran(BojaIntenzitet.TAMNA));
+        insert(new KoeficijentPreporuke(10, $donjiDeo));
+        System.out.println("Biranje boje suknje na osnovu tipa tela i boje koze")
+end
+
+rule "G1 - Biranje komada prema koeficijentu preporuke"
+	salience -10
+	no-loop
+    when
+    	$donjiDeo : DonjiDeo();
+    	Number($avg : doubleValue) from accumulate(
+                       	KoeficijentPreporuke( $komad : komad, $b:Double.valueOf(bodovi * $komad.getKoeficijentOdabira()) ),
+                       	average($b) );
+    	Number($bodovi > $avg) from accumulate(
+                	KoeficijentPreporuke(komad.getId() == $donjiDeo.getId(), $b:Double.valueOf(bodovi * $donjiDeo.getKoeficijentOdabira())),
+                	sum($b)
+                );
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        $preporuceniKomadi.getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo($donjiDeo, $bodovi * $donjiDeo.getKoeficijentOdabira()));
+    	update($preporuceniKomadi);
+    	System.out.println("Biranje komada prema koeficijentu preporuke, izabran komad: " + $donjiDeo.getId());
+end
+
+rule "Brisanje poena nakon odabira"
+	salience -20
+	when
+		$koeficijentPreporuke:KoeficijentPreporuke();
+	then
+		delete($koeficijentPreporuke);
+end
+
+rule "Provera uspesnosti"
+	salience -30
+	no-loop
+    when
+        preporuceniKomadi : PreporuceniKomadi( preporuceniDonjiDelovi.size > 0);
+    then
+    	System.out.println("Uspesno zavrsena preporuka");
+end
