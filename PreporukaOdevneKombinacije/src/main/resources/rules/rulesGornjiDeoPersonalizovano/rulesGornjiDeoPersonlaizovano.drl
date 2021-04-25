@@ -1,4 +1,7 @@
 
+
+global Map hashMapColor
+
 declare KoeficijentPreporuke
 	bodovi: double
 	komad: GornjiDeo
@@ -75,13 +78,13 @@ end
 
 rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran"
     no-loop
-    salience 20
+    salience (hashMapColor[$dresscode])
     when
-        $unos : UnosDTO(temperatura > 20, dresscode == DressCode.LEZERAN );
-        $gornjiDeo : GornjiDeo( boja == Boja.BELA));
-        $list: List( size > 0 ) from collect(GornjiDeo( boja == Boja.BELA ))
+        $unos : UnosDTO(temperatura > 20, dresscode == DressCode.LEZERAN, $boja : boje );
+        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0)));
+        $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
     then
-    	insert(new BojaIzabran( Boja.BELA ));
+    	insert(new BojaIzabran( $b ));
     	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
         System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
 end
@@ -121,4 +124,35 @@ rule "Provera uspesnosti"
     then
     	System.out.println("Uspesno zavrsena preporuka");
 end
+
+
+#medjusobna iskljucivost
+rule "E2 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code - odredjivanje boje(dresscode)"
+    no-loop
+    salience(hashMapColor[$dresscode])
+    when
+        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $boja : boje );
+        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0)));
+        $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
+    then
+       	insert(new BojaIzabran( $b ));
+       	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
+        System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
+end
+
+rule "E3 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code - odredjivanje boje(korisnik)"
+    no-loop
+    salience(hashMapColor[$dresscode])
+    when
+        $unos : UnosDTO(temperatura > 20, dresscode : dresscode );
+        $gornjiDeo : GornjiDeo( $b : boja == Boja.CRNA));
+        $list: List( size > 0 ) from collect(GornjiDeo( boja == Boja.CRNA ))
+    then
+        insert(new BojaIzabran( $b ));
+       	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
+        System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
+end
+
+
+
 
