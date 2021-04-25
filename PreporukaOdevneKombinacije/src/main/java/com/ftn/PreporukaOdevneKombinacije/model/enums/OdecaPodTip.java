@@ -1,5 +1,5 @@
 package com.ftn.PreporukaOdevneKombinacije.model.enums;
 
-public enum OdecaTip {
+public enum OdecaPodTip {
     SIROKA, USKA
 }

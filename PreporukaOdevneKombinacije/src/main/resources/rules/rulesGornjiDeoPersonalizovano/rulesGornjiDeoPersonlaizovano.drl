@@ -1,0 +1,67 @@
+
+declare KoeficijentPreporuke
+	bodovi: double
+	komad: GornjiDeo
+end
+
+declare TipTelaIzabran
+	tipTela: TipTela
+end
+
+declare PodtipOdeceIzabran
+	podTip: OdecaPodTip
+end
+
+declare TipOdeceIzabran
+	tip: List<GornjiDeoEnum>
+end
+
+declare MaterijalIzabran
+	materijal: List<Materijal>
+end
+
+
+
+rule "A1 - Tip tela - trougao"
+    when
+        $user : User(kukovi >= ramena + 5/100 * kukovi);
+    then
+    	insert(new TipTelaIzabran(TipTela.TROUGAO));
+        System.out.println("Tip tela - trougao");
+end
+
+rule "B1 - Biranje podtipa odece ako je tip tela trougao"
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
+        $gornjiDeo : GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA));
+    then
+    	insert(new PodtipOdeceIzabran(OdecaPodTip.SIROKA));
+    	insert(new KoeficijentPreporuke(10, $gornjiDeo));
+        System.out.println("Biranje podtipa odece ako je tip tela trougao");
+end
+
+rule "C1 - Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran"
+    no-loop
+    when
+        $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
+        $gornjiDeo : GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE));
+    then
+    	insert(new TipOdeceIzabran(new ArrayList() {{  add(GornjiDeoEnum.MAJICA_KRATKI);  add(GornjiDeoEnum.MAJICA_BRETELE); }}));
+    	insert(new KoeficijentPreporuke(20, $gornjiDeo));
+        System.out.println("Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran");
+end
+
+rule "D1 - Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava"
+    no-loop
+    salience 50
+    when
+        $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
+        $tipOdece : TipOdeceIzabran( $tip : tip contains GornjiDeoEnum.MAJICA_KRATKI);
+        $gornjiDeo : GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK));
+    then
+    	insert(new MaterijalIzabran(new ArrayList() {{  add(Materijal.LAN); add(Materijal.PAMUK); }}));
+    	insert(new KoeficijentPreporuke(20, $gornjiDeo));
+        System.out.println("Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava");
+end
+
