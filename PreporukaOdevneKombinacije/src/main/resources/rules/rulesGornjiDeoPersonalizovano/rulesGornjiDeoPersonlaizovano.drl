@@ -20,6 +20,11 @@ declare MaterijalIzabran
 	materijal: List<Materijal>
 end
 
+declare BojaIzabran
+    boja: Boja
+end
+
+
 
 
 rule "A1 - Tip tela - trougao"
@@ -35,9 +40,10 @@ rule "B1 - Biranje podtipa odece ako je tip tela trougao"
     when
         $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
         $gornjiDeo : GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA));
+        $list: List( size > 0 ) from collect(GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA ))
     then
     	insert(new PodtipOdeceIzabran(OdecaPodTip.SIROKA));
-    	insert(new KoeficijentPreporuke(10, $gornjiDeo));
+    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
         System.out.println("Biranje podtipa odece ako je tip tela trougao");
 end
 
@@ -46,9 +52,10 @@ rule "C1 - Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vr
     when
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
         $gornjiDeo : GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE));
+        $list: List( size > 0 ) from collect(GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE ))
     then
     	insert(new TipOdeceIzabran(new ArrayList() {{  add(GornjiDeoEnum.MAJICA_KRATKI);  add(GornjiDeoEnum.MAJICA_BRETELE); }}));
-    	insert(new KoeficijentPreporuke(20, $gornjiDeo));
+    	insert(new KoeficijentPreporuke(20 + 10 / $list.size(), $gornjiDeo));
         System.out.println("Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran");
 end
 
@@ -59,9 +66,59 @@ rule "D1 - Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
         $tipOdece : TipOdeceIzabran( $tip : tip contains GornjiDeoEnum.MAJICA_KRATKI);
         $gornjiDeo : GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK));
+        $list: List( size > 0 ) from collect(GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK ))
     then
     	insert(new MaterijalIzabran(new ArrayList() {{  add(Materijal.LAN); add(Materijal.PAMUK); }}));
-    	insert(new KoeficijentPreporuke(20, $gornjiDeo));
+    	insert(new KoeficijentPreporuke(20 + 10 / $list.size(), $gornjiDeo));
         System.out.println("Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava");
+end
+
+rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran"
+    no-loop
+    salience 20
+    when
+        $unos : UnosDTO(temperatura > 20, dresscode == DressCode.LEZERAN );
+        $gornjiDeo : GornjiDeo( boja == Boja.BELA));
+        $list: List( size > 0 ) from collect(GornjiDeo( boja == Boja.BELA ))
+    then
+    	insert(new BojaIzabran( Boja.BELA ));
+    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
+        System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
+end
+
+rule "F1 - Biranje komada prema koeficijentu preporuke"
+	salience -10
+	no-loop
+    when
+    	$gornjiDeo : GordnjiDeo();
+    	Number($avg : doubleValue) from accumulate(
+                       	KoeficijentPreporuke( $komad : komad, $b:Double.valueOf(bodovi * $komad.getKoeficijentOdabira()) ),
+                       	average($b) );
+    	Number($bodovi > $avg) from accumulate(
+                	KoeficijentPreporuke(komad.getId() == $gornjiDeo.getId(), $b:Double.valueOf(bodovi * $gornjiDeo.getKoeficijentOdabira())),
+                	sum($b)
+                );
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        $preporuceniKomadi.getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($gornjiDeo, $bodovi * $gornjiDeo.getKoeficijentOdabira()));
+    	update($preporuceniKomadi);
+    	System.out.println("Biranje komada prema koeficijentu preporuke, izabran komad: " + $gornjiDeo.getId());
+end
+
+rule "Brisanje poena nakon odabira"
+	salience -20
+	when
+		$koeficijentPreporuke:KoeficijentPreporuke();
+	then
+		delete($koeficijentPreporuke);
+end
+
+rule "Provera uspesnosti"
+	salience -30
+	no-loop
+    when
+        preporuceniKomadi : PreporuceniKomadi( preporuceniGornjiDelovi.size > 0);
+    then
+    	System.out.println("Uspesno zavrsena preporuka");
 end
 
