@@ -1,5 +1,5 @@
 package com.ftn.PreporukaOdevneKombinacije.model.enums;
 
 public enum BojaIntenzitet {
-    TAMNA, SVETLA, SREDNJE
+    TAMNA, SVETLA, SREDNJE, PASTELNA
 }

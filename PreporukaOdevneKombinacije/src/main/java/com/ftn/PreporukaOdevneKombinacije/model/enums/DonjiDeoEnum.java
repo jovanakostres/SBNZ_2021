@@ -1,5 +1,5 @@
 package com.ftn.PreporukaOdevneKombinacije.model.enums;
 
 public enum DonjiDeoEnum {
-    PANTALONE, SUKNJA
+    PANTALONE, SUKNJA, TRENERKA, HELANKE
 }

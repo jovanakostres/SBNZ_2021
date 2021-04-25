@@ -1,5 +1,6 @@
 package com.ftn.PreporukaOdevneKombinacije.model;
 
+import com.ftn.PreporukaOdevneKombinacije.model.enums.BojaKoze;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Pol;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.TipTela;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Visina;
@@ -13,5 +14,5 @@ public class User {
     private TipTela tipTela;
     private Visina visina;
     private List<Integer> obimiCM;
-
+    private BojaKoze bojaKoze;
 }
