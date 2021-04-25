@@ -128,3 +128,31 @@ rule "Provera uspesnosti"
     then
     	System.out.println("Uspesno zavrsena preporuka");
 end
+
+rule "F2 - Izbor boje suknje ako je korisnik svetle puti, ima tip tela trougao i nizak je"
+    no-loop
+    when
+        $user : User(bojaKoze == BojaKoze.SUMMER || BojaKoze.SPRING || BojaKoze.AUTUMN || BojaKoze.WINTER, kukovi >= ramena + 0.15 * kukovi)
+        $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
+        $user : User(visina < 165)
+    then
+       	insert(new IntenzitetBojeIzabran(BojaIntenzitet.TAMNA));
+        insert(new KoeficijentPreporuke(10, $donjiDeo));
+        System.out.println("Biranje boje suknje na osnovu tipa tela i boje koze")
+end
+
+rule "F3 - Izbor boje suknje ako je korisnik svetle puti, ima tip tela trougao i nizak je"
+    no-loop
+    when
+        $user : User(bojaKoze == BojaKoze.SUMMER || BojaKoze.SPRING || BojaKoze.AUTUMN || BojaKoze.WINTER, kukovi < ramena + 0.15 * kukovi)
+        $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
+        $user : User(visina < 165)
+    then
+        insert(new IntenzitetBojeIzabran(BojaIntenzitet.SREDNJA));
+        insert(new KoeficijentPreporuke(10, $donjiDeo));
+        System.out.println("Biranje boje suknje na osnovu tipa tela i boje koze")
+end
+
+query "Nadji sve suknje"
+    donjiDelovi : DonjiDeo.
+end
