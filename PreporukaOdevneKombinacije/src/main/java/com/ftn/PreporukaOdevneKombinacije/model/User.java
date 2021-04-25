@@ -12,7 +12,9 @@ public class User {
     private String password;
     private Pol pol;
     private TipTela tipTela;
-    private Visina visina;
-    private List<Integer> obimiCM;
+    private int visina;
+    private int kilaza;
+    private int ramena, kukovi, struk; //za tip tela
     private BojaKoze bojaKoze;
+    private List<KomadOdece> komadi;
 }
