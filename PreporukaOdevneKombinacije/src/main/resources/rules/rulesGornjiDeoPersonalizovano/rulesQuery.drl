@@ -1,0 +1,5 @@
+
+
+query tipOdeceGornji(GornjiDeoEnum gde)
+    GornjiDeo( odecaTip == gde)
+end

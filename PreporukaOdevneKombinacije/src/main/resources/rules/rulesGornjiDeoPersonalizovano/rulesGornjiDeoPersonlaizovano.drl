@@ -80,7 +80,7 @@ rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress cod
     no-loop
     salience (hashMapColor[$dresscode])
     when
-        $unos : UnosDTO(temperatura > 20, dresscode == DressCode.LEZERAN, $boja : boje );
+        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $boja : boje );
         $gornjiDeo : GornjiDeo( $b : boja == boje.get(0)));
         $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
     then
@@ -127,7 +127,7 @@ end
 
 
 #medjusobna iskljucivost
-rule "E2 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code - odredjivanje boje(dresscode)"
+rule "E1"
     no-loop
     salience(hashMapColor[$dresscode])
     when
@@ -137,10 +137,9 @@ rule "E2 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress cod
     then
        	insert(new BojaIzabran( $b ));
        	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-        System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
 end
 
-rule "E3 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code - odredjivanje boje(korisnik)"
+rule "E2"
     no-loop
     salience(hashMapColor[$dresscode])
     when
@@ -150,8 +149,23 @@ rule "E3 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress cod
     then
         insert(new BojaIzabran( $b ));
        	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-        System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
 end
+
+#upozorenje da se nesto previse nosi
+rule "Alarm"
+    no-loop
+    salience(hashMapColor[$dresscode])
+    when
+
+        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $boja : boje );
+        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0)));
+        $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
+    then
+       	insert(new BojaIzabran( $b ));
+       	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
+end
+
+
 
 
 
