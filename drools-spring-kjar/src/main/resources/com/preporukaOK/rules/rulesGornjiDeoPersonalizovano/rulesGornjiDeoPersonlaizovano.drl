@@ -1,4 +1,9 @@
+package com.preporukaOK.rules.rulesGornjiDeoPersonalizovano
 
+import java.util.List;
+import java.util.Map;
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 
 global Map hashMapColor
 
@@ -42,7 +47,7 @@ rule "B1 - Biranje podtipa odece ako je tip tela trougao"
     no-loop
     when
         $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
-        $gornjiDeo : GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA));
+        $gornjiDeo : GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA);
         $list: List( size > 0 ) from collect(GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA ))
     then
     	insert(new PodtipOdeceIzabran(OdecaPodTip.SIROKA));
@@ -54,7 +59,7 @@ rule "C1 - Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vr
     no-loop
     when
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
-        $gornjiDeo : GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE));
+        $gornjiDeo : GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE);
         $list: List( size > 0 ) from collect(GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE ))
     then
     	insert(new TipOdeceIzabran(new ArrayList() {{  add(GornjiDeoEnum.MAJICA_KRATKI);  add(GornjiDeoEnum.MAJICA_BRETELE); }}));
@@ -68,7 +73,7 @@ rule "D1 - Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo
     when
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
         $tipOdece : TipOdeceIzabran( $tip : tip contains GornjiDeoEnum.MAJICA_KRATKI);
-        $gornjiDeo : GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK));
+        $gornjiDeo : GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK);
         $list: List( size > 0 ) from collect(GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK ))
     then
     	insert(new MaterijalIzabran(new ArrayList() {{  add(Materijal.LAN); add(Materijal.PAMUK); }}));
@@ -80,8 +85,8 @@ rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress cod
     no-loop
     salience (hashMapColor[$dresscode])
     when
-        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $boja : boje );
-        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0)));
+        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $bojeUnos : boje );
+        $gornjiDeo : GornjiDeo( $b : boja == $bojeUnos.get(0));
         $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
     then
     	insert(new BojaIzabran( $b ));
@@ -131,8 +136,8 @@ rule "E1"
     no-loop
     salience(hashMapColor[$dresscode])
     when
-        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $boja : boje );
-        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0)));
+        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $bojeUnos : boje );
+        $gornjiDeo : GornjiDeo( $b : boja == $bojeUnos.get(0)));
         $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
     then
        	insert(new BojaIzabran( $b ));
@@ -144,7 +149,7 @@ rule "E2"
     salience(hashMapColor[$dresscode])
     when
         $unos : UnosDTO(temperatura > 20, dresscode : dresscode );
-        $gornjiDeo : GornjiDeo( $b : boja == Boja.CRNA));
+        $gornjiDeo : GornjiDeo( $b : boja == Boja.CRNA);
         $list: List( size > 0 ) from collect(GornjiDeo( boja == Boja.CRNA ))
     then
         insert(new BojaIzabran( $b ));
@@ -158,7 +163,7 @@ rule "Alarm"
     when
 
         $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $boja : boje );
-        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0)));
+        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0));
         $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
     then
        	insert(new BojaIzabran( $b ));
