@@ -21,6 +21,8 @@ public class UnosDTO {
         this.boje = boje;
     }
 
+    public UnosDTO() {}
+
     public double getTemperatura() {
         return temperatura;
     }

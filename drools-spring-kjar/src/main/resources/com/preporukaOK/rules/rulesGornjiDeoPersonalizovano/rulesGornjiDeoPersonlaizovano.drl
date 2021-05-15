@@ -1,9 +1,12 @@
 package com.preporukaOK.rules.rulesGornjiDeoPersonalizovano
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
 
 global Map hashMapColor
 
@@ -21,18 +24,16 @@ declare PodtipOdeceIzabran
 end
 
 declare TipOdeceIzabran
-	tip: List<GornjiDeoEnum>
+	tip: GornjiDeoEnum[]
 end
 
 declare MaterijalIzabran
-	materijal: List<Materijal>
+	materijal: Materijal[]
 end
 
 declare BojaIzabran
     boja: Boja
 end
-
-
 
 
 rule "A1 - Tip tela - trougao"
@@ -44,9 +45,9 @@ rule "A1 - Tip tela - trougao"
 end
 
 rule "B1 - Biranje podtipa odece ako je tip tela trougao"
-    no-loop
+    lock-on-active
     when
-        $tipTela : TipTelaIzabran(podTip == TipTela.TROUGAO);
+        $tipTela : TipTelaIzabran(tipTela == TipTela.TROUGAO);
         $gornjiDeo : GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA);
         $list: List( size > 0 ) from collect(GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA ))
     then
@@ -56,36 +57,38 @@ rule "B1 - Biranje podtipa odece ako je tip tela trougao"
 end
 
 rule "C1 - Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran"
-    no-loop
+    lock-on-active
     when
-        $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
-        $gornjiDeo : GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE);
-        $list: List( size > 0 ) from collect(GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || GornjiDeoEnum.MAJICA_BRETELE ))
+        $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dressCode == DressCode.LEZERAN );
+        $gornjiDeo : GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || odecaTip == GornjiDeoEnum.MAJICA_BRETELE);
+        $list: List( size > 0 ) from collect(GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || odecaTip == GornjiDeoEnum.MAJICA_BRETELE ))
     then
-    	insert(new TipOdeceIzabran(new ArrayList() {{  add(GornjiDeoEnum.MAJICA_KRATKI);  add(GornjiDeoEnum.MAJICA_BRETELE); }}));
+    	insert(new TipOdeceIzabran(new GornjiDeoEnum[]  {GornjiDeoEnum.MAJICA_KRATKI, GornjiDeoEnum.MAJICA_BRETELE} ));
     	insert(new KoeficijentPreporuke(20 + 10 / $list.size(), $gornjiDeo));
         System.out.println("Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran");
 end
 
+
 rule "D1 - Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava"
-    no-loop
+    lock-on-active
     salience 50
     when
-        $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dresscode == DressCode.LEZERAN );
+        $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dressCode == DressCode.LEZERAN );
         $tipOdece : TipOdeceIzabran( $tip : tip contains GornjiDeoEnum.MAJICA_KRATKI);
-        $gornjiDeo : GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK);
-        $list: List( size > 0 ) from collect(GornjiDeo( materijal == Materijal.LAN || Materijal.PAMUK ))
+        $gornjiDeo : GornjiDeo( materijal == Materijal.LAN || materijal == Materijal.PAMUK);
+        $list: List( size > 0 ) from collect(GornjiDeo( materijal == Materijal.LAN || materijal == Materijal.PAMUK ))
     then
-    	insert(new MaterijalIzabran(new ArrayList() {{  add(Materijal.LAN); add(Materijal.PAMUK); }}));
+    	insert(new MaterijalIzabran(new Materijal[] { Materijal.LAN,Materijal.PAMUK }));
     	insert(new KoeficijentPreporuke(20 + 10 / $list.size(), $gornjiDeo));
         System.out.println("Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava");
 end
 
+
 rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran"
-    no-loop
+    lock-on-active
     salience (hashMapColor[$dresscode])
     when
-        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $bojeUnos : boje );
+        $unos : UnosDTO(temperatura > 20, $dresscode : dressCode, $bojeUnos : boje );
         $gornjiDeo : GornjiDeo( $b : boja == $bojeUnos.get(0));
         $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
     then
@@ -94,22 +97,23 @@ rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress cod
         System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
 end
 
+
 rule "F1 - Biranje komada prema koeficijentu preporuke"
 	salience -10
-	no-loop
+	lock-on-active
     when
-    	$gornjiDeo : GordnjiDeo();
+    	$gornjiDeo : GornjiDeo();
     	Number($avg : doubleValue) from accumulate(
-                       	KoeficijentPreporuke( $komad : komad, $b:Double.valueOf(bodovi * $komad.getKoeficijentOdabira()) ),
+                       	KoeficijentPreporuke( $komad : komad, $b:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ),
                        	average($b) );
-    	Number($bodovi > $avg) from accumulate(
-                	KoeficijentPreporuke(komad.getId() == $gornjiDeo.getId(), $b:Double.valueOf(bodovi * $gornjiDeo.getKoeficijentOdabira())),
-                	sum($b)
+        $poeni : Double(this >= $avg) from accumulate(
+                	KoeficijentPreporuke(komad.getId() == $gornjiDeo.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
+                	sum($b1)
                 );
         $preporuceniKomadi : PreporuceniKomadi();
     then
-        $preporuceniKomadi.getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($gornjiDeo, $bodovi * $gornjiDeo.getKoeficijentOdabira()));
-    	update($preporuceniKomadi);
+        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($gornjiDeo, $poeni));}
+
     	System.out.println("Biranje komada prema koeficijentu preporuke, izabran komad: " + $gornjiDeo.getId());
 end
 
@@ -131,24 +135,11 @@ rule "Provera uspesnosti"
 end
 
 
-#medjusobna iskljucivost
-rule "E1"
-    no-loop
-    salience(hashMapColor[$dresscode])
-    when
-        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $bojeUnos : boje );
-        $gornjiDeo : GornjiDeo( $b : boja == $bojeUnos.get(0)));
-        $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
-    then
-       	insert(new BojaIzabran( $b ));
-       	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-end
-
 rule "E2"
-    no-loop
+    lock-on-active
     salience(hashMapColor[$dresscode])
     when
-        $unos : UnosDTO(temperatura > 20, dresscode : dresscode );
+        $unos : UnosDTO(temperatura > 20, $dresscode : dressCode );
         $gornjiDeo : GornjiDeo( $b : boja == Boja.CRNA);
         $list: List( size > 0 ) from collect(GornjiDeo( boja == Boja.CRNA ))
     then
@@ -156,19 +147,9 @@ rule "E2"
        	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
 end
 
-#upozorenje da se nesto previse nosi
-rule "Alarm"
-    no-loop
-    salience(hashMapColor[$dresscode])
-    when
 
-        $unos : UnosDTO(temperatura > 20, $dresscode : dresscode, $boja : boje );
-        $gornjiDeo : GornjiDeo( $b : boja == boje.get(0));
-        $list: List( size > 0 ) from collect(GornjiDeo( boja == $b ))
-    then
-       	insert(new BojaIzabran( $b ));
-       	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-end
+
+
 
 
 
