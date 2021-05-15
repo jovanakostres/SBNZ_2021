@@ -1,4 +1,9 @@
+package com.preporukaOK.rules.rulesGornjiDeoPersonalizovano
 
+import java.util.List;
+import java.util.Map;
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 
 query tipOdeceGornji(GornjiDeoEnum gde)
     GornjiDeo( odecaTip == gde)

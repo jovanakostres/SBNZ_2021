@@ -26,4 +26,36 @@ public class GornjiDeo extends KomadOdece{
         this.odecaPodTip = odecaPodTip;
         this.odecaTip = odecaTip;
     }
+
+    public DuzinaRukava getDuzinaRukava() {
+        return duzinaRukava;
+    }
+
+    public void setDuzinaRukava(DuzinaRukava duzinaRukava) {
+        this.duzinaRukava = duzinaRukava;
+    }
+
+    public Izrez getIzrez() {
+        return izrez;
+    }
+
+    public void setIzrez(Izrez izrez) {
+        this.izrez = izrez;
+    }
+
+    public OdecaPodTip getOdecaPodTip() {
+        return odecaPodTip;
+    }
+
+    public void setOdecaPodTip(OdecaPodTip odecaPodTip) {
+        this.odecaPodTip = odecaPodTip;
+    }
+
+    public GornjiDeoEnum getOdecaTip() {
+        return odecaTip;
+    }
+
+    public void setOdecaTip(GornjiDeoEnum odecaTip) {
+        this.odecaTip = odecaTip;
+    }
 }

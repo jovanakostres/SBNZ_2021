@@ -41,4 +41,67 @@ public abstract class KomadOdece {
         this.image = image;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boja getBoja() {
+        return boja;
+    }
+
+    public void setBoja(Boja boja) {
+        this.boja = boja;
+    }
+
+    public BojaIntenzitet getBojaIntenzitet() {
+        return bojaIntenzitet;
+    }
+
+    public void setBojaIntenzitet(BojaIntenzitet bojaIntenzitet) {
+        this.bojaIntenzitet = bojaIntenzitet;
+    }
+
+    public Materijal getMaterijal() {
+        return materijal;
+    }
+
+    public void setMaterijal(Materijal materijal) {
+        this.materijal = materijal;
+    }
+
+    public Vreme getVreme() {
+        return vreme;
+    }
+
+    public void setVreme(Vreme vreme) {
+        this.vreme = vreme;
+    }
+
+    public int getPrioritet() {
+        return prioritet;
+    }
+
+    public void setPrioritet(int prioritet) {
+        this.prioritet = prioritet;
+    }
+
+    public double getKoeficijentOdabira() {
+        return koeficijentOdabira;
+    }
+
+    public void setKoeficijentOdabira(double koeficijentOdabira) {
+        this.koeficijentOdabira = koeficijentOdabira;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
