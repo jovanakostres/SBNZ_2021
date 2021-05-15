@@ -27,6 +27,8 @@ public class GornjiDeo extends KomadOdece{
         this.odecaTip = odecaTip;
     }
 
+    public GornjiDeo(){}
+
     public DuzinaRukava getDuzinaRukava() {
         return duzinaRukava;
     }

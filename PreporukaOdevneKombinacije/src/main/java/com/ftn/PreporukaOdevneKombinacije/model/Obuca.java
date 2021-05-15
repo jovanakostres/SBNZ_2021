@@ -23,4 +23,5 @@ public class Obuca extends KomadOdece{
         this.stikla = stikla;
     }
 
+    public Obuca(){}
 }

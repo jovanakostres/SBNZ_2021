@@ -41,6 +41,10 @@ public abstract class KomadOdece {
         this.image = image;
     }
 
+    public KomadOdece(){
+
+    }
+
     public Long getId() {
         return id;
     }
