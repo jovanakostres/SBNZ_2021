@@ -26,4 +26,6 @@ public class GornjiDeo extends KomadOdece{
         this.odecaPodTip = odecaPodTip;
         this.odecaTip = odecaTip;
     }
+
+    public GornjiDeo(){}
 }

@@ -14,4 +14,6 @@ public class Jakna extends KomadOdece{
         super(boja, bojaIntenzitet, materijal, vreme, prioritet, image);
         this.tipJakne = tip;
     }
+
+    public Jakna(){}
 }

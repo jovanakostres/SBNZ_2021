@@ -41,4 +41,8 @@ public abstract class KomadOdece {
         this.image = image;
     }
 
+    public KomadOdece(){
+
+    }
+
 }

@@ -22,4 +22,6 @@ public class DonjiDeo extends KomadOdece {
         this.dubina = dubina;
         this.duzina = duzina;
     }
+
+    public DonjiDeo(){}
 }
