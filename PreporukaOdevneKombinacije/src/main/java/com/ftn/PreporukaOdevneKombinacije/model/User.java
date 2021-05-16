@@ -39,7 +39,7 @@ public class User {
     @Column(name="bojakoze")
     private BojaKoze bojaKoze;
 
-    @OneToMany(mappedBy="korisnik")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="korisnik")
     private List<KomadOdece> komadi;
 
     public User(String username, String password, Pol pol, TipTela tipTela, int visina, int kilaza, int ramena, int kukovi, int struk, BojaKoze bojaKoze, List<KomadOdece> komadi) {
@@ -70,6 +70,8 @@ public class User {
         this.bojaKoze = bojaKoze;
         this.komadi = komadi;
     }
+
+    public User() {}
 
     public Long getId() {
         return id;

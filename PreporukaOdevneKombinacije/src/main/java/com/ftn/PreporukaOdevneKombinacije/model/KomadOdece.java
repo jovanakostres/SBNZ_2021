@@ -32,7 +32,7 @@ public abstract class KomadOdece {
     @Column(nullable = false, length = 1000000)
     private String image;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="korisnik_id", nullable=false)
     private User korisnik;
 

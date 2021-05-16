@@ -21,6 +21,12 @@ public class UnosDTO {
         this.boje = boje;
     }
 
+    public UnosDTO(String mesto, DressCode dressCode, List<Boja> boje) {
+        this.mesto = mesto;
+        this.dressCode = dressCode;
+        this.boje = boje;
+    }
+
     public UnosDTO() {}
 
     public double getTemperatura() {

@@ -47,7 +47,7 @@ end
 
 rule "B1 - Biranje podtipa odece ako je tip tela trougao"
     salience 450
-    lock-on-active
+    no-loop
     when
         $tipTela : TipTelaIzabran(tipTela == TipTela.TROUGAO);
         $gornjiDeo : GornjiDeo( odecaPodTip == OdecaPodTip.SIROKA);
@@ -55,40 +55,50 @@ rule "B1 - Biranje podtipa odece ako je tip tela trougao"
     then
     	insert(new PodtipOdeceIzabran(OdecaPodTip.SIROKA));
     	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-        System.out.println("Biranje podtipa odece ako je tip tela trougao");
+        System.out.println("B1 id odece : " + $gornjiDeo.getId());
 end
 
 rule "C1 - Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran"
     salience 400
-    lock-on-active
+    no-loop
     when
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dressCode == DressCode.LEZERAN );
-        $gornjiDeo : GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || odecaTip == GornjiDeoEnum.MAJICA_BRETELE);
-        $list: List( size > 0 ) from collect(GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || odecaTip == GornjiDeoEnum.MAJICA_BRETELE ))
+        List( size > 0 ) from collect(GornjiDeo( odecaTip == GornjiDeoEnum.MAJICA_KRATKI || odecaTip == GornjiDeoEnum.MAJICA_BRETELE ))
     then
     	insert(new TipOdeceIzabran(new GornjiDeoEnum[]  {GornjiDeoEnum.MAJICA_KRATKI, GornjiDeoEnum.MAJICA_BRETELE} ));
+        System.out.println("C1");
+end
+
+rule "C2 - Dodavanje bodova za tip odece"
+    salience 380
+    no-loop
+    when
+        TipOdeceIzabran($tip : tip);
+        $gornjiDeo : GornjiDeo( odecaTip memberOf $tip);
+        $list : List( size > 0 ) from collect(GornjiDeo(odecaTip memberOf $tip));
+    then
     	insert(new KoeficijentPreporuke(20 + 10 / $list.size(), $gornjiDeo));
-        System.out.println("Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran");
+        System.out.println("C2 , id odece : " + $gornjiDeo.getId());
 end
 
 
 rule "D1 - Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava"
     salience 350
-    lock-on-active
+    no-loop
     when
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dressCode == DressCode.LEZERAN );
-        $tipOdece : TipOdeceIzabran( $tip : tip contains GornjiDeoEnum.MAJICA_KRATKI);
+        $tipOdece : TipOdeceIzabran( $tip : tip contains GornjiDeoEnum.MAJICA_KRATKI || tip contains GornjiDeoEnum.MAJICA_BRETELE );
         $gornjiDeo : GornjiDeo( materijal == Materijal.LAN || materijal == Materijal.PAMUK);
         $list: List( size > 0 ) from collect(GornjiDeo( materijal == Materijal.LAN || materijal == Materijal.PAMUK ))
     then
     	insert(new MaterijalIzabran(new Materijal[] { Materijal.LAN,Materijal.PAMUK }));
     	insert(new KoeficijentPreporuke(20 + 10 / $list.size(), $gornjiDeo));
-        System.out.println("Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava");
+        System.out.println("D1 , id odece : " + $gornjiDeo.getId());
 end
 
 
 rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran"
-    lock-on-active
+    no-loop
     salience (hashMapColor[$dresscode])
     when
         $unos : UnosDTO(temperatura > 20, $dresscode : dressCode, $bojeUnos : boje );
@@ -97,13 +107,13 @@ rule "E1 - Biranje boje odece ako je temperatura veća od 20 stepeni i dress cod
     then
     	insert(new BojaIzabran( $b ));
     	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-        System.out.println("Biranje boje odece ako je temperatura veća od 20 stepeni i dress code je ležeran");
+        System.out.println("E1 , id odece : " + $gornjiDeo.getId());
 end
 
 
 rule "F1 - Biranje komada prema koeficijentu preporuke"
 	salience -10
-	lock-on-active
+	no-loop
     when
     	$gornjiDeo : GornjiDeo();
     	Number($avg : doubleValue) from accumulate(
@@ -117,7 +127,7 @@ rule "F1 - Biranje komada prema koeficijentu preporuke"
     then
         modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($gornjiDeo, $poeni));}
 
-    	System.out.println("Biranje komada prema koeficijentu preporuke, izabran komad: " + $gornjiDeo.getId());
+    	System.out.println("F1 Biranje komada prema koeficijentu preporuke, izabran komad : " + $gornjiDeo.getId() + "  srednja vrednost poena : " + $avg);
 end
 
 rule "Brisanje poena nakon odabira"
