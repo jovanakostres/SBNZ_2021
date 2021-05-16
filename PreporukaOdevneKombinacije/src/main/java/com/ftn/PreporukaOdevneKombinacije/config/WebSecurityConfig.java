@@ -1,4 +1,4 @@
-package com.ftn.adminapp.configuration;
+package com.ftn.PreporukaOdevneKombinacije.config;
 
 import com.ftn.PreporukaOdevneKombinacije.security.TokenUtils;
 import com.ftn.PreporukaOdevneKombinacije.security.auth.RestAuthenticationEntryPoint;
@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
                 .authorizeRequests().antMatchers("/auth/**").permitAll().antMatchers("/h2-console/**").permitAll().antMatchers("/api/foo").permitAll()
+                .antMatchers("/clothes/**").permitAll()
                 .anyRequest().authenticated().and()
                 .cors().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),BasicAuthenticationFilter.class);
