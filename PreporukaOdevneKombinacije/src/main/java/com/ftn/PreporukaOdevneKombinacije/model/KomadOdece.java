@@ -32,6 +32,10 @@ public abstract class KomadOdece {
     @Column(nullable = false, length = 1000000)
     private String image;
 
+    @ManyToOne
+    @JoinColumn(name="korisnik_id", nullable=false)
+    private User korisnik;
+
     public KomadOdece(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image) {
         this.boja = boja;
         this.bojaIntenzitet = bojaIntenzitet;

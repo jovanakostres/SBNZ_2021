@@ -1,4 +1,4 @@
 package com.ftn.PreporukaOdevneKombinacije.repository;
 
-public class JaknaRepository {
+public interface JaknaRepository {
 }

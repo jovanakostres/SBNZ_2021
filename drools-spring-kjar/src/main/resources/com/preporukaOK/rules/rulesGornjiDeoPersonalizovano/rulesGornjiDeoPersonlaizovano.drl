@@ -37,6 +37,7 @@ end
 
 
 rule "A1 - Tip tela - trougao"
+    salience 500
     when
         $user : User(kukovi >= ramena + 5/100 * kukovi);
     then
@@ -45,6 +46,7 @@ rule "A1 - Tip tela - trougao"
 end
 
 rule "B1 - Biranje podtipa odece ako je tip tela trougao"
+    salience 450
     lock-on-active
     when
         $tipTela : TipTelaIzabran(tipTela == TipTela.TROUGAO);
@@ -57,6 +59,7 @@ rule "B1 - Biranje podtipa odece ako je tip tela trougao"
 end
 
 rule "C1 - Biranje tipa odece ako je temperatura veća od 20 stepeni, suvo je vreme i dress code je ležeran"
+    salience 400
     lock-on-active
     when
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dressCode == DressCode.LEZERAN );
@@ -70,8 +73,8 @@ end
 
 
 rule "D1 - Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo je vreme,  dress code je ležeran  i tip odeće je majica kratkih rukava"
+    salience 350
     lock-on-active
-    salience 50
     when
         $unos : UnosDTO(temperatura > 20, vreme == Vreme.SUVO, dressCode == DressCode.LEZERAN );
         $tipOdece : TipOdeceIzabran( $tip : tip contains GornjiDeoEnum.MAJICA_KRATKI);

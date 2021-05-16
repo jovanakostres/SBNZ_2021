@@ -2,6 +2,7 @@ package com.ftn.PreporukaOdevneKombinacije.model.drlModel;
 
 import com.ftn.PreporukaOdevneKombinacije.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PreporuceniKomadi {
@@ -18,6 +19,9 @@ public class PreporuceniKomadi {
         this.preporucenaObuca = preporucenaObuca;
     }
 
+    public PreporuceniKomadi(){
+        this.preporuceniGornjiDelovi = new ArrayList<>();
+    }
 
     public List<PreporuceniGornjiDeo> getPreporuceniGornjiDelovi() {
         return preporuceniGornjiDelovi;
