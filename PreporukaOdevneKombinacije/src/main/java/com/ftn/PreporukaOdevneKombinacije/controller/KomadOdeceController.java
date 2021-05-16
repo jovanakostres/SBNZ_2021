@@ -1,7 +1,9 @@
 package com.ftn.PreporukaOdevneKombinacije.controller;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Boja;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.DressCode;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
@@ -24,14 +26,20 @@ public class KomadOdeceController {
     @Autowired
     private KomadOdeceService komadOdeceService;
 
+    private PreporuceniKomadiMapper preporuceniKomadiMapper;
+
     @PostMapping("/personalized_recommendation")
     public ResponseEntity<?> getPreporukaPersonalizovano(@RequestBody UnosDTO unosDTO) {
         User user = userService.findOne(1L);
-        komadOdeceService.getPreporukaPersonalizovano(new UnosDTO(25, Vreme.SUVO, "Novi Sad", DressCode.LEZERAN, new ArrayList<Boja>() {{ add(Boja.LJUBICASTA); add(Boja.BELA);}}), user);
-        if(user != null){
+        PreporuceniKomadi prep = komadOdeceService.getPreporukaPersonalizovano(new UnosDTO(25, Vreme.SUVO, "Novi Sad", DressCode.LEZERAN, new ArrayList<Boja>() {{ add(Boja.LJUBICASTA); add(Boja.BELA);}}), user);
+        if(prep.getPreporuceniGornjiDelovi().size() <= 0){
             return new ResponseEntity<>("Error! Comment not found!", HttpStatus.NOT_FOUND);
         }else{
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(preporuceniKomadiMapper.toDto(prep),HttpStatus.OK);
         }
+    }
+
+    public KomadOdeceController(){
+        preporuceniKomadiMapper = new PreporuceniKomadiMapper();
     }
 }
