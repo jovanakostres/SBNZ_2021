@@ -7,6 +7,8 @@ import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.repository.GornjiDeoRepository;
+import com.ftn.PreporukaOdevneKombinacije.repository.KomadOdeceRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,14 @@ import java.util.Map;
 public class GornjiDeoService {
 
     @Autowired
+    private GornjiDeoRepository repository;
+
+    @Autowired
     private KieContainer kieContainer;
+
+    public GornjiDeo create(GornjiDeo komadOdece){
+        return repository.save(komadOdece);
+    }
 
     public PreporuceniKomadi getPreporuceniGornjiDeo(UnosDTO unosDTO, User user, List<GornjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
         KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");

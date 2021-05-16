@@ -42,7 +42,7 @@ public class User implements UserDetails {
     @Column(name="bojakoze")
     private BojaKoze bojaKoze;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="korisnik")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="korisnik")
     private List<KomadOdece> komadi;
 
 

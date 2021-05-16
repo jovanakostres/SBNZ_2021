@@ -14,13 +14,13 @@ public abstract class KomadOdece {
     @Column(nullable = false)
     private Boja boja;
 
-    @Column(nullable = false, name = "bojaint")
+    @Column(name = "bojaint")
     private BojaIntenzitet bojaIntenzitet;
 
     @Column(nullable = false)
     private Materijal materijal;
 
-    @Column(nullable = false)
+    @Column()
     private Vreme vreme;
 
     @Column(nullable = false)
@@ -42,6 +42,15 @@ public abstract class KomadOdece {
         this.materijal = materijal;
         this.vreme = vreme;
         this.prioritet = prioritet;
+        this.image = image;
+    }
+
+    public KomadOdece(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image) {
+        this.boja = boja;
+        this.materijal = materijal;
+        this.prioritet = prioritet;
+        this.vreme  = vreme;
+        this.koeficijentOdabira = koeficijentOdabira;
         this.image = image;
     }
 
@@ -111,5 +120,13 @@ public abstract class KomadOdece {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public User getKorisnik() {
+        return korisnik;
+    }
+
+    public void setKorisnik(User korisnik) {
+        this.korisnik = korisnik;
     }
 }
