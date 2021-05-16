@@ -4,13 +4,16 @@ import com.ftn.PreporukaOdevneKombinacije.model.enums.BojaKoze;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Pol;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.TipTela;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Visina;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "platform_user")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,6 +44,7 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="korisnik")
     private List<KomadOdece> komadi;
+
 
     public User(String username, String password, Pol pol, TipTela tipTela, int visina, int kilaza, int ramena, int kukovi, int struk, BojaKoze bojaKoze, List<KomadOdece> komadi) {
         this.username = username;
@@ -83,6 +87,26 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     public void setUsername(String username) {
@@ -167,5 +191,9 @@ public class User {
 
     public void setKomadi(List<KomadOdece> komadi) {
         this.komadi = komadi;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 }
