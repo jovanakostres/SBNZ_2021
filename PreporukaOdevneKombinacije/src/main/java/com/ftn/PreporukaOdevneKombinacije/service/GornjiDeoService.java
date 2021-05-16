@@ -1,5 +1,6 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
+import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
@@ -19,17 +20,18 @@ public class GornjiDeoService {
     @Autowired
     private KieContainer kieContainer;
 
-    public PreporuceniKomadi getPreporuceniGornjiDeo(List<KomadOdece> komadi, PreporuceniKomadi preporuceniKomadi) {
+    public PreporuceniKomadi getPreporuceniGornjiDeo(UnosDTO unosDTO, List<KomadOdece> komadi, PreporuceniKomadi preporuceniKomadi) {
         KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
         for(KomadOdece komadOdece : komadi){
             kieSession.insert(komadOdece);
         }
-        kieSession.setGlobal("hashMapColor", 2);
+
+        kieSession.setGlobal("hashMapColor", makeHashMapColor());
         kieSession.insert(preporuceniKomadi);
+        kieSession.insert(unosDTO);
         kieSession.fireAllRules();
 
-
-        kieSession.fireAllRules();
+        System.out.println(preporuceniKomadi.getPreporuceniGornjiDelovi().size());
 
         return preporuceniKomadi;
     }
