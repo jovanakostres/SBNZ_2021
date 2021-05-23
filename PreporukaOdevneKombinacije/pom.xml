@@ -95,6 +95,13 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>sbnz.integracija</groupId>
+			<artifactId>drools-spring-kjar</artifactId>
+			<type>jar</type>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

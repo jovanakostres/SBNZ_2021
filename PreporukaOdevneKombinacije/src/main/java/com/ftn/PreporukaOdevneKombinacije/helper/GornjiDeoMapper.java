@@ -19,6 +19,6 @@ public class GornjiDeoMapper implements MapperInterface<GornjiDeo, GornjiDeoUnos
 
     @Override
     public GornjiDeoUnosDTO toDto(GornjiDeo entity) {
-        return null;
+        return new GornjiDeoUnosDTO(entity);
     }
 }

@@ -31,6 +31,14 @@ public class GornjiDeoService {
         return repository.save(komadOdece);
     }
 
+    public List<GornjiDeo> findAll() {
+        return repository.findAll();
+    }
+
+    public GornjiDeo findOne(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
     public PreporuceniKomadi getPreporuceniGornjiDeo(UnosDTO unosDTO, User user, List<GornjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
         KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
         for(GornjiDeo komadOdece : komadi){
@@ -50,6 +58,11 @@ public class GornjiDeoService {
         kieSession.insert(unosDTO);
         kieSession.insert(user);
         kieSession.fireAllRules();
+
+//        HashMap<Long, Double> a = new HashMap<>();
+//        a.entrySet().forEach(entry -> {
+//            System.out.println((Long)entry.getKey() + " " + entry.getValue());
+//        });
 
         System.out.println(preporuceniKomadi.getPreporuceniGornjiDelovi().size());
 
@@ -79,8 +92,6 @@ public class GornjiDeoService {
         kieSession.insert(DressCode.BLACKTIE);
         kieSession.insert(DressCode.FORMALAN);
         kieSession.insert(DressCode.IZLAZAK);
-        kieSession.insert(DressCode.ODMOR);
-        kieSession.insert(DressCode.POSLOVNI);
         kieSession.insert(DressCode.SPORTSKI);
     }
 
@@ -88,9 +99,8 @@ public class GornjiDeoService {
         kieSession.insert(GornjiDeoEnum.BLUZA);
         kieSession.insert(GornjiDeoEnum.DUKS);
         kieSession.insert(GornjiDeoEnum.DZEMPER);
-        kieSession.insert(GornjiDeoEnum.DZEMPER_RASKOPCAVANJE);
-        kieSession.insert(GornjiDeoEnum.KARDIGAN);
         kieSession.insert(GornjiDeoEnum.KOSULJA);
+        kieSession.insert(GornjiDeoEnum.TUNIKA);
         kieSession.insert(GornjiDeoEnum.MAJICA);
         kieSession.insert(GornjiDeoEnum.MAJICA_BRETELE);
         kieSession.insert(GornjiDeoEnum.MAJICA_KRATKI);
@@ -107,7 +117,6 @@ public class GornjiDeoService {
         kieSession.insert(Materijal.PLIS);
         kieSession.insert(Materijal.POLIESTER);
         kieSession.insert(Materijal.SOMOT);
-        kieSession.insert(Materijal.SPANDEX);
         kieSession.insert(Materijal.SVILA);
         kieSession.insert(Materijal.TEKSAS);
         kieSession.insert(Materijal.VUNA);
@@ -117,6 +126,9 @@ public class GornjiDeoService {
         HashMap<DressCode, Integer> map = new HashMap<>();
         map.put(DressCode.LEZERAN, 250);
         map.put(DressCode.BLACKTIE, 300);
+        map.put(DressCode.FORMALAN, 250);
+        map.put(DressCode.IZLAZAK, 250);
+        map.put(DressCode.SPORTSKI, 250);
         return map;
     }
 }

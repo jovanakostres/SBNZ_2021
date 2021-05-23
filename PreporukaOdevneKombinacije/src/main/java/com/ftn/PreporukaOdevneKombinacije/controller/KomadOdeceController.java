@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/clothes")
@@ -58,8 +59,10 @@ public class KomadOdeceController {
             GornjiDeo gornjiDeo = gornjiDeoMapper.toEntity(gornjiDeoUnosDTO);
             gornjiDeo.setKorisnik(userDetails);
             GornjiDeo created = gornjiDeoService.create(gornjiDeo);
+            userDetails.getKomadi().add(created);
+            userService.update(userDetails);
             return new ResponseEntity<>(
-                    "Kreirano",
+                    gornjiDeoMapper.toDto(created),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             //e.printStackTrace();
@@ -69,7 +72,30 @@ public class KomadOdeceController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getComment(@PathVariable("id") Long gornjiDeoId) {
+        GornjiDeo gornjiDeo = gornjiDeoService.findOne(gornjiDeoId);
+        if(gornjiDeo == null){
+            return new ResponseEntity<>("Error! Comment not found!",HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(gornjiDeoMapper.toDto(gornjiDeo),HttpStatus.OK);
+        }
+    }
 
+    @GetMapping
+    public ResponseEntity<?> getComments() {
+        List<GornjiDeo> gornjiDeoList = gornjiDeoService.findAll();
+        return new ResponseEntity<>(toGDDtoList(gornjiDeoList), HttpStatus.OK);
+    }
+
+
+    private List<GornjiDeoUnosDTO> toGDDtoList(List<GornjiDeo> gornjiDeos) {
+        List<GornjiDeoUnosDTO> gornjiDeoUnosDTOS = new ArrayList<>();
+        for(GornjiDeo gornjiDeo : gornjiDeos){
+            gornjiDeoUnosDTOS.add(gornjiDeoMapper.toDto(gornjiDeo));
+        }
+        return gornjiDeoUnosDTOS;
+    }
 
     public KomadOdeceController(){
         preporuceniKomadiMapper = new PreporuceniKomadiMapper();
