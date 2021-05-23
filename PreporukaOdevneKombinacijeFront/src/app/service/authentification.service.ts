@@ -11,7 +11,7 @@ export interface AuthResponseData {
   accessToken: string;
   expiresIn: string;
 }
-
+//ng serve --ssl --ssl-key C:\Users\Jovana\Desktop\SBNZ_2021\PreporukaOdevneKombinacijeFront\localhost.key --ssl-cert C:\Users\Jovana\Desktop\SBNZ_2021\PreporukaOdevneKombinacijeFront\localhost.crt
 export class User {
   constructor(
     private _token: string,
@@ -148,7 +148,7 @@ export class AuthentificationService {
   
 
   public isAuthenticated(): boolean {
-    const token = JSON.parse(localStorage.getItem('currentUser') || "")?.token;
+    const token = JSON.parse(localStorage?.getItem('currentUser') || "")?.token;
     // Check whether the token is expired and return
     // true or false
     return !this.jwtHelper.isTokenExpired(token);

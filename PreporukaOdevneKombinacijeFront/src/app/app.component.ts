@@ -14,7 +14,7 @@ export class AppComponent {
     private router: Router){}
 
   loggedIn():boolean{
-    if(this.authService.isAuthenticated()){
+    if(this.authService.isLoggedIn()){
       return true;
     }
     return false;
