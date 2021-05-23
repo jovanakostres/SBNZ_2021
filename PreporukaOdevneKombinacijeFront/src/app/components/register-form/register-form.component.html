@@ -1,0 +1,35 @@
+<div class = "glavni">
+    <form [formGroup]="myForm">
+        <ng-container *ngIf="step == 1" >
+            <mat-form-field>
+                <mat-label>Dresscode</mat-label>
+                <mat-select style="width: 150px;" formControlName = "dresscode" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let food of dresscode;" [value]="food.value">
+                    {{food.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    Please provide a valid title
+                  </mat-error>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="step == 2"> 
+            <mat-form-field>
+                <mat-label>Unesite mesto:</mat-label>
+                <input matInput type="text" formControlName="mesto" placeholder="Mesto" (keyup)="onKey($event)"/>
+                <mat-error>
+                    Please provide a valid title
+                  </mat-error>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="step == 3">            
+                <mat-label>Izaberi boju:</mat-label>
+                <div *ngFor="let object of colors;let i = index" style = "display: flex;">
+                    <input type="checkbox" [disabled] = "!object.checked && (checkedNumber > 1)" [value] = "object.name" (click)="check(object, i)"> {{object.name}}
+                </div>       
+        </ng-container>
+        <br>
+        <button mat-button *ngIf="step <= 2" (click)="step = step + 1; invalid = true;" [disabled] = "invalid" >Next</button>
+        <button mat-button *ngIf="step == 3" [disabled] = "checkedNumber < 2" (click) = onSubmit(myForm)>Submit</button>
+    </form>
+</div>

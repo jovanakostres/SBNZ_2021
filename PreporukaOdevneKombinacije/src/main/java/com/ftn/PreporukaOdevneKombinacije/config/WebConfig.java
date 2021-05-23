@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         //update: for some reason DELETE is only blocked, so I just added manually
         registry.addMapping("/**").allowedOrigins("https://localhost:4200")
-                .allowedMethods("PUT", "POST", "DELETE", "GET");
+                .allowedMethods("PUT", "POST", "DELETE", "GET", "OPTIONS");
     }
 }
