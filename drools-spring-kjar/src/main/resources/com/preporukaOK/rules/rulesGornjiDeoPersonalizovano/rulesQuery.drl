@@ -9,5 +9,3 @@ import com.ftn.PreporukaOdevneKombinacije.dto.*;
 query tipOdeceGornji(GornjiDeoEnum gde)
     GornjiDeo( odecaTip == gde)
 end
-
-

@@ -11,12 +11,9 @@ import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.dto.*;
 import org.kie.api.runtime.rule.Match
 
-global Map<DressCode, Integer> hashMapColor
+import accumulate com.ftn.PreporukaOdevneKombinacije.droolsFunction.SumPerClothingItem sumPerItem;
 
-declare KoeficijentPreporuke
-	bodovi: double
-	komad: GornjiDeo
-end
+global Map<DressCode, Integer> hashMapColor
 
 declare TipTelaIzabran
 	tipTela: TipTela
@@ -121,7 +118,7 @@ rule "B - Dodavanje bodova za podtip odece"
         $list: List( size > 0 ) from collect(GornjiDeo( odecaPodTip == $podtip ))
     then
     	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-        System.out.println("B id odece : " + $gornjiDeo.getId());
+        System.out.println("B id odece : " + $gornjiDeo.getId() + "  broj bodova : " + (10 + 5 / $list.size()));
 end
 
 rule "C1 - 1 - Biranje tipa odece prema i materijala prema temperaturi > 20"
@@ -281,7 +278,7 @@ rule "C - Dodavanje bodova za tip odece"
                         );
     then
     	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $gornjiDeo));
-        System.out.println("C , id odece : " + $gornjiDeo.getId());
+        System.out.println("C , id odece : " + $gornjiDeo.getId()  + "  broj bodova : " + (20 + 5 * $brojponavljanja));
 end
 
 
@@ -349,7 +346,7 @@ rule "D - Biranje materijala odece ako je temperatura veća od 20 stepeni, suvo 
         );
     then
     	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $gornjiDeo));
-        System.out.println("D , id odece : " + $gornjiDeo.getId());
+        System.out.println("D , id odece : " + $gornjiDeo.getId() + "  broj bodova : " + (20 + 5 * $brojponavljanja) );
 end
 
 
@@ -363,7 +360,7 @@ rule "E2 - Biranje boje ako dresscode utice"
         $list: List( size > 0 ) from collect(GornjiDeo( boja == Boja.CRNA || boja == Boja.BELA ))
     then
        	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-       	System.out.println("E2 , id odece : " + $gornjiDeo.getId());
+       	System.out.println("E2 , id odece : " + $gornjiDeo.getId()  + "  broj bodova : " + (10 + 5 / $list.size()));
         insert(new Marker("E1"));
 end
 
@@ -378,7 +375,7 @@ rule "E1 - Biranje boje odece ako dresscode ne utice"
     then
     	insert(new BojaIzabran( $b ));
     	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $gornjiDeo));
-        System.out.println("E1 , id odece : " + $gornjiDeo.getId());
+        System.out.println("E1 , id odece : " + $gornjiDeo.getId() + "  broj bodova : " + (10 + 5 / $list.size()) );
 end
 
 
@@ -386,20 +383,10 @@ end
 
 rule "F1 - Biranje komada prema koeficijentu preporuke"
 	salience -10
-	no-loop
+	lock-on-active
     when
     	$gornjiDeo : GornjiDeo();
-    	$ukupneVrednosti : ArrayList() from accumulate( KoeficijentPreporuke( $komad : komad, $b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ),
-                        init( HashMap<Long, Double> tests = new HashMap<Long, Double>();),
-                        action(
-                            if (tests.get($komad.getId()) == null) tests.put($komad.getId(), $b4);
-                            else tests.put($komad.getId(), tests.get($komad.getId()) + $b4);
-                        ),
-                        reverse(
-                            tests.put($komad.getId(), tests.get($komad.getId()) - $b4);
-                        ),
-                        result( new ArrayList<>(tests.values()) )
-                    );
+    	 accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
     	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
                        	average($d) );
         $poeni : Double(this >= $avg) from accumulate(
@@ -415,6 +402,7 @@ end
 
 rule "Brisanje poena nakon odabira"
 	salience -20
+	no-loop
 	when
 		$koeficijentPreporuke:KoeficijentPreporuke();
 	then
