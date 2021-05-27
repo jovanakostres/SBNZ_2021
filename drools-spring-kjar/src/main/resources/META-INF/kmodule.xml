@@ -4,4 +4,8 @@
         <ksession name="gDPersRulesSession"/>
     </kbase>
 
+    <kbase name="izborDD" packages="com.preporukaOK.rules.rulesDonjiDeoPersonalizovano">
+        <ksession name="dDPersRulesSession"/>
+    </kbase>
+
 </kmodule>

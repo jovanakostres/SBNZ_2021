@@ -7,8 +7,11 @@ import javax.persistence.*;
 @Entity
 public class DonjiDeo extends KomadOdece {
 
-    @Column
-    private DonjiDeoEnum tip;
+    @Column(name = "ot")
+    private DonjiDeoEnum odecaTip;
+
+    @Column(name = "opt")
+    private OdecaPodTip odecaPodTip;
 
     @Column
     private Dubina dubina;
@@ -16,12 +19,64 @@ public class DonjiDeo extends KomadOdece {
     @Column
     private DuzinaDonjegDela duzina;
 
-    public DonjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DonjiDeoEnum tip, Dubina dubina, DuzinaDonjegDela duzina) {
-        super(boja, bojaIntenzitet, materijal,vreme, prioritet, image);
-        this.tip = tip;
+    public DonjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip, Dubina dubina, DuzinaDonjegDela duzina) {
+        super(boja, bojaIntenzitet, materijal, vreme, prioritet, image);
+        this.odecaTip = tip;
+        this.odecaPodTip = odecaPodTip;
+        this.dubina = dubina;
+        this.duzina = duzina;
+    }
+
+    public DonjiDeo(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip) {
+        super(boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+        this.odecaTip = tip;
+        this.odecaPodTip = odecaPodTip;
+    }
+
+    public DonjiDeo(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip) {
+        super(id, boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+        this.odecaTip = tip;
+        this.odecaPodTip = odecaPodTip;
+    }
+
+    public DonjiDeo(DonjiDeoEnum tip, OdecaPodTip odecaPodTip, Dubina dubina, DuzinaDonjegDela duzina) {
+        this.odecaTip = tip;
+        this.odecaPodTip = odecaPodTip;
         this.dubina = dubina;
         this.duzina = duzina;
     }
 
     public DonjiDeo(){}
+
+    public DonjiDeoEnum getOdecaTip() {
+        return odecaTip;
+    }
+
+    public void setOdecaTip(DonjiDeoEnum tip) {
+        this.odecaTip = tip;
+    }
+
+    public OdecaPodTip getOdecaPodTip() {
+        return odecaPodTip;
+    }
+
+    public void setOdecaPodTip(OdecaPodTip odecaPodTip) {
+        this.odecaPodTip = odecaPodTip;
+    }
+
+    public Dubina getDubina() {
+        return dubina;
+    }
+
+    public void setDubina(Dubina dubina) {
+        this.dubina = dubina;
+    }
+
+    public DuzinaDonjegDela getDuzina() {
+        return duzina;
+    }
+
+    public void setDuzina(DuzinaDonjegDela duzina) {
+        this.duzina = duzina;
+    }
 }

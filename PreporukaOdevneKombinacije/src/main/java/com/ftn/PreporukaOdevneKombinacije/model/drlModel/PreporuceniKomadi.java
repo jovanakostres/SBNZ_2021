@@ -8,11 +8,11 @@ import java.util.List;
 public class PreporuceniKomadi {
 
     private List<PreporuceniGornjiDeo> preporuceniGornjiDelovi;
-    private List<DonjiDeo> preporuceniDonjiDelovi;
+    private List<PreporuceniDonjiDeo> preporuceniDonjiDelovi;
     private List<Jakna> preporuceneJakne;
     private List<Obuca> preporucenaObuca;
 
-    public PreporuceniKomadi(List<PreporuceniGornjiDeo> preporuceniGornjiDelovi, List<DonjiDeo> preporuceniDonjiDelovi, List<Jakna> preporuceneJakne, List<Obuca> preporucenaObuca) {
+    public PreporuceniKomadi(List<PreporuceniGornjiDeo> preporuceniGornjiDelovi, List<PreporuceniDonjiDeo> preporuceniDonjiDelovi, List<Jakna> preporuceneJakne, List<Obuca> preporucenaObuca) {
         this.preporuceniGornjiDelovi = preporuceniGornjiDelovi;
         this.preporuceniDonjiDelovi = preporuceniDonjiDelovi;
         this.preporuceneJakne = preporuceneJakne;
@@ -21,6 +21,7 @@ public class PreporuceniKomadi {
 
     public PreporuceniKomadi(){
         this.preporuceniGornjiDelovi = new ArrayList<>();
+        this.preporuceniDonjiDelovi = new ArrayList<>();
     }
 
     public List<PreporuceniGornjiDeo> getPreporuceniGornjiDelovi() {
@@ -31,11 +32,11 @@ public class PreporuceniKomadi {
         this.preporuceniGornjiDelovi = preporuceniGornjiDelovi;
     }
 
-    public List<DonjiDeo> getPreporuceniDonjiDelovi() {
+    public List<PreporuceniDonjiDeo> getPreporuceniDonjiDelovi() {
         return preporuceniDonjiDelovi;
     }
 
-    public void setPreporuceniDonjiDelovi(List<DonjiDeo> preporuceniDonjiDelovi) {
+    public void setPreporuceniDonjiDelovi(List<PreporuceniDonjiDeo> preporuceniDonjiDelovi) {
         this.preporuceniDonjiDelovi = preporuceniDonjiDelovi;
     }
 

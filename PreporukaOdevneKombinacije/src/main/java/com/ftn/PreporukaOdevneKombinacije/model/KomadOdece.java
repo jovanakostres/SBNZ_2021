@@ -54,6 +54,16 @@ public abstract class KomadOdece {
         this.image = image;
     }
 
+    public KomadOdece(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image) {
+        this.id = id;
+        this.boja = boja;
+        this.materijal = materijal;
+        this.prioritet = prioritet;
+        this.vreme  = vreme;
+        this.koeficijentOdabira = koeficijentOdabira;
+        this.image = image;
+    }
+
     public KomadOdece(){
 
     }

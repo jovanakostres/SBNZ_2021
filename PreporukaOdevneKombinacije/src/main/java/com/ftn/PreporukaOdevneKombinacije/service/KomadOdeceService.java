@@ -1,6 +1,7 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
@@ -32,16 +33,22 @@ public class KomadOdeceService {
     @Autowired
     private GornjiDeoService gornjiDeoService;
 
+    @Autowired
+    private DonjiDeoService donjiDeoService;
+
 
 
     public PreporuceniKomadi getPreporukaPersonalizovano(UnosDTO unosDTO, User user) {
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
 
         List<GornjiDeo> gornjiDeoList = new ArrayList<>();
+        List<DonjiDeo> donjiDeoList = new ArrayList<>();
         List<KomadOdece> k = user.getKomadi();
         for (KomadOdece komadOdece : user.getKomadi()){
             if (komadOdece instanceof GornjiDeo)
                 gornjiDeoList.add((GornjiDeo) komadOdece);
+            if (komadOdece instanceof DonjiDeo)
+                donjiDeoList.add((DonjiDeo) komadOdece);
         }
 
 //        String url = "http://api.openweathermap.org/data/2.5/weather?q=" + unosDTO.getMesto() + "&appid=8a45d678f270270943ef5016b28f55e3&units=metric";
@@ -64,6 +71,7 @@ public class KomadOdeceService {
         //vreme end
 
         preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeo(unosDTO,user,gornjiDeoList, preporuceniKomadi);
+        preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeo(unosDTO,user,donjiDeoList, preporuceniKomadi);
 
 
         return preporuceniKomadi;

@@ -33,6 +33,12 @@ public class GornjiDeo extends KomadOdece{
         this.odecaTip = odecaTip;
     }
 
+    public GornjiDeo(Long id, Boja boja, Materijal materijal, int prioritet, Vreme vreme, double koeficijentOdabira, String image, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip) {
+        super(id, boja, materijal,vreme, prioritet, koeficijentOdabira, image);
+        this.odecaPodTip = odecaPodTip;
+        this.odecaTip = odecaTip;
+    }
+
     public GornjiDeo(){}
 
     public DuzinaRukava getDuzinaRukava() {

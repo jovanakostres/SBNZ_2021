@@ -1,14 +1,13 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
-import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
-import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.repository.DonjiDeoRepository;
 import com.ftn.PreporukaOdevneKombinacije.repository.GornjiDeoRepository;
-import com.ftn.PreporukaOdevneKombinacije.repository.KomadOdeceRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,43 +15,42 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class GornjiDeoService {
+public class DonjiDeoService {
+
 
     @Autowired
-    private GornjiDeoRepository repository;
+    private DonjiDeoRepository repository;
 
     @Autowired
     private KieContainer kieContainer;
 
-    public GornjiDeo create(GornjiDeo komadOdece){
+    public DonjiDeo create(DonjiDeo komadOdece){
         return repository.save(komadOdece);
     }
 
-    public List<GornjiDeo> findAll() {
+    public List<DonjiDeo> findAll() {
         return repository.findAll();
     }
 
-    public GornjiDeo findOne(Long id) {
+    public DonjiDeo findOne(Long id) {
         return repository.findById(id).orElse(null);
     }
 
-    public PreporuceniKomadi getPreporuceniGornjiDeo(UnosDTO unosDTO, User user, List<GornjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
-        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
-        for(GornjiDeo komadOdece : komadi){
+    public PreporuceniKomadi getPreporuceniDonjiDeo(UnosDTO unosDTO, User user, List<DonjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
+        KieSession kieSession = kieContainer.newKieSession("dDPersRulesSession");
+        for(DonjiDeo komadOdece : komadi){
             kieSession.insert(komadOdece);
         }
 
-        kieSession.setGlobal("hashMapColor", makeHashMapColor());
-
+        insertOdecaTip(kieSession);
         insertTipTela(kieSession);
         insertPodTip(kieSession);
         insertVreme(kieSession);
         insertDresscode(kieSession);
         insertMaterijal(kieSession);
-        insertOdecaTip(kieSession);
+
 
         kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);
@@ -64,8 +62,7 @@ public class GornjiDeoService {
 //            System.out.println((Long)entry.getKey() + " " + entry.getValue());
 //        });
 
-        System.out.println(preporuceniKomadi.getPreporuceniGornjiDelovi().size());
-        kieSession.dispose();
+        System.out.println(preporuceniKomadi.getPreporuceniDonjiDelovi().size());
 
         return preporuceniKomadi;
     }
@@ -97,15 +94,13 @@ public class GornjiDeoService {
     }
 
     public void insertOdecaTip(KieSession kieSession){
-        kieSession.insert(GornjiDeoEnum.BLUZA);
-        kieSession.insert(GornjiDeoEnum.DUKS);
-        kieSession.insert(GornjiDeoEnum.DZEMPER);
-        kieSession.insert(GornjiDeoEnum.KOSULJA);
-        kieSession.insert(GornjiDeoEnum.TUNIKA);
-        kieSession.insert(GornjiDeoEnum.MAJICA);
-        kieSession.insert(GornjiDeoEnum.MAJICA_BRETELE);
-        kieSession.insert(GornjiDeoEnum.MAJICA_KRATKI);
-        kieSession.insert(GornjiDeoEnum.MAJICA_DUGI);
+        kieSession.insert(DonjiDeoEnum.HELANKE);
+        kieSession.insert(DonjiDeoEnum.KRATKA_SUKNJA);
+        kieSession.insert(DonjiDeoEnum.KRATKE_PANTALONE);
+        kieSession.insert(DonjiDeoEnum.MAXI_SUKNJA);
+        kieSession.insert(DonjiDeoEnum.PANTALONE);
+        kieSession.insert(DonjiDeoEnum.SORC);
+        kieSession.insert(DonjiDeoEnum.TRENERKA);
     }
 
     public void insertMaterijal(KieSession kieSession){
