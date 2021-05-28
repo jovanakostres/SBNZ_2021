@@ -2,35 +2,32 @@ package com.ftn.PreporukaOdevneKombinacije;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.helper.TrackingAgendaEventListener;
-import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
-import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniDonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import org.junit.Test;
 import org.kie.api.KieServices;
-import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.Match;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class gornjiDeoPersonalizovanoTests {
+public class DonjiDeoPersonalizovanoTests {
 
-    //vrati prazan niz preporuke kada nema gornjih delova u memoriji
     @Test
     public void TestNoClothingItems(){
         User user = createUser(1L);
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
-        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
+        KieSession kieSession = kieContainer.newKieSession("dDPersRulesSession");
         kieSession.insert(user);
 
         insertTipTela(kieSession);
@@ -45,7 +42,7 @@ public class gornjiDeoPersonalizovanoTests {
         kieSession.insert(createUnos());
         kieSession.fireAllRules();
 
-        assertEquals(0, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
+        assertEquals(0, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
 
         kieSession.dispose();
     }
@@ -54,9 +51,9 @@ public class gornjiDeoPersonalizovanoTests {
     public void TestOneClothingItems(){
         User user = createUser(1L);
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
-        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
+        KieSession kieSession = kieContainer.newKieSession("dDPersRulesSession");
         kieSession.insert(user);
-        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
+        kieSession.insert(new DonjiDeo(Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -70,8 +67,8 @@ public class gornjiDeoPersonalizovanoTests {
         kieSession.insert(createUnos());
         kieSession.fireAllRules();
 
-        assertEquals(1, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
-        assertEquals(Double.valueOf(90), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
+        assertEquals(1, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
+        assertEquals(Double.valueOf(95), preporuceniKomadi.getPreporuceniDonjiDelovi().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -80,12 +77,12 @@ public class gornjiDeoPersonalizovanoTests {
     public void TestOneClothingItemsDresscodeBlackTie(){
         User user = createUser(1L);
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
-        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
+        KieSession kieSession = kieContainer.newKieSession("dDPersRulesSession");
         TrackingAgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
         kieSession.addEventListener(agendaEventListener);
 
         kieSession.insert(user);
-        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
+        kieSession.insert(new DonjiDeo(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -107,8 +104,8 @@ public class gornjiDeoPersonalizovanoTests {
         assertTrue(ruleNames.contains("A3 - Tip tela - obrnuti trougao"));
         assertTrue(ruleNames.contains("C - Dodavanje bodova za tip odece"));
         assertTrue(ruleNames.contains("E2 - Biranje boje ako dresscode utice"));
-        assertEquals(1, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
-        assertEquals(Double.valueOf(105), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
+        assertEquals(1, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
+        assertEquals(Double.valueOf(100), preporuceniKomadi.getPreporuceniDonjiDelovi().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -118,15 +115,15 @@ public class gornjiDeoPersonalizovanoTests {
     public void TestFewClothingItems(){
         User user = createUser(1L);
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
-        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
+        KieSession kieSession = kieContainer.newKieSession("dDPersRulesSession");
 
         TrackingAgendaEventListener agendaEventListener = new TrackingAgendaEventListener();
         kieSession.addEventListener(agendaEventListener);
 
         kieSession.insert(user);
         //kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
-        for(GornjiDeo gd : createGornjiDelovi()){
-            kieSession.insert(gd);
+        for(DonjiDeo dd : createDonjiDelovi()){
+            kieSession.insert(dd);
         }
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -149,14 +146,14 @@ public class gornjiDeoPersonalizovanoTests {
         assertTrue(ruleNames.contains("A3 - Tip tela - obrnuti trougao"));
         assertTrue(ruleNames.contains("C - Dodavanje bodova za tip odece"));
         assertTrue(ruleNames.contains("E1 - Biranje boje odece ako dresscode ne utice"));
-        assertTrue(ruleNames.contains("D1 - 2 - Biranje materijala prema tipu odece - kosulja, bluza, tunika"));
+        assertTrue(ruleNames.contains("D1 - 1 - Biranje materijala prema tipu odece - kratka suknja, maxi suknja, pantalone i kratke pantalone"));
 
-        assertEquals(2, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
+        assertEquals(2, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
 
-        Optional<PreporuceniGornjiDeo> gd = preporuceniKomadi.getPreporuceniGornjiDelovi().stream().filter(element -> element.getGornjiDeo().getId().equals(1L)).findFirst();
-        assertEquals(Double.valueOf(99), gd.get().getPoeni());
-        gd = preporuceniKomadi.getPreporuceniGornjiDelovi().stream().filter(element -> element.getGornjiDeo().getId().equals(3L)).findFirst();
-        assertEquals(Double.valueOf(99), gd.get().getPoeni());
+        Optional<PreporuceniDonjiDeo> gd = preporuceniKomadi.getPreporuceniDonjiDelovi().stream().filter(element -> element.getDonjiDeo().getId().equals(1L)).findFirst();
+        assertEquals(Double.valueOf(96), gd.get().getPoeni());
+        gd = preporuceniKomadi.getPreporuceniDonjiDelovi().stream().filter(element -> element.getDonjiDeo().getId().equals(4L)).findFirst();
+        assertEquals(Double.valueOf(92), gd.get().getPoeni());
 
         kieSession.dispose();
     }
@@ -185,13 +182,13 @@ public class gornjiDeoPersonalizovanoTests {
         return new UnosDTO(25, Vreme.SUVO, "Beograd", DressCode.BLACKTIE, new ArrayList<Boja>() {{add(Boja.CRVENA); add(Boja.BELA);}});
     }
 
-    public List<GornjiDeo> createGornjiDelovi(){
-        List<GornjiDeo> gornjiDeoList = new ArrayList<>();
-        gornjiDeoList.add(new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
-        gornjiDeoList.add(new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.DUKS));
-        gornjiDeoList.add(new GornjiDeo(3L, Boja.CRVENA, Materijal.POLIESTER,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.MAJICA_DUGI));
-        gornjiDeoList.add(new GornjiDeo(4L, Boja.NARANDZASTA, Materijal.TEKSAS,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.KOSULJA));
-        return gornjiDeoList;
+    public List<DonjiDeo> createDonjiDelovi(){
+        List<DonjiDeo> donjiDeoList = new ArrayList<>();
+        donjiDeoList.add(new DonjiDeo(1L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
+        donjiDeoList.add(new DonjiDeo(2L, Boja.BRAON, Materijal.SOMOT, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.KRATKA_SUKNJA ,OdecaPodTip.USKA));
+        donjiDeoList.add(new DonjiDeo(3L, Boja.ZELENA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.TRENERKA ,OdecaPodTip.SIROKA));
+        donjiDeoList.add(new DonjiDeo(4L, Boja.CRNA, Materijal.POLIESTER, Vreme.VLAZNO, 0,  1, "", DonjiDeoEnum.HELANKE ,OdecaPodTip.USKA));
+        return donjiDeoList;
     }
 
     public void insertTipTela(KieSession kieSession){
@@ -221,15 +218,13 @@ public class gornjiDeoPersonalizovanoTests {
     }
 
     public void insertOdecaTip(KieSession kieSession){
-        kieSession.insert(GornjiDeoEnum.BLUZA);
-        kieSession.insert(GornjiDeoEnum.DUKS);
-        kieSession.insert(GornjiDeoEnum.DZEMPER);
-        kieSession.insert(GornjiDeoEnum.KOSULJA);
-        kieSession.insert(GornjiDeoEnum.TUNIKA);
-        kieSession.insert(GornjiDeoEnum.MAJICA);
-        kieSession.insert(GornjiDeoEnum.MAJICA_BRETELE);
-        kieSession.insert(GornjiDeoEnum.MAJICA_KRATKI);
-        kieSession.insert(GornjiDeoEnum.MAJICA_DUGI);
+        kieSession.insert(DonjiDeoEnum.HELANKE);
+        kieSession.insert(DonjiDeoEnum.KRATKA_SUKNJA);
+        kieSession.insert(DonjiDeoEnum.KRATKE_PANTALONE);
+        kieSession.insert(DonjiDeoEnum.MAXI_SUKNJA);
+        kieSession.insert(DonjiDeoEnum.PANTALONE);
+        kieSession.insert(DonjiDeoEnum.SORC);
+        kieSession.insert(DonjiDeoEnum.TRENERKA);
     }
 
     public void insertMaterijal(KieSession kieSession){
