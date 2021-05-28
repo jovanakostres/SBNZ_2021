@@ -22,5 +22,9 @@ INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet,
 
 INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype) VALUES (7, 3, 2, 7, 0, 0, 1, '', 1,0, 1, 1, 6,'DonjiDeo');
 
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype) VALUES (8, 3, 2, 1, 0, 0, 1, '', 1, 1, 6,'Jakna');
 
-SELECT pg_catalog.setval('public.komadi_odece_id_seq', 7, true);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype) VALUES (9, 10, 2, 3, 0, 0, 1, '', 1, 0, 9,'Jakna');
+
+
+SELECT pg_catalog.setval('public.komadi_odece_id_seq', 9, true);

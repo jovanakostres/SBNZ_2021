@@ -1,4 +1,4 @@
-package com.preporukaOK.rules.rulesDonjiDeoPersonalizovano
+package com.preporukaOK.rules.rulesJaknaPersonalizovano
 
 import java.util.List;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ declare PodtipOdeceIzabran
 end
 
 declare TipOdeceIzabran
-	tip: DonjiDeoEnum
+	tip: JaknaEnum
 end
 
 declare MaterijalIzabran
@@ -92,7 +92,7 @@ rule "B1 - Biranje podtipa odece - siroka"
     no-loop
     when
         $tipTela : TipTelaIzabran(tipTela == TipTela.TROUGAO);
-        List( size > 0 ) from collect(DonjiDeo( odecaPodTip == OdecaPodTip.SIROKA  ))
+        List( size > 0 ) from collect(Jakna( odecaPodTip == OdecaPodTip.SIROKA  ))
     then
     	insert(new PodtipOdeceIzabran(OdecaPodTip.SIROKA));
         System.out.println("B1");
@@ -113,11 +113,11 @@ rule "B - Dodavanje bodova za podtip odece"
     no-loop
     when
         PodtipOdeceIzabran($podtip : podTip);
-        $donjiDeo : DonjiDeo( odecaPodTip == $podtip);
-        $list: List( size > 0 ) from collect(DonjiDeo( odecaPodTip == $podtip ))
+        $jakna : Jakna( odecaPodTip == $podtip);
+        $list: List( size > 0 ) from collect(Jakna( odecaPodTip == $podtip ))
     then
-    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $donjiDeo));
-        System.out.println("B id odece : " + $donjiDeo.getId() + "  broj bodova : " + (10 + 5 / $list.size()));
+    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $jakna));
+        System.out.println("B id odece : " + $jakna.getId() + "  broj bodova : " + (10 + 5 / $list.size()));
 
 end
 
@@ -127,14 +127,14 @@ rule "C1 - 1 - Biranje tipa odece prema i materijala prema temperaturi > 20"
     when
         $unos : UnosDTO(temperatura > 20);
     then
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.SORC));
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+    	insert(new TipOdeceIzabran(JaknaEnum.PRSLUK));
+    	insert(new TipOdeceIzabran(JaknaEnum.KARDIGAN));
+    	insert(new TipOdeceIzabran(JaknaEnum.TRENERKA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
     	insert(new MaterijalIzabran(Materijal.LAN));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SVILA));
+        insert(new MaterijalIzabran(Materijal.KOZA));
         System.out.println("C1 - 1");
 end
 
@@ -144,14 +144,17 @@ rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 20
     when
         $unos : UnosDTO(temperatura <= 20, temperatura > 10);
     then
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
+    	insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
+    	insert(new TipOdeceIzabran(JaknaEnum.KARDIGAN));
+    	insert(new TipOdeceIzabran(JaknaEnum.SAKO));
+    	insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SOMOT));
         insert(new MaterijalIzabran(Materijal.TEKSAS));
         insert(new MaterijalIzabran(Materijal.PLIS));
+        insert(new MaterijalIzabran(Materijal.KOZA));
+        insert(new MaterijalIzabran(Materijal.VUNA));
         System.out.println("C1 - 2");
 end
 
@@ -161,12 +164,11 @@ rule "C1 - 3 - Biranje tipa odece i materijala prema temperaturi < 10"
     when
         $unos : UnosDTO(temperatura <= 10);
     then
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
+    	insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+       	insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
-        insert(new MaterijalIzabran(Materijal.SOMOT));
-        insert(new MaterijalIzabran(Materijal.TEKSAS));
         insert(new MaterijalIzabran(Materijal.PLIS));
         insert(new MaterijalIzabran(Materijal.KRZNO));
         insert(new MaterijalIzabran(Materijal.VUNA));
@@ -179,13 +181,12 @@ rule "C2 - 1 - Biranje tipa odece i materijala prema dresscodu - lezeran"
     when
         $unos : UnosDTO(dressCode == DressCode.LEZERAN);
     then
-        insert(new TipOdeceIzabran(DonjiDeoEnum.SORC));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
+        insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
+        insert(new TipOdeceIzabran(JaknaEnum.KARDIGAN));
+       	insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+       	insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+       	insert(new TipOdeceIzabran(JaknaEnum.PRSLUK));
+        insert(new TipOdeceIzabran(JaknaEnum.TRENERKA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
     	insert(new MaterijalIzabran(Materijal.LAN));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
@@ -193,6 +194,7 @@ rule "C2 - 1 - Biranje tipa odece i materijala prema dresscodu - lezeran"
         insert(new MaterijalIzabran(Materijal.TEKSAS));
         insert(new MaterijalIzabran(Materijal.PLIS));
         insert(new MaterijalIzabran(Materijal.VUNA));
+        insert(new MaterijalIzabran(Materijal.KOZA));
         System.out.println("C2 - 1");
 end
 
@@ -202,10 +204,10 @@ rule "C2 - 2 - Biranje tipa odece i materijala prema dresscodu - sportski"
     when
         $unos : UnosDTO(dressCode == DressCode.SPORTSKI);
     then
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.SORC));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
+    	insert(new TipOdeceIzabran(JaknaEnum.PRSLUK));
+        insert(new TipOdeceIzabran(JaknaEnum.TRENERKA));
+        insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
+        insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         System.out.println("C2 - 2");
@@ -217,9 +219,13 @@ rule "C2 - 3 - Biranje tipa odece i materijala prema dresscodu - formalan"
     when
         $unos : UnosDTO(dressCode == DressCode.FORMALAN);
     then
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+    	insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+        insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+        insert(new TipOdeceIzabran(JaknaEnum.SAKO));
+        insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
+        insert(new TipOdeceIzabran(JaknaEnum.KARDIGAN));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+        insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SOMOT));
@@ -236,16 +242,18 @@ rule "C2 - 4 - Biranje tipa odece i materijala prema dresscodu - izlazak"
     when
         $unos : UnosDTO(dressCode == DressCode.IZLAZAK);
     then
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
+    	insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
+        insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+        insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+        insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SOMOT));
         insert(new MaterijalIzabran(Materijal.SVILA));
         insert(new MaterijalIzabran(Materijal.KOZA));
         insert(new MaterijalIzabran(Materijal.CIPKA));
+        insert(new MaterijalIzabran(Materijal.KRZNO));
         System.out.println("C2 - 4");
 end
 
@@ -255,12 +263,13 @@ rule "C2 - 5 - Biranje tipa odece i materijala prema dresscodu - blacktie"
     when
         $unos : UnosDTO(dressCode == DressCode.BLACKTIE);
     then
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+    	insert(new TipOdeceIzabran(JaknaEnum.SAKO));
+        insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+        insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
-        insert(new MaterijalIzabran(Materijal.SVILA));
+        insert(new MaterijalIzabran(Materijal.KRZNO));
         System.out.println("C2 - 5");
 end
 
@@ -268,18 +277,18 @@ rule "C - Dodavanje bodova za tip odece"
     salience 380
     no-loop
     when
-        $donjiDeo : DonjiDeo();
+        $jakna : Jakna();
         $brojponavljanja : Long( this > 0) from accumulate(
-                        	TipOdeceIzabran( tip == $donjiDeo.getOdecaTip()),
+                        	TipOdeceIzabran( tip == $jakna.getOdecaTip()),
                         	count(1)
                         );
     then
-    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $donjiDeo));
-        System.out.println("C , id odece : " + $donjiDeo.getId()  + "  broj bodova : " + (20 + 5 * $brojponavljanja));
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $jakna));
+        System.out.println("C , id odece : " + $jakna.getId()  + "  broj bodova : " + (20 + 5 * $brojponavljanja));
 end
 
 
-rule "D1 - 1 - Biranje materijala prema tipu odece - kratka suknja, maxi suknja, pantalone i kratke pantalone"
+rule "D1 - 1 - Biranje materijala prema tipu odece - prsluk, jakna zimski, jakna prelazni, trenerka, sako"
     salience 350
     no-loop
     when
@@ -287,13 +296,11 @@ rule "D1 - 1 - Biranje materijala prema tipu odece - kratka suknja, maxi suknja,
            TipOdeceIzabran( $tip : tip);
            collectSet( $tip )
          )
-        DonjiDeoEnum( $nm : name, name == "KRATKA_SUKNJA" || name == "MAXI_SUKNJA" || name == "PANTALONE" || name == "KRATKE_PANTALONE" || name == "SORC") from $setOfTip;
-        $list: List( size > 0 ) from collect(DonjiDeo( odecaTip.toString() == $nm ))
+        JaknaEnum( $nm : name, name == "PRSLUK" || name == "JAKNA_PRELAZNI" || name == "ZIMSKA_JAKNA" || name == "TRENERKA" || name == "SAKO") from $setOfTip;
+        $list: List( size > 0 ) from collect(Jakna( odecaTip.toString() == $nm ))
     then
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
-        insert(new MaterijalIzabran(Materijal.LAN));
-        insert(new MaterijalIzabran(Materijal.SVILA));
         insert(new MaterijalIzabran(Materijal.PLIS));
         insert(new MaterijalIzabran(Materijal.TEKSAS));
         insert(new MaterijalIzabran(Materijal.KOZA));
@@ -301,7 +308,7 @@ rule "D1 - 1 - Biranje materijala prema tipu odece - kratka suknja, maxi suknja,
         System.out.println("D1 - 1" + "  " + $nm);
 end
 
-rule "D1 - 2 - Biranje materijala prema tipu odece - trenerka, helanke"
+rule "D1 - 2 - Biranje materijala prema tipu odece - kaput, bunda, monton, kardigan"
     salience 350
     no-loop
     when
@@ -309,15 +316,15 @@ rule "D1 - 2 - Biranje materijala prema tipu odece - trenerka, helanke"
                    TipOdeceIzabran( $tip : tip);
                    collectSet( $tip )
                  )
-        DonjiDeoEnum( $nm : name, name == "TRENERKA" || name == "HELANKE") from $setOfTip;
-        $list: List( size > 0 ) from collect(DonjiDeo( odecaTip.toString() == $nm ))
+        JaknaEnum( $nm : name, name == "KAPUT" || name == "BUNDA" || name == "MONTON" || name == "KARDIGAN") from $setOfTip;
+        $list: List( size > 0 ) from collect(Jakna( odecaTip.toString() == $nm ))
     then
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
-        insert(new MaterijalIzabran(Materijal.LAN));
-        insert(new MaterijalIzabran(Materijal.SVILA));
         insert(new MaterijalIzabran(Materijal.PLIS));
         insert(new MaterijalIzabran(Materijal.KOZA));
+        insert(new MaterijalIzabran(Materijal.VUNA));
+        insert(new MaterijalIzabran(Materijal.KRZNO));
         System.out.println("D1 - 2" + "  " + $nm);
 end
 
@@ -326,14 +333,14 @@ rule "D - Dodavanje bodova za materijal"
     salience 340
     no-loop
     when
-        $donjiDeo : DonjiDeo();
+        $jakna : Jakna();
         $brojponavljanja : Long( this > 0) from accumulate(
-                           MaterijalIzabran( materijal == $donjiDeo.getMaterijal()),
+                           MaterijalIzabran( materijal == $jakna.getMaterijal()),
                            count(1)
         );
     then
-    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $donjiDeo));
-        System.out.println("D , id odece : " + $donjiDeo.getId() + "  broj bodova : " + (20 + 5 * $brojponavljanja) );
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $jakna));
+        System.out.println("D , id odece : " + $jakna.getId() + "  broj bodova : " + (20 + 5 * $brojponavljanja) );
 end
 
 
@@ -343,11 +350,11 @@ rule "E2 - Biranje boje ako dresscode utice"
     salience 300
     when
         $unos : UnosDTO($dresscode : dressCode == DressCode.BLACKTIE );
-        $donjiDeo : DonjiDeo( boja == Boja.CRNA || boja == Boja.BELA);
-        $list: List( size > 0 ) from collect(DonjiDeo( boja == Boja.CRNA || boja == Boja.BELA ))
+        $jakna : Jakna( boja == Boja.CRNA || boja == Boja.BELA);
+        $list: List( size > 0 ) from collect(Jakna( boja == Boja.CRNA || boja == Boja.BELA ))
     then
-       	insert(new KoeficijentPreporuke(15 + 10 / $list.size(), $donjiDeo));
-       	System.out.println("E2 , id odece : " + $donjiDeo.getId()  + "  broj bodova : " + (15 + 10 / $list.size()));
+       	insert(new KoeficijentPreporuke(15 + 10 / $list.size(), $jakna));
+       	System.out.println("E2 , id odece : " + $jakna.getId()  + "  broj bodova : " + (15 + 10 / $list.size()));
         insert(new Marker("E1"));
 end
 
@@ -356,24 +363,24 @@ rule "E1 - Biranje boje odece ako dresscode ne utice"
     salience 290
     when
         $unos : UnosDTO( $bojeUnos : boje );
-        $donjiDeo : DonjiDeo( $b : boja memberOf $bojeUnos);
-        $list: List( size > 0 ) from collect(DonjiDeo( boja memberOf $bojeUnos))
+        $jakna : Jakna( $b : boja memberOf $bojeUnos);
+        $list: List( size > 0 ) from collect(Jakna( boja memberOf $bojeUnos))
         not Marker(uniqueIdentifier == "E1")
     then
     	insert(new BojaIzabran( $b ));
-    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $donjiDeo));
-        System.out.println("E1 , id odece : " + $donjiDeo.getId() + "  broj bodova : " + (10 + 5 / $list.size()) );
+    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $jakna));
+        System.out.println("E1 , id odece : " + $jakna.getId() + "  broj bodova : " + (10 + 5 / $list.size()) );
 end
 
 rule "F - Dodavanje bodova za prilagodjenost vremenu"
     salience 250
         when
             $unos : UnosDTO($vremeUnos : vreme );
-            $donjiDeo : DonjiDeo( vreme == $vremeUnos);
-            $list: List( size > 0 ) from collect(DonjiDeo( vreme == $vremeUnos ))
+            $jakna : Jakna( vreme == $vremeUnos);
+            $list: List( size > 0 ) from collect(Jakna( vreme == $vremeUnos ))
         then
-           	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $donjiDeo));
-           	System.out.println("F , id odece : " + $donjiDeo.getId()  + "  broj bodova : " + (10 + 5 / $list.size()));
+           	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $jakna));
+           	System.out.println("F , id odece : " + $jakna.getId()  + "  broj bodova : " + (10 + 5 / $list.size()));
 end
 
 
@@ -382,19 +389,19 @@ rule "G - Biranje komada prema koeficijentu preporuke"
 	salience -10
 	lock-on-active
     when
-    	$donjiDeo : DonjiDeo();
+    	$jakna : Jakna();
     	 accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
     	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
                        	average($d) );
         $poeni : Double(this >= $avg) from accumulate(
-                	KoeficijentPreporuke(komad.getId() == $donjiDeo.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
+                	KoeficijentPreporuke(komad.getId() == $jakna.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
                 	sum($b1)
                 );
         $preporuceniKomadi : PreporuceniKomadi();
     then
-        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo($donjiDeo, $poeni));}
+        modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna($jakna, $poeni));}
         System.out.println($ukupneVrednosti);
-    	System.out.println("G Biranje komada prema koeficijentu preporuke, izabran komad : " + $donjiDeo.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
+    	System.out.println("G Biranje komada prema koeficijentu preporuke, izabran komad : " + $jakna.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
 end
 
 rule "Brisanje poena nakon odabira"
@@ -410,7 +417,7 @@ rule "Provera uspesnosti"
 	salience -30
 	no-loop
     when
-        preporuceniKomadi : PreporuceniKomadi( preporuceniDonjiDelovi.size > 0);
+        preporuceniKomadi : PreporuceniKomadi( preporuceneJakne.size > 0);
     then
     	System.out.println("Uspesno zavrsena preporuka");
 end

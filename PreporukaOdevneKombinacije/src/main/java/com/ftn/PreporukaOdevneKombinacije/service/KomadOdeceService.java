@@ -1,10 +1,7 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
-import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
-import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
-import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
-import com.ftn.PreporukaOdevneKombinacije.model.User;
+import com.ftn.PreporukaOdevneKombinacije.model.*;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
 import com.ftn.PreporukaOdevneKombinacije.repository.KomadOdeceRepository;
@@ -36,6 +33,9 @@ public class KomadOdeceService {
     @Autowired
     private DonjiDeoService donjiDeoService;
 
+    @Autowired
+    private JaknaService jaknaService;
+
 
 
     public PreporuceniKomadi getPreporukaPersonalizovano(UnosDTO unosDTO, User user) {
@@ -43,12 +43,15 @@ public class KomadOdeceService {
 
         List<GornjiDeo> gornjiDeoList = new ArrayList<>();
         List<DonjiDeo> donjiDeoList = new ArrayList<>();
-        List<KomadOdece> k = user.getKomadi();
+        List<Jakna> jaknaList = new ArrayList<>();
+
         for (KomadOdece komadOdece : user.getKomadi()){
             if (komadOdece instanceof GornjiDeo)
                 gornjiDeoList.add((GornjiDeo) komadOdece);
             if (komadOdece instanceof DonjiDeo)
                 donjiDeoList.add((DonjiDeo) komadOdece);
+            if (komadOdece instanceof Jakna)
+                jaknaList.add((Jakna) komadOdece);
         }
 
 //        String url = "http://api.openweathermap.org/data/2.5/weather?q=" + unosDTO.getMesto() + "&appid=8a45d678f270270943ef5016b28f55e3&units=metric";
@@ -72,7 +75,7 @@ public class KomadOdeceService {
 
         preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeo(unosDTO,user,gornjiDeoList, preporuceniKomadi);
         preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeo(unosDTO,user,donjiDeoList, preporuceniKomadi);
-
+        preporuceniKomadi = jaknaService.getPreporucenaJakna(unosDTO,user,jaknaList, preporuceniKomadi);
 
         return preporuceniKomadi;
     }

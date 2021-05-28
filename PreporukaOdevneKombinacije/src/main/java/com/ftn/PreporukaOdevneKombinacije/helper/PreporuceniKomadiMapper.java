@@ -2,6 +2,7 @@ package com.ftn.PreporukaOdevneKombinacije.helper;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.PreporuceniGornjiDeoDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.PreporuceniKomadiDTO;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporucenaJakna;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniDonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
@@ -25,6 +26,10 @@ public class PreporuceniKomadiMapper implements MapperInterface<PreporuceniKomad
         }
         for(PreporuceniDonjiDeo preporuceniDonjiDeo : entity.getPreporuceniDonjiDelovi()){
             preporuceniGornjiDelovi.add(new PreporuceniGornjiDeoDTO(preporuceniDonjiDeo.getDonjiDeo().getId(), preporuceniDonjiDeo.getDonjiDeo().getImage(), preporuceniDonjiDeo.getPoeni()));
+        }
+
+        for(PreporucenaJakna preporucenaJakna : entity.getPreporuceneJakne()){
+            preporuceniGornjiDelovi.add(new PreporuceniGornjiDeoDTO(preporucenaJakna.getJakna().getId(), preporucenaJakna.getJakna().getImage(), preporucenaJakna.getPoeni()));
         }
         return new PreporuceniKomadiDTO(preporuceniGornjiDelovi);
     }

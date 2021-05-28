@@ -7,13 +7,50 @@ import javax.persistence.*;
 @Entity
 public class Jakna extends KomadOdece{
 
-    @Column
-    private JaknaTip tipJakne;
+    @Column(name = "ot")
+    private JaknaEnum odecaTip;
 
-    public Jakna(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, JaknaTip tip) {
+    @Column(name = "opt")
+    private OdecaPodTip odecaPodTip;
+
+    public Jakna(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, JaknaEnum odecaTip, OdecaPodTip odecaPodTip) {
         super(boja, bojaIntenzitet, materijal, vreme, prioritet, image);
-        this.tipJakne = tip;
+        this.odecaTip = odecaTip;
+        this.odecaPodTip = odecaPodTip;
+    }
+
+    public Jakna(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, JaknaEnum odecaTip, OdecaPodTip odecaPodTip) {
+        super(boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+        this.odecaTip = odecaTip;
+        this.odecaPodTip = odecaPodTip;
+    }
+
+    public Jakna(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, JaknaEnum odecaTip, OdecaPodTip odecaPodTip) {
+        super(id, boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+        this.odecaTip = odecaTip;
+        this.odecaPodTip = odecaPodTip;
+    }
+
+    public Jakna(JaknaEnum odecaTip, OdecaPodTip odecaPodTip) {
+        this.odecaTip = odecaTip;
+        this.odecaPodTip = odecaPodTip;
     }
 
     public Jakna(){}
+
+    public JaknaEnum getOdecaTip() {
+        return odecaTip;
+    }
+
+    public void setOdecaTip(JaknaEnum odecaTip) {
+        this.odecaTip = odecaTip;
+    }
+
+    public OdecaPodTip getOdecaPodTip() {
+        return odecaPodTip;
+    }
+
+    public void setOdecaPodTip(OdecaPodTip odecaPodTip) {
+        this.odecaPodTip = odecaPodTip;
+    }
 }

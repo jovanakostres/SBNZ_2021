@@ -9,10 +9,10 @@ public class PreporuceniKomadi {
 
     private List<PreporuceniGornjiDeo> preporuceniGornjiDelovi;
     private List<PreporuceniDonjiDeo> preporuceniDonjiDelovi;
-    private List<Jakna> preporuceneJakne;
+    private List<PreporucenaJakna> preporuceneJakne;
     private List<Obuca> preporucenaObuca;
 
-    public PreporuceniKomadi(List<PreporuceniGornjiDeo> preporuceniGornjiDelovi, List<PreporuceniDonjiDeo> preporuceniDonjiDelovi, List<Jakna> preporuceneJakne, List<Obuca> preporucenaObuca) {
+    public PreporuceniKomadi(List<PreporuceniGornjiDeo> preporuceniGornjiDelovi, List<PreporuceniDonjiDeo> preporuceniDonjiDelovi, List<PreporucenaJakna> preporuceneJakne, List<Obuca> preporucenaObuca) {
         this.preporuceniGornjiDelovi = preporuceniGornjiDelovi;
         this.preporuceniDonjiDelovi = preporuceniDonjiDelovi;
         this.preporuceneJakne = preporuceneJakne;
@@ -22,6 +22,7 @@ public class PreporuceniKomadi {
     public PreporuceniKomadi(){
         this.preporuceniGornjiDelovi = new ArrayList<>();
         this.preporuceniDonjiDelovi = new ArrayList<>();
+        this.preporuceneJakne = new ArrayList<>();
     }
 
     public List<PreporuceniGornjiDeo> getPreporuceniGornjiDelovi() {
@@ -40,11 +41,11 @@ public class PreporuceniKomadi {
         this.preporuceniDonjiDelovi = preporuceniDonjiDelovi;
     }
 
-    public List<Jakna> getPreporuceneJakne() {
+    public List<PreporucenaJakna> getPreporuceneJakne() {
         return preporuceneJakne;
     }
 
-    public void setPreporuceneJakne(List<Jakna> preporuceneJakne) {
+    public void setPreporuceneJakne(List<PreporucenaJakna> preporuceneJakne) {
         this.preporuceneJakne = preporuceneJakne;
     }
 

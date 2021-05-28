@@ -8,4 +8,8 @@
         <ksession name="dDPersRulesSession"/>
     </kbase>
 
+    <kbase name="izborJakne" packages="com.preporukaOK.rules.rulesJaknaPersonalizovano">
+        <ksession name="jaknaPersRulesSession"/>
+    </kbase>
+
 </kmodule>
