@@ -121,6 +121,7 @@ public class GornjiDeoService {
         kieSession.insert(Materijal.SVILA);
         kieSession.insert(Materijal.TEKSAS);
         kieSession.insert(Materijal.VUNA);
+        kieSession.insert(Materijal.GUMA);
     }
 
     public HashMap<DressCode, Integer> makeHashMapColor(){

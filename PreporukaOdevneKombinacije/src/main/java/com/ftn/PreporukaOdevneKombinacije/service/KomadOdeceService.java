@@ -36,6 +36,9 @@ public class KomadOdeceService {
     @Autowired
     private JaknaService jaknaService;
 
+    @Autowired
+    private ObucaService obucaService;
+
 
 
     public PreporuceniKomadi getPreporukaPersonalizovano(UnosDTO unosDTO, User user) {
@@ -44,6 +47,7 @@ public class KomadOdeceService {
         List<GornjiDeo> gornjiDeoList = new ArrayList<>();
         List<DonjiDeo> donjiDeoList = new ArrayList<>();
         List<Jakna> jaknaList = new ArrayList<>();
+        List<Obuca> obucaList = new ArrayList<>();
 
         for (KomadOdece komadOdece : user.getKomadi()){
             if (komadOdece instanceof GornjiDeo)
@@ -52,6 +56,8 @@ public class KomadOdeceService {
                 donjiDeoList.add((DonjiDeo) komadOdece);
             if (komadOdece instanceof Jakna)
                 jaknaList.add((Jakna) komadOdece);
+            if (komadOdece instanceof Obuca)
+                obucaList.add((Obuca) komadOdece);
         }
 
 //        String url = "http://api.openweathermap.org/data/2.5/weather?q=" + unosDTO.getMesto() + "&appid=8a45d678f270270943ef5016b28f55e3&units=metric";
@@ -76,6 +82,7 @@ public class KomadOdeceService {
         preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeo(unosDTO,user,gornjiDeoList, preporuceniKomadi);
         preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeo(unosDTO,user,donjiDeoList, preporuceniKomadi);
         preporuceniKomadi = jaknaService.getPreporucenaJakna(unosDTO,user,jaknaList, preporuceniKomadi);
+        preporuceniKomadi = obucaService.getPreporuceniDonjiDeo(unosDTO,user,obucaList, preporuceniKomadi);
 
         return preporuceniKomadi;
     }

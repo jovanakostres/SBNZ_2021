@@ -121,7 +121,7 @@ rule "B - Dodavanje bodova za podtip odece"
 
 end
 
-rule "C1 - 1 - Biranje tipa odece prema i materijala prema temperaturi > 20"
+rule "C1 - 1 - Biranje tipa odece i materijala prema temperaturi > 20"
     salience 400
     no-loop
     when

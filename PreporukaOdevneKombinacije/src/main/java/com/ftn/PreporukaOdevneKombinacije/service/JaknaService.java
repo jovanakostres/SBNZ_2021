@@ -63,7 +63,7 @@ public class JaknaService {
 //        });
 
         System.out.println(preporuceniKomadi.getPreporuceneJakne().size());
-
+        kieSession.dispose();
         return preporuceniKomadi;
     }
 
@@ -118,6 +118,7 @@ public class JaknaService {
         kieSession.insert(Materijal.SVILA);
         kieSession.insert(Materijal.TEKSAS);
         kieSession.insert(Materijal.VUNA);
+        kieSession.insert(Materijal.GUMA);
     }
 
     public HashMap<DressCode, Integer> makeHashMapColor(){

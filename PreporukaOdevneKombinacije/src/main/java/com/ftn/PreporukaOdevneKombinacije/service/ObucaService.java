@@ -2,12 +2,12 @@ package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
-import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.model.Obuca;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.repository.DonjiDeoRepository;
-import com.ftn.PreporukaOdevneKombinacije.repository.GornjiDeoRepository;
+import com.ftn.PreporukaOdevneKombinacije.repository.ObucaRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,30 +17,29 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class DonjiDeoService {
-
+public class ObucaService {
 
     @Autowired
-    private DonjiDeoRepository repository;
+    private ObucaRepository repository;
 
     @Autowired
     private KieContainer kieContainer;
 
-    public DonjiDeo create(DonjiDeo komadOdece){
+    public Obuca create(Obuca komadOdece){
         return repository.save(komadOdece);
     }
 
-    public List<DonjiDeo> findAll() {
+    public List<Obuca> findAll() {
         return repository.findAll();
     }
 
-    public DonjiDeo findOne(Long id) {
+    public Obuca findOne(Long id) {
         return repository.findById(id).orElse(null);
     }
 
-    public PreporuceniKomadi getPreporuceniDonjiDeo(UnosDTO unosDTO, User user, List<DonjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
-        KieSession kieSession = kieContainer.newKieSession("dDPersRulesSession");
-        for(DonjiDeo komadOdece : komadi){
+    public PreporuceniKomadi getPreporuceniDonjiDeo(UnosDTO unosDTO, User user, List<Obuca> komadi, PreporuceniKomadi preporuceniKomadi) {
+        KieSession kieSession = kieContainer.newKieSession("obucaPersRulesSession");
+        for(Obuca komadOdece : komadi){
             kieSession.insert(komadOdece);
         }
 
@@ -50,7 +49,7 @@ public class DonjiDeoService {
         insertVreme(kieSession);
         insertDresscode(kieSession);
         insertMaterijal(kieSession);
-
+        insertBoje(kieSession);
 
         kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);
@@ -62,7 +61,7 @@ public class DonjiDeoService {
 //            System.out.println((Long)entry.getKey() + " " + entry.getValue());
 //        });
 
-        System.out.println(preporuceniKomadi.getPreporuceniDonjiDelovi().size());
+        System.out.println(preporuceniKomadi.getPreporucenaObuca().size());
         kieSession.dispose();
 
         return preporuceniKomadi;
@@ -95,13 +94,24 @@ public class DonjiDeoService {
     }
 
     public void insertOdecaTip(KieSession kieSession){
-        kieSession.insert(DonjiDeoEnum.HELANKE);
-        kieSession.insert(DonjiDeoEnum.KRATKA_SUKNJA);
-        kieSession.insert(DonjiDeoEnum.KRATKE_PANTALONE);
-        kieSession.insert(DonjiDeoEnum.MAXI_SUKNJA);
-        kieSession.insert(DonjiDeoEnum.PANTALONE);
-        kieSession.insert(DonjiDeoEnum.SORC);
-        kieSession.insert(DonjiDeoEnum.TRENERKA);
+        kieSession.insert(ObucaEnum.CIPELE);
+        kieSession.insert(ObucaEnum.CIZME);
+        kieSession.insert(ObucaEnum.PAPUCE);
+        kieSession.insert(ObucaEnum.PATIKE);
+        kieSession.insert(ObucaEnum.SANDALE);
+    }
+
+    public void insertBoje(KieSession kieSession){
+        kieSession.insert(Boja.BELA);
+        kieSession.insert(Boja.BRAON);
+        kieSession.insert(Boja.LJUBICASTA);
+        kieSession.insert(Boja.CRNA);
+        kieSession.insert(Boja.CRVENA);
+        kieSession.insert(Boja.NARANDZASTA);
+        kieSession.insert(Boja.ROZA);
+        kieSession.insert(Boja.SIVA);
+        kieSession.insert(Boja.ZELENA);
+        kieSession.insert(Boja.ZUTA);
     }
 
     public void insertMaterijal(KieSession kieSession){

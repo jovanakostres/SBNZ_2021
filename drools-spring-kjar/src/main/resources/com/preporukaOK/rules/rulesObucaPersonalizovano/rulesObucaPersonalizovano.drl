@@ -1,0 +1,363 @@
+package com.preporukaOK.rules.rulesObucaPersonalizovano
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+import org.kie.api.runtime.rule.Match
+
+import accumulate com.ftn.PreporukaOdevneKombinacije.droolsFunction.SumPerClothingItem sumPerItem;
+
+
+declare TipTelaIzabran
+	tipTela: TipTela
+end
+
+declare PodtipOdeceIzabran
+	podTip: OdecaPodTip
+end
+
+declare TipOdeceIzabran
+	tip: ObucaEnum
+end
+
+declare MaterijalIzabran
+	materijal: Materijal
+end
+
+declare BojaIzabran
+    boja: Boja
+end
+
+declare Marker
+    uniqueIdentifier : String
+end
+
+
+rule "A1 - Tip tela - trougao"
+    salience 500
+    when
+        $user : User(kukovi >= ramena + 5/100 * kukovi);
+    then
+    	insert(new TipTelaIzabran(TipTela.TROUGAO));
+        System.out.println("Tip tela - trougao");
+end
+
+rule "A2 - Tip tela - pravougaonik"
+    salience 500
+    when
+        $user : User( ramena <= 25/100 * ramena + struk, ramena <= 5/100 * ramena + kukovi);
+        not (TipTelaIzabran())
+    then
+    	insert(new TipTelaIzabran(TipTela.PRAVOUGAONIK));
+        System.out.println("Tip tela - pravougaonik");
+end
+
+rule "A3 - Tip tela - obrnuti trougao"
+    salience 500
+    when
+        $user : User( ramena >= kukovi + 5/100 * ramena);
+        not (TipTelaIzabran())
+    then
+    	insert(new TipTelaIzabran(TipTela.OB_TROUGAO));
+        System.out.println("Tip tela - pravougaonik");
+end
+
+rule "A4 - Tip tela - pescani sat"
+     salience 500
+     when
+         $user : User( ramena > 25/100 * ramena + struk, ramena  <= 5/100 * ramena + kukovi);
+         not (TipTelaIzabran())
+     then
+     	insert(new TipTelaIzabran(TipTela.PES_SAT));
+         System.out.println("Tip tela - pescani sat");
+ end
+
+rule "A5 - Tip tela - krug"
+     salience 490
+     when
+         not(TipTelaIzabran())
+     then
+     	insert(new TipTelaIzabran(TipTela.KRUG));
+         System.out.println("Tip tela - krug");
+end
+
+
+rule "C1 - 1 - Biranje tipa obuce i materijala prema temperaturi > 20"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(temperatura > 20);
+    then
+    	insert(new TipOdeceIzabran(ObucaEnum.SANDALE));
+    	insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
+    	insert(new TipOdeceIzabran(ObucaEnum.PAPUCE));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        System.out.println("C1 - 1");
+end
+
+rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 20"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(temperatura <= 20, temperatura > 10);
+    then
+    	insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        insert(new MaterijalIzabran(Materijal.KOZA));
+        System.out.println("C1 - 2");
+end
+
+rule "C1 - 3 - Biranje tipa odece i materijala prema temperaturi < 10"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(temperatura <= 10);
+    then
+    	insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.KOZA));
+        insert(new MaterijalIzabran(Materijal.KRZNO));
+        insert(new MaterijalIzabran(Materijal.VUNA));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        System.out.println("C1 - 3");
+end
+
+rule "C2 - 1 - Biranje tipa obuce i materijala prema dresscodu - lezeran"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(dressCode == DressCode.LEZERAN);
+    then
+        insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
+        insert(new TipOdeceIzabran(ObucaEnum.PAPUCE));
+        insert(new TipOdeceIzabran(ObucaEnum.SANDALE));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        System.out.println("C2 - 1");
+end
+
+rule "C2 - 2 - Biranje tipa obuce i materijala prema dresscodu - sportski"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(dressCode == DressCode.SPORTSKI);
+    then
+        insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.PAMUK));
+        System.out.println("C2 - 2");
+end
+
+rule "C2 - 3 - Biranje tipa obuce i materijala prema dresscodu - formalan"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(dressCode == DressCode.FORMALAN);
+    then
+    	insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.KOZA));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        System.out.println("C2 - 3");
+end
+
+rule "C2 - 4 - Biranje tipa obuce i materijala prema dresscodu - izlazak"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(dressCode == DressCode.IZLAZAK);
+    then
+    	insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+        insert(new TipOdeceIzabran(ObucaEnum.SANDALE));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        insert(new MaterijalIzabran(Materijal.KOZA));
+        System.out.println("C2 - 4");
+end
+
+rule "C2 - 5 - Biranje tipa obuce i materijala prema dresscodu - blacktie"
+    salience 400
+    no-loop
+    when
+        $unos : UnosDTO(dressCode == DressCode.BLACKTIE);
+    then
+    	insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        insert(new MaterijalIzabran(Materijal.KOZA));
+        System.out.println("C2 - 5");
+end
+
+rule "C - Dodavanje bodova za tip obuce"
+    salience 380
+    no-loop
+    when
+        $obuca : Obuca();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	TipOdeceIzabran( tip == $obuca.getObucaTip()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $obuca));
+        System.out.println("C , id obuce : " + $obuca.getId()  + "  broj bodova : " + (20 + 5 * $brojponavljanja));
+end
+
+
+rule "D1 - 1 - Biranje materijala prema tipu obuce - patike, sandale, papuce"
+    salience 350
+    no-loop
+    when
+        $setOfTip: Set() from accumulate (
+           TipOdeceIzabran( $tip : tip);
+           collectSet( $tip )
+         )
+        ObucaEnum( $nm : name, name == "PATIKE" || name == "SANDALE" || name == "PAPUCE") from $setOfTip;
+        $list: List( size > 0 ) from collect(Obuca( obucaTip.toString() == $nm ))
+    then
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        insert(new MaterijalIzabran(Materijal.KRZNO));
+        System.out.println("D1 - 1" + "  " + $nm);
+end
+
+rule "D1 - 2 - Biranje materijala prema tipu obuce - cizme, cipele"
+    salience 350
+    no-loop
+    when
+        $setOfTip: Set() from accumulate (
+                   TipOdeceIzabran( $tip : tip);
+                   collectSet( $tip )
+                 )
+        ObucaEnum( $nm : name, name == "CIZME" || name == "CIPELE") from $setOfTip;
+        $list: List( size > 0 ) from collect(Obuca( obucaTip.toString() == $nm ))
+    then
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.GUMA));
+        insert(new MaterijalIzabran(Materijal.KRZNO));
+        System.out.println("D1 - 2" + "  " + $nm);
+end
+
+
+rule "D - Dodavanje bodova za materijal"
+    salience 340
+    no-loop
+    when
+        $obuca : Obuca();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                           MaterijalIzabran( materijal == $obuca.getMaterijal()),
+                           count(1)
+        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $obuca));
+        System.out.println("D , id obuce : " + $obuca.getId() + "  broj bodova : " + (20 + 5 * $brojponavljanja) );
+end
+
+
+
+rule "E2 - Biranje boje ako dresscode utice"
+    no-loop
+    salience 300
+    when
+        $unos : UnosDTO($dresscode : dressCode == DressCode.BLACKTIE );
+        $obuca : Obuca( boja == Boja.CRNA || boja == Boja.BELA);
+        $list: List( size > 0 ) from collect(Obuca( boja == Boja.CRNA || boja == Boja.BELA ))
+    then
+       	insert(new KoeficijentPreporuke(15 + 10 / $list.size(), $obuca));
+       	System.out.println("E2 , id obuce : " + $obuca.getId()  + "  broj bodova : " + (15 + 10 / $list.size()));
+        insert(new Marker("E1"));
+end
+
+rule "E1 - Biranje boje obuce ako dresscode ne utice"
+    no-loop
+    salience 290
+    when
+        $unos : UnosDTO( $bojeUnos : boje );
+        $obuca : Obuca( $b : boja memberOf $bojeUnos);
+        $list: List( size > 0 ) from collect(Obuca( boja memberOf $bojeUnos))
+        not Marker(uniqueIdentifier == "E1")
+    then
+    	insert(new BojaIzabran( $b ));
+    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $obuca));
+        System.out.println("E1 , id obuce : " + $obuca.getId() + "  broj bodova : " + (10 + 5 / $list.size()) );
+end
+
+rule "F - Dodavanje bodova za prilagodjenost vremenu"
+    salience 250
+        when
+            $unos : UnosDTO($vremeUnos : vreme );
+            $obuca : Obuca( vreme == $vremeUnos);
+            $list: List( size > 0 ) from collect(Obuca( vreme == $vremeUnos ))
+        then
+           	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $obuca));
+           	System.out.println("F , id obuce : " + $obuca.getId()  + "  broj bodova : " + (10 + 5 / $list.size()));
+end
+
+
+rule "G - Biranje komada prema koeficijentu preporuke"
+	salience -10
+	lock-on-active
+    when
+    	$obuca : Obuca();
+    	accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
+    	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
+                       	average($d) );
+        $poeni : Double(this >= $avg) from accumulate(
+                	KoeficijentPreporuke(komad.getId() == $obuca.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
+                	sum($b1)
+                );
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca($obuca, $poeni));}
+        System.out.println($ukupneVrednosti);
+    	System.out.println("G Biranje obuce prema koeficijentu preporuke, izabran komad : " + $obuca.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
+end
+
+rule "Brisanje poena nakon odabira"
+	salience -20
+	no-loop
+	when
+		$koeficijentPreporuke:KoeficijentPreporuke();
+	then
+		delete($koeficijentPreporuke);
+end
+
+rule "Provera uspesnosti"
+	salience -30
+	no-loop
+    when
+        preporuceniKomadi : PreporuceniKomadi( preporucenaObuca.size > 0);
+    then
+    	System.out.println("Uspesno zavrsena preporuka");
+end
+
+
+
+
+
+
+
+
+
+
+

@@ -7,21 +7,48 @@ import javax.persistence.*;
 @Entity
 public class Obuca extends KomadOdece{
 
-    @Column
-    private Vodootpornost vodootpornost;
-
-    @Column
-    private ObucaTip obucaTip;
+    @Column(name = "ot")
+    private ObucaEnum obucaTip;
 
     @Column
     private Stikla stikla;
 
-    public Obuca(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, Vodootpornost vodootpornost, ObucaTip obucaTip, Stikla stikla) {
+    public Obuca(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, ObucaEnum obucaTip, Stikla stikla) {
         super(boja, bojaIntenzitet, materijal, vreme, prioritet, image);
-        this.vodootpornost = vodootpornost;
+        this.obucaTip = obucaTip;
+        this.stikla = stikla;
+    }
+
+    public Obuca(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, ObucaEnum obucaTip) {
+        super(boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+        this.obucaTip = obucaTip;
+    }
+
+    public Obuca(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, ObucaEnum obucaTip) {
+        super(id, boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+        this.obucaTip = obucaTip;
+    }
+
+    public Obuca(ObucaEnum obucaTip, Stikla stikla) {
         this.obucaTip = obucaTip;
         this.stikla = stikla;
     }
 
     public Obuca(){}
+
+    public ObucaEnum getObucaTip() {
+        return obucaTip;
+    }
+
+    public void setObucaTip(ObucaEnum obucaTip) {
+        this.obucaTip = obucaTip;
+    }
+
+    public Stikla getStikla() {
+        return stikla;
+    }
+
+    public void setStikla(Stikla stikla) {
+        this.stikla = stikla;
+    }
 }

@@ -12,4 +12,8 @@
         <ksession name="jaknaPersRulesSession"/>
     </kbase>
 
+    <kbase name="izborObuce" packages="com.preporukaOK.rules.rulesObucaPersonalizovano">
+        <ksession name="obucaPersRulesSession"/>
+    </kbase>
+
 </kmodule>
