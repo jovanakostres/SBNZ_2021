@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KomadOdeceRepository extends JpaRepository<KomadOdece, Long> {
+    Iterable<? extends KomadOdece> findByKorisnikId(long l);
 }
