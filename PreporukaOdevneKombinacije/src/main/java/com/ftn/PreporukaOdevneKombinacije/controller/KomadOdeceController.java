@@ -1,6 +1,7 @@
 package com.ftn.PreporukaOdevneKombinacije.controller;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.GornjiDeoUnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.IzabranoDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.helper.GornjiDeoMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
@@ -42,6 +43,18 @@ public class KomadOdeceController {
 
     @PostMapping("/personalized_recommendation")
     public ResponseEntity<?> getPreporukaPersonalizovano(@RequestBody UnosDTO unosDTO) {
+        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //User user = userService.findOne(1L);
+        PreporuceniKomadi prep = komadOdeceService.getPreporukaPersonalizovano(new UnosDTO(25, Vreme.SUVO, "Novi Sad", DressCode.LEZERAN, new ArrayList<Boja>() {{ add(Boja.LJUBICASTA); add(Boja.BELA);}}), userDetails);
+        if(prep.getPreporuceniGornjiDelovi().size() <= 0){
+            return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(preporuceniKomadiMapper.toDto(prep),HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/chosen")
+    public ResponseEntity<?> getOdabrano(@RequestBody IzabranoDTO izabranoDTO) {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //User user = userService.findOne(1L);
         PreporuceniKomadi prep = komadOdeceService.getPreporukaPersonalizovano(new UnosDTO(25, Vreme.SUVO, "Novi Sad", DressCode.LEZERAN, new ArrayList<Boja>() {{ add(Boja.LJUBICASTA); add(Boja.BELA);}}), userDetails);

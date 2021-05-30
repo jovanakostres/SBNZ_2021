@@ -1,6 +1,7 @@
 package com.ftn.PreporukaOdevneKombinacije.model.drlModel;
 
 
+import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.Obuca;
 
 public class PreporucenaObuca {
@@ -11,6 +12,15 @@ public class PreporucenaObuca {
     public PreporucenaObuca(Obuca obuca, Double poeni) {
         this.obuca = obuca;
         this.poeni = poeni;
+    }
+
+    public PreporucenaObuca(KomadOdece obuca, Integer poeni) {
+        this.obuca = (Obuca) obuca;
+        this.poeni = (double) poeni;
+    }
+
+    public PreporucenaObuca(Object obuca) {
+        this.obuca = (Obuca) obuca;
     }
 
     public PreporucenaObuca() {

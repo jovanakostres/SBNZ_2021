@@ -16,4 +16,9 @@
         <ksession name="obucaPersRulesSession"/>
     </kbase>
 
+    <kbase name="cepIzvestaj" eventProcessingMode="stream" packages="com.preporukaOK.rules.rulesCEP">
+        <ksession name="cepIzvestajRulesSession"/>
+        <ksession name="cepIzvestajRulesnPseudoClock" clockType="pseudo"/>
+    </kbase>
+
 </kmodule>

@@ -1,0 +1,170 @@
+package com.preporukaOK.rules.rulesCEP
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.HashMap;
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.model.event.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+import org.kie.api.runtime.rule.Match
+
+declare window najvisePreporucenaOdeca7dana
+	@doc("Preporucena odeca u zadnjih 7 dana")
+	UcestalostKomada() over window:time( 7d )
+end
+
+declare window preporucenaOdeca7dana
+	@doc("Preporucena odeca u zadnjih 7 dana")
+	IzabranKomadOdeceEvent() over window:time( 7d )
+end
+
+declare window preporucenaOdeca24sata
+	@doc("Preporucena odeca u zadnjih 24 sata")
+	IzabranKomadOdeceEvent() over window:time( 24h )
+end
+
+rule "Dodat novi komad"
+    salience 100
+    agenda-group "7danaNajvise"
+	when
+		IzabranKomadOdeceEvent($komadOdece: komadOdece);
+		not UcestalostKomada($komadOdece.getId() == komadOdece.getId())
+	then
+		insert(new UcestalostKomada($komadOdece, 0));
+		System.out.println("Dodat komad : " + $komadOdece.getId());
+end
+
+rule "Ucestalost komada vec dodata"
+    salience 50
+    agenda-group "7danaNajvise"
+	when
+		IzabranKomadOdeceEvent($komadOdece: komadOdece);
+		$ucestalost: UcestalostKomada($komadOdece.getId() == komadOdece.getId())
+	then
+	    modify($ucestalost) {setBrojPonavljanja($ucestalost.getBrojPonavljanja() + 1);}
+        System.out.println("Povecana ucestalost : " + $komadOdece.getId());
+end
+
+
+rule "Najvise preporucivan gornji deo poslednjih 7 dana"
+    salience -1
+    agenda-group "7danaNajvise"
+	when
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : UcestalostKomada( komadOdece.class == GornjiDeo.class ) from window najvisePreporucenaOdeca7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKomada( $komad : komadOdece, $brojP : brojPonavljanja) from $events;
+		not UcestalostKomada( brojPonavljanja > $brojP) from $events;
+	then
+        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($komad, $brojP));}
+        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + $komad.getId() + " ucestalost : " + $brojP);
+end
+
+rule "Najvise preporucivana obuca poslednjih 7 dana"
+    salience -2
+    agenda-group "7danaNajvise"
+	when
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : UcestalostKomada( komadOdece.class == Obuca.class ) from window najvisePreporucenaOdeca7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKomada(   $komad : komadOdece, $brojP : brojPonavljanja) from $events;
+		not UcestalostKomada( brojPonavljanja > $brojP) from $events;
+	then
+        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca($komad, $brojP));}
+        System.out.println("Najvise preporucivana obuca poslednjih 7 dana : " + $komad.getId() + " ucestalost : " + $brojP);
+end
+
+rule "Najvise preporucivani donji deo poslednjih 7 dana"
+    salience -3
+    agenda-group "7danaNajvise"
+	when
+		$preporuceniKomadi : PreporuceniKomadi( );
+		accumulate(
+        			$e : UcestalostKomada( komadOdece.class == DonjiDeo.class) from window najvisePreporucenaOdeca7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKomada(  $komad : komadOdece, $brojP : brojPonavljanja) from $events;
+		not UcestalostKomada( brojPonavljanja > $brojP) from $events;
+	then
+        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo($komad, $brojP));}
+        System.out.println("Najvise preporucivani donji deo poslednjih 7 dana : " + $komad.getId() + " ucestalost : " + $brojP);
+end
+
+rule "Najvise preporucivana jakna poslednjih 7 dana"
+    salience -4
+    agenda-group "7danaNajvise"
+	when
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : UcestalostKomada( komadOdece.class == Jakna.class ) from window najvisePreporucenaOdeca7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKomada(  $komad : komadOdece, $brojP : brojPonavljanja) from $events;
+		not UcestalostKomada( brojPonavljanja > $brojP) from $events;
+	then
+        modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna($komad, $brojP));}
+        System.out.println("Najvise preporucivana jakna poslednjih 7 dana : " + $komad.getId() + " ucestalost : " + $brojP);
+end
+
+
+
+
+rule "Preporucivani komadi poslednjih 7 dana"
+    salience -1
+    agenda-group "7danaSvePreporucivano"
+	when
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : IzabranKomadOdeceEvent( $komadOdece : komadOdece) from window preporucenaOdeca7dana,
+        			$events : collectSet( $komadOdece )
+        		)
+	then
+
+	    for(Object gd : $events ) {
+	        if(gd instanceof GornjiDeo)
+	            modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gd));}
+	        if(gd instanceof Jakna)
+            	modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(gd));}
+            if(gd instanceof DonjiDeo)
+                modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(gd));}
+            if(gd instanceof Obuca)
+                modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
+	    }
+
+        System.out.println("Preporucivani gornji delovi poslednjih 7 dana");
+end
+
+
+rule "Preporucivani komadi poslednjih 24 sata"
+    salience -1
+    agenda-group "24sataSvePreporucivano"
+	when
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : IzabranKomadOdeceEvent( $komadOdece : komadOdece) from window preporucenaOdeca24sata,
+        			$events : collectSet( $komadOdece )
+        		)
+	then
+
+	    for(Object gd : $events ) {
+	        if(gd instanceof GornjiDeo)
+	            modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gd));}
+	        if(gd instanceof Jakna)
+            	modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(gd));}
+            if(gd instanceof DonjiDeo)
+                modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(gd));}
+            if(gd instanceof Obuca)
+                modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
+	    }
+
+        System.out.println("Preporucivani gornji delovi poslednjih 7 dana");
+end

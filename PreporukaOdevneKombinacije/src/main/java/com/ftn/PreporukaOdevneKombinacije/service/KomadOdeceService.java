@@ -1,10 +1,13 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
+import com.ftn.PreporukaOdevneKombinacije.dto.IzabranoDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.*;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
+import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranKomadOdeceEvent;
 import com.ftn.PreporukaOdevneKombinacije.repository.KomadOdeceRepository;
+import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +42,8 @@ public class KomadOdeceService {
     @Autowired
     private ObucaService obucaService;
 
-
+    @Autowired
+    private KieContainer kieContainer;
 
     public PreporuceniKomadi getPreporukaPersonalizovano(UnosDTO unosDTO, User user) {
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
@@ -85,6 +89,18 @@ public class KomadOdeceService {
         preporuceniKomadi = obucaService.getPreporuceniDonjiDeo(unosDTO,user,obucaList, preporuceniKomadi);
 
         return preporuceniKomadi;
+    }
+
+
+    public void saveIzabrano(IzabranoDTO izabranoDTO){
+        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
+        kieSession.insert(new IzabranKomadOdeceEvent(gornjiDeoService.findOne(izabranoDTO.getIdGornjiDeo())));
+        kieSession.insert(new IzabranKomadOdeceEvent(donjiDeoService.findOne(izabranoDTO.getIdDonjiDeo())));
+        kieSession.insert(new IzabranKomadOdeceEvent(jaknaService.findOne(izabranoDTO.getIdJakna())));
+        kieSession.insert(new IzabranKomadOdeceEvent(obucaService.findOne(izabranoDTO.getIdObuca())));
+
+        kieSession.fireAllRules();
+
     }
 
 }
