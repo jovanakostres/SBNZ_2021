@@ -19,12 +19,16 @@ public class DonjiDeo extends KomadOdece {
     @Column
     private DuzinaDonjegDela duzina;
 
-    public DonjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip, Dubina dubina, DuzinaDonjegDela duzina) {
+    @Column
+    private TipDonjegDela tipDonjegDela;
+
+    public DonjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip, Dubina dubina, DuzinaDonjegDela duzina, TipDonjegDela tipDonjegDela) {
         super(boja, bojaIntenzitet, materijal, vreme, prioritet, image);
         this.odecaTip = tip;
         this.odecaPodTip = odecaPodTip;
         this.dubina = dubina;
         this.duzina = duzina;
+        this.tipDonjegDela = tipDonjegDela;
     }
 
     public DonjiDeo(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip) {
@@ -79,4 +83,8 @@ public class DonjiDeo extends KomadOdece {
     public void setDuzina(DuzinaDonjegDela duzina) {
         this.duzina = duzina;
     }
+
+    public TipDonjegDela getTipDonjegDela() { return tipDonjegDela; }
+
+    public void setTipDonjegDela(TipDonjegDela tipDonjegDela) { this.tipDonjegDela = tipDonjegDela; }
 }

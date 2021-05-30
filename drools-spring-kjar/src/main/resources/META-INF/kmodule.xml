@@ -24,6 +24,10 @@
     <kbase name="cepIzvestajKomb" eventProcessingMode="stream" packages="com.preporukaOK.rules.rulesCEPKomb">
         <ksession name="cepIzvestajKombRulesSession"/>
         <ksession name="cepIzvestajKombRulesnPseudoClock" clockType="pseudo"/>
+
+    <kbase name="izborDDO" packages="com.preporukaOK.rules.rulesDonjiDeoOpste">
+        <ksession name="ddoPersRulesSession"/>
+
     </kbase>
 
 </kmodule>

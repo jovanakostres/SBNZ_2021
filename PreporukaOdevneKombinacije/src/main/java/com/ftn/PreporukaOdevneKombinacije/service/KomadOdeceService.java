@@ -2,6 +2,7 @@ package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.IzabranoDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.*;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
@@ -92,7 +93,8 @@ public class KomadOdeceService {
     }
 
 
-    public void saveIzabrano(IzabranoDTO izabranoDTO){
+
+    public void saveIzabrano(IzabranoDTO izabranoDTO) {
         KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
         kieSession.insert(new IzabranKomadOdeceEvent(gornjiDeoService.findOne(izabranoDTO.getIdGornjiDeo())));
         kieSession.insert(new IzabranKomadOdeceEvent(donjiDeoService.findOne(izabranoDTO.getIdDonjiDeo())));
@@ -100,6 +102,34 @@ public class KomadOdeceService {
         kieSession.insert(new IzabranKomadOdeceEvent(obucaService.findOne(izabranoDTO.getIdObuca())));
 
         kieSession.fireAllRules();
+    }
+
+
+    public boolean getPreporukaOpste(UnosNeulogovanDTO unosDTO) {
+
+        PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
+
+        List<GornjiDeo> gornjiDeoList = new ArrayList<>();
+        List<DonjiDeo> donjiDeoList = new ArrayList<>();
+        List<Jakna> jaknaList = new ArrayList<>();
+        List<Obuca> obucaList = new ArrayList<>();
+
+        for (KomadOdece komadOdece : getKomadiById()){
+            if (komadOdece instanceof GornjiDeo)
+                gornjiDeoList.add((GornjiDeo) komadOdece);
+            if (komadOdece instanceof DonjiDeo)
+                donjiDeoList.add((DonjiDeo) komadOdece);
+            if (komadOdece instanceof Jakna)
+                jaknaList.add((Jakna) komadOdece);
+            if (komadOdece instanceof Obuca)
+                obucaList.add((Obuca) komadOdece);
+        }
+
+        return donjiDeoService.getPreporuceniDonjiDeoOpste(unosDTO,donjiDeoList,preporuceniKomadi);
+    }
+
+    private Iterable<? extends KomadOdece> getKomadiById() {
+        return repository.findByKorisnikId(1L);
 
     }
 

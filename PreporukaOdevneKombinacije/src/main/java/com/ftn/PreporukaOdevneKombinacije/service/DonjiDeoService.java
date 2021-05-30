@@ -1,6 +1,7 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
@@ -18,7 +19,6 @@ import java.util.List;
 
 @Service
 public class DonjiDeoService {
-
 
     @Autowired
     private DonjiDeoRepository repository;
@@ -102,6 +102,7 @@ public class DonjiDeoService {
         kieSession.insert(DonjiDeoEnum.PANTALONE);
         kieSession.insert(DonjiDeoEnum.SORC);
         kieSession.insert(DonjiDeoEnum.TRENERKA);
+        kieSession.insert(DonjiDeoEnum.SUKNJA);
     }
 
     public void insertMaterijal(KieSession kieSession){
@@ -120,6 +121,39 @@ public class DonjiDeoService {
         kieSession.insert(Materijal.GUMA);
     }
 
+    public void insertTipDonjegDela(KieSession kieSession){
+        kieSession.insert(TipDonjegDela.PLEATED);
+        kieSession.insert(TipDonjegDela.POODLE);
+        kieSession.insert(TipDonjegDela.PENCIL);
+        kieSession.insert(TipDonjegDela.ALINE);
+        kieSession.insert(TipDonjegDela.WRAP);
+        kieSession.insert(TipDonjegDela.TRUMPET);
+        kieSession.insert(TipDonjegDela.SKINY);
+        kieSession.insert(TipDonjegDela.BOOTCUT);
+        kieSession.insert(TipDonjegDela.FLARED);
+        kieSession.insert(TipDonjegDela.STRAIGHT);
+        kieSession.insert(TipDonjegDela.BAGGY);
+    }
+
+    public void insertDuzinaDonjegDela(KieSession kieSession){
+        kieSession.insert(DuzinaDonjegDela.MAXI);
+        kieSession.insert(DuzinaDonjegDela.MINI);
+        kieSession.insert(DuzinaDonjegDela.MIDI);
+    }
+
+    public void insertDubinaDonjegDela(KieSession kieSession){
+        kieSession.insert(Dubina.MAXI);
+        kieSession.insert(Dubina.MINI);
+        kieSession.insert(Dubina.MIDI);
+    }
+
+    public void insertBojaIntenzitet(KieSession kieSession){
+        kieSession.insert(BojaIntenzitet.PASTELNA);
+        kieSession.insert(BojaIntenzitet.TAMNA);
+        kieSession.insert(BojaIntenzitet.SREDNJE);
+        kieSession.insert(BojaIntenzitet.SVETLA);
+    }
+
     public HashMap<DressCode, Integer> makeHashMapColor(){
         HashMap<DressCode, Integer> map = new HashMap<>();
         map.put(DressCode.LEZERAN, 250);
@@ -128,5 +162,32 @@ public class DonjiDeoService {
         map.put(DressCode.IZLAZAK, 250);
         map.put(DressCode.SPORTSKI, 250);
         return map;
+    }
+
+    public boolean getPreporuceniDonjiDeoOpste(UnosNeulogovanDTO unosDTO, List<DonjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
+        KieSession kieSession = kieContainer.newKieSession("ddoPersRulesSession");
+        for(DonjiDeo komadOdece : komadi){
+            kieSession.insert(komadOdece);
+        }
+
+        insertTipTela(kieSession);
+        insertTipDonjegDela(kieSession);
+        insertDubinaDonjegDela(kieSession);
+        insertDuzinaDonjegDela(kieSession);
+        insertBojaIntenzitet(kieSession);
+
+        kieSession.insert(unosDTO);
+
+        kieSession.fireAllRules();
+
+//        HashMap<Long, Double> a = new HashMap<>();
+//        a.entrySet().forEach(entry -> {
+//            System.out.println((Long)entry.getKey() + " " + entry.getValue());
+//        });
+
+
+        kieSession.dispose();
+
+        return true;
     }
 }
