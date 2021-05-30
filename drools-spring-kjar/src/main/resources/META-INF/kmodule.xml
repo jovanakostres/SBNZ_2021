@@ -16,6 +16,10 @@
         <ksession name="obucaPersRulesSession"/>
     </kbase>
 
+    <kbase name="queryGornjiDeo" packages="com.preporukaOK.rules.rulesQueryKomadOdece">
+        <ksession name="queryKomadOdeceRulesSession"/>
+    </kbase>
+
     <kbase name="cepIzvestaj" eventProcessingMode="stream" packages="com.preporukaOK.rules.rulesCEP">
         <ksession name="cepIzvestajRulesSession"/>
         <ksession name="cepIzvestajRulesnPseudoClock" clockType="pseudo"/>

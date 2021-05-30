@@ -1,0 +1,48 @@
+package com.preporukaOK.rules.rulesQueryKomadOdece
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+
+
+query "getKomadOdeceByMaterijal" (Materijal mat, Long id)
+	$komad : KomadOdece( materijal == mat, korisnik.getId() == id );
+end
+
+query "getKomadOdeceByBoja" (Boja b, Long id)
+	$komad : KomadOdece( boja == b, korisnik.getId() == id );
+end
+
+query "getGornjiDeoByTip" (GornjiDeoEnum b, Long id)
+	$komad : GornjiDeo( odecaTip == b, korisnik.getId() == id );
+end
+
+query "getDonjiDeoByTip" (DonjiDeoEnum b, Long id)
+	$komad : DonjiDeo( odecaTip == b, korisnik.getId() == id );
+end
+
+query "getJaknaByTip" (JaknaEnum b, Long id)
+	$komad : Jakna( odecaTip == b, korisnik.getId() == id );
+end
+
+query "getObucaByTip" (ObucaEnum b, Long id)
+	$komad : Obuca( obucaTip == b, korisnik.getId() == id );
+end
+
+query "getGornjiDeoByPodTip" (OdecaPodTip b, Long id)
+	$komad : GornjiDeo( odecaPodTip == b, korisnik.getId() == id );
+end
+
+query "getDonjiDeoByPodTip" (OdecaPodTip b, Long id)
+	$komad : DonjiDeo( odecaPodTip == b, korisnik.getId() == id );
+end
+
+query "getJaknaByPodTip" (OdecaPodTip b, Long id)
+	$komad : Jakna( odecaPodTip == b, korisnik.getId() == id );
+end

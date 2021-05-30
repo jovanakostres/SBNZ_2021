@@ -34,6 +34,11 @@ public class Obuca extends KomadOdece{
         this.stikla = stikla;
     }
 
+    public Obuca(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, User korisnik, ObucaEnum obucaTip) {
+        super(id, boja, materijal, vreme, prioritet, koeficijentOdabira, image, korisnik);
+        this.obucaTip = obucaTip;
+    }
+
     public Obuca(){}
 
     public ObucaEnum getObucaTip() {
