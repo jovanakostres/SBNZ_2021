@@ -2,9 +2,11 @@ package com.ftn.PreporukaOdevneKombinacije;
 
 import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.model.Jakna;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranKomadOdeceEvent;
+import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranaKombinacijaEvent;
 import org.drools.core.time.SessionPseudoClock;
 import org.junit.Test;
 import org.kie.api.KieServices;
@@ -191,6 +193,69 @@ public class CepIzvestajTests {
         assertEquals( 2, preporuceniKomadi1.getPreporuceniGornjiDelovi().size());
 
         assertEquals( 2, preporuceniKomadi1.getPreporuceniDonjiDelovi().size());
+
+    }
+
+
+    @Test
+    public void dana7NajviseaIzabranoUzKomadTest() {
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kc = ks.newKieClasspathContainer();
+        KieSession kSession = kc.newKieSession("cepIzvestajKombRulesnPseudoClock");
+        SessionPseudoClock clock = kSession.getSessionClock();
+
+        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
+        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
+
+        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+
+        Jakna jakna = new Jakna(5L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
+        Jakna jakna1 = new Jakna(6L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
+
+        IzabranaKombinacijaEvent izabranaKombinacijaEvent = new IzabranaKombinacijaEvent(gornjiDeo, donjiDeo);
+        IzabranaKombinacijaEvent izabranaKombinacijaEvent1 = new IzabranaKombinacijaEvent(gornjiDeo, donjiDeo2);
+        IzabranaKombinacijaEvent izabranaKombinacijaEvent2 = new IzabranaKombinacijaEvent(gornjiDeo, donjiDeo);
+        IzabranaKombinacijaEvent izabranaKombinacijaEvent3 = new IzabranaKombinacijaEvent(gornjiDeo2, donjiDeo);
+        IzabranaKombinacijaEvent izabranaKombinacijaEvent4 = new IzabranaKombinacijaEvent(jakna, donjiDeo);
+        IzabranaKombinacijaEvent izabranaKombinacijaEvent5 = new IzabranaKombinacijaEvent(jakna1, donjiDeo);
+        IzabranaKombinacijaEvent izabranaKombinacijaEvent6 = new IzabranaKombinacijaEvent(jakna, donjiDeo);
+
+        kSession.insert(izabranaKombinacijaEvent);
+        kSession.insert(izabranaKombinacijaEvent1);
+        kSession.insert(izabranaKombinacijaEvent2);
+        kSession.insert(izabranaKombinacijaEvent3);
+        kSession.insert(izabranaKombinacijaEvent4);
+        kSession.insert(izabranaKombinacijaEvent6);
+        kSession.insert(izabranaKombinacijaEvent5);
+
+        PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
+
+        kSession.insert(preporuceniKomadi);
+        kSession.insert(donjiDeo);
+        kSession.fireAllRules();
+
+        assertEquals( Long.valueOf(1), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getGornjiDeo().getId());
+        assertEquals( Double.valueOf(2), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
+
+        assertEquals( Long.valueOf(5), preporuceniKomadi.getPreporuceneJakne().get(0).getJakna().getId());
+        assertEquals( Double.valueOf(2), preporuceniKomadi.getPreporuceneJakne().get(0).getPoeni());
+
+        clock.advanceTime(6, TimeUnit.DAYS);
+        PreporuceniKomadi preporuceniKomadi1 = new PreporuceniKomadi();
+        kSession.insert(preporuceniKomadi1);
+        kSession.fireAllRules();
+        assertEquals( Long.valueOf(1), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getGornjiDeo().getId());
+        assertEquals( Double.valueOf(2), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
+
+        assertEquals( Long.valueOf(5), preporuceniKomadi.getPreporuceneJakne().get(0).getJakna().getId());
+        assertEquals( Double.valueOf(2), preporuceniKomadi.getPreporuceneJakne().get(0).getPoeni());
+
+        clock.advanceTime(1, TimeUnit.DAYS);
+        PreporuceniKomadi preporuceniKomadi2 = new PreporuceniKomadi();
+        kSession.insert(preporuceniKomadi2);
+        kSession.fireAllRules();
+        assertEquals( 0, preporuceniKomadi2.getPreporuceniGornjiDelovi().size());
 
     }
 }

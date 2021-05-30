@@ -21,4 +21,9 @@
         <ksession name="cepIzvestajRulesnPseudoClock" clockType="pseudo"/>
     </kbase>
 
+    <kbase name="cepIzvestajKomb" eventProcessingMode="stream" packages="com.preporukaOK.rules.rulesCEPKomb">
+        <ksession name="cepIzvestajKombRulesSession"/>
+        <ksession name="cepIzvestajKombRulesnPseudoClock" clockType="pseudo"/>
+    </kbase>
+
 </kmodule>

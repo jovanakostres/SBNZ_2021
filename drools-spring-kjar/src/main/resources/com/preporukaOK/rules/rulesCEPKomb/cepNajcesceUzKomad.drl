@@ -1,0 +1,131 @@
+package com.preporukaOK.rules.rulesCEPKomb
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.HashMap;
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.model.event.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+import org.kie.api.runtime.rule.Match
+
+declare window najvisePreporucenaOdecaKombinacije7dana
+	@doc("Preporucene kombinacije u zadnjih 7 dana")
+	UcestalostKombinacije() over window:time( 7d )
+end
+
+rule "Dodata nova kombinacija"
+    salience 100
+	when
+		IzabranaKombinacijaEvent($komadOdece1: komadOdece1, $komadOdece2: komadOdece2);
+		not UcestalostKombinacije($komadOdece1.getId() == komadOdece1.getId(), $komadOdece2.getId() == komadOdece2.getId())
+	    not UcestalostKombinacije($komadOdece1.getId() == komadOdece2.getId(), $komadOdece2.getId() == komadOdece1.getId())
+	then
+		insert(new UcestalostKombinacije($komadOdece1,$komadOdece2, 0));
+		System.out.println("Dodat komad : " + $komadOdece1.getId() + ",  " + $komadOdece2.getId());
+end
+
+rule "Ucestalost kombinacije vec dodata"
+    salience 50
+	when
+		IzabranaKombinacijaEvent($komadOdece1: komadOdece1, $komadOdece2: komadOdece2);
+		$ucestalost: UcestalostKombinacije(($komadOdece1.getId() == komadOdece1.getId() && $komadOdece2.getId() == komadOdece2.getId()) ||
+		    ($komadOdece1.getId() == komadOdece2.getId() && $komadOdece2.getId() == komadOdece1.getId()))
+	then
+	    modify($ucestalost) {setBrojPonavljanja($ucestalost.getBrojPonavljanja() + 1);}
+        System.out.println("Povecana ucestalost : " + $komadOdece1.getId() + ",  " + $komadOdece2.getId());
+end
+
+rule "Najvise preporucivan gornji deo uz komad poslednjih 7 dana"
+    salience -1
+	when
+	    $ulaz : KomadOdece( $id : id , class != GornjiDeo.class)
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : UcestalostKombinacije((komadOdece1.getId() == $id && komadOdece2.class == GornjiDeo.class)
+        			|| (komadOdece2.getId() == $id &&  komadOdece1.class == GornjiDeo.class)) from window najvisePreporucenaOdecaKombinacije7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
+		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+	then
+	    KomadOdece gornji;
+	    if( $komad1.getId() != $id)
+            gornji = $komad1;
+        else
+            gornji = $komad2;
+        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gornji, $brojP));}
+        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + gornji.getId() + " ucestalost : " + $brojP);
+end
+
+rule "Najvise preporucivan donji deo uz komad poslednjih 7 dana"
+    salience -2
+	when
+	    $ulaz : KomadOdece( $id : id , class != DonjiDeo.class)
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : UcestalostKombinacije((komadOdece1.getId() == $id && komadOdece2.class == DonjiDeo.class)
+        			|| (komadOdece2.getId() == $id &&  komadOdece1.class == DonjiDeo.class)) from window najvisePreporucenaOdecaKombinacije7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
+		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+	then
+	    KomadOdece donji;
+	    if( $komad1.getId() != $id)
+            donji = $komad1;
+        else
+            donji = $komad2;
+        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(donji, $brojP));}
+        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + donji.getId() + " ucestalost : " + $brojP);
+end
+
+
+rule "Najvise preporucivana jakna uz komad poslednjih 7 dana"
+    salience -3
+	when
+	    $ulaz : KomadOdece( $id : id , class != Jakna.class)
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : UcestalostKombinacije((komadOdece1.getId() == $id && komadOdece2.class == Jakna.class)
+        			|| (komadOdece2.getId() == $id &&  komadOdece1.class == Jakna.class)) from window najvisePreporucenaOdecaKombinacije7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
+		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+	then
+	    KomadOdece jakna;
+	    if( $komad1.getId() != $id)
+            jakna = $komad1;
+        else
+            jakna = $komad2;
+        modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(jakna, $brojP));}
+        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + jakna.getId() + " ucestalost : " + $brojP);
+end
+
+rule "Najvise preporucivana obuca uz komad poslednjih 7 dana"
+    salience -4
+	when
+	    $ulaz : KomadOdece( $id : id , class != Obuca.class)
+		$preporuceniKomadi : PreporuceniKomadi();
+		accumulate(
+        			$e : UcestalostKombinacije((komadOdece1.getId() == $id && komadOdece2.class == Obuca.class)
+        			|| (komadOdece2.getId() == $id &&  komadOdece1.class == Obuca.class)) from window najvisePreporucenaOdecaKombinacije7dana,
+        			$events : collectList( $e )
+        		)
+		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
+		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+	then
+	    KomadOdece obuca;
+	    if( $komad1.getId() != $id)
+            obuca = $komad1;
+        else
+            obuca = $komad2;
+        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(obuca, $brojP));}
+        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + obuca.getId() + " ucestalost : " + $brojP);
+end
+
