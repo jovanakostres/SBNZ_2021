@@ -2,6 +2,7 @@ package com.ftn.PreporukaOdevneKombinacije.dto;
 
 import com.ftn.PreporukaOdevneKombinacije.model.enums.BojaKoze;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.DressCode;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.Pol;
 
 public class UnosNeulogovanDTO {
     private int ramena, kukovi, struk;
@@ -9,10 +10,11 @@ public class UnosNeulogovanDTO {
     private DressCode dressCode;
     private BojaKoze bojaKoze;
     private String vreme;
+    private Pol pol;
 
     public UnosNeulogovanDTO(){}
 
-    public UnosNeulogovanDTO(int ramena, int kukovi, int struk, int visina, DressCode dressCode, BojaKoze bojaKoze, String vreme) {
+    public UnosNeulogovanDTO(int ramena, int kukovi, int struk, int visina, DressCode dressCode, BojaKoze bojaKoze, String vreme, Pol pol) {
         this.ramena = ramena;
         this.kukovi = kukovi;
         this.struk = struk;
@@ -20,6 +22,7 @@ public class UnosNeulogovanDTO {
         this.dressCode = dressCode;
         this.bojaKoze = bojaKoze;
         this.vreme = vreme;
+        this.pol = pol;
     }
 
     public int getRamena() {
@@ -73,4 +76,8 @@ public class UnosNeulogovanDTO {
     public String getVreme() { return vreme; }
 
     public void setVreme(String vreme) { this.vreme = vreme; }
+
+    public Pol getPol() { return pol; }
+
+    public void setPol(Pol pol) { this.pol = pol; }
 }

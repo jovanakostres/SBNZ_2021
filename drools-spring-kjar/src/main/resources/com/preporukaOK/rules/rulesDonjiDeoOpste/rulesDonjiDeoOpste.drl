@@ -47,6 +47,45 @@ rule "A1 - Tip tela - trougao"
         System.out.println("Tip tela - trougao");
 end
 
+rule "A2 - Tip tela - pravougaonik"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO( ramena <= 25/100 * ramena + struk, ramena <= 5/100 * ramena + kukovi);
+        not (TipTelaIzabran())
+    then
+    	insert(new TipTelaIzabran(TipTela.PRAVOUGAONIK));
+        System.out.println("Tip tela - pravougaonik");
+end
+
+rule "A3 - Tip tela - obrnuti trougao"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO( ramena >= kukovi + 5/100 * ramena);
+        not (TipTelaIzabran())
+    then
+    	insert(new TipTelaIzabran(TipTela.OB_TROUGAO));
+        System.out.println("Tip tela - pravougaonik");
+end
+
+rule "A4 - Tip tela - pescani sat"
+     salience 500
+     when
+         $unos : UnosNeulogovanDTO( ramena > 25/100 * ramena + struk, ramena  <= 5/100 * ramena + kukovi);
+         not (TipTelaIzabran())
+     then
+     	insert(new TipTelaIzabran(TipTela.PES_SAT));
+         System.out.println("Tip tela - pescani sat");
+ end
+
+rule "A5 - Tip tela - krug"
+     salience 490
+     when
+         not(TipTelaIzabran())
+     then
+     	insert(new TipTelaIzabran(TipTela.KRUG));
+         System.out.println("Tip tela - krug");
+end
+
 rule "B1 - Tip donjeg dela ako je tip tela trougao i dresscode lezeran"
 	salience 450
     no-loop
