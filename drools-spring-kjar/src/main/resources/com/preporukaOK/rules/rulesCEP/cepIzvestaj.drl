@@ -127,20 +127,21 @@ rule "Preporucivani komadi poslednjih 7 dana"
         			$e : IzabranKomadOdeceEvent( $komadOdece : komadOdece) from window preporucenaOdeca7dana,
         			$events : collectSet( $komadOdece )
         		)
+        $komad : KomadOdece() from  $events
 	then
+        insert($komad);
+	    //for(Object gd : $events ) {
+        //    if(gd instanceof GornjiDeo)
+  	    //        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gd));}
+   	    //    if(gd instanceof Jakna)
+        //    	modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(gd));}
+        //    if(gd instanceof DonjiDeo)
+        //        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(gd));}
+        //    if(gd instanceof Obuca)
+        //        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
+   	    //}
 
-	    for(Object gd : $events ) {
-	        if(gd instanceof GornjiDeo)
-	            modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gd));}
-	        if(gd instanceof Jakna)
-            	modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(gd));}
-            if(gd instanceof DonjiDeo)
-                modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(gd));}
-            if(gd instanceof Obuca)
-                modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
-	    }
-
-        System.out.println("Preporucivani gornji delovi poslednjih 7 dana");
+        System.out.println("Preporucivani gornji delovi poslednjih 7 dana, id: "+ $komad.getId());
 end
 
 
@@ -153,18 +154,64 @@ rule "Preporucivani komadi poslednjih 24 sata"
         			$e : IzabranKomadOdeceEvent( $komadOdece : komadOdece) from window preporucenaOdeca24sata,
         			$events : collectSet( $komadOdece )
         		)
+        $komad : KomadOdece() from  $events
 	then
 
-	    for(Object gd : $events ) {
-	        if(gd instanceof GornjiDeo)
-	            modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gd));}
-	        if(gd instanceof Jakna)
-            	modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(gd));}
-            if(gd instanceof DonjiDeo)
-                modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(gd));}
-            if(gd instanceof Obuca)
-                modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
-	    }
+        insert($komad);
+	    //for(Object gd : $events ) {
+	    //    if(gd instanceof GornjiDeo)
+	    //        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gd));}
+	    //    if(gd instanceof Jakna)
+        //    	modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(gd));}
+        //    if(gd instanceof DonjiDeo)
+        //        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(gd));}
+        //    if(gd instanceof Obuca)
+        //        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
+	    //}
 
-        System.out.println("Preporucivani gornji delovi poslednjih 7 dana");
+        System.out.println("Preporucivani gornji delovi poslednjih 24 sata, id: " + $komad.getId());
+end
+
+rule "Prikupljanje gornji deo"
+    salience -50
+    when
+        $gornjiDeo : GornjiDeo();
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($gornjiDeo));}
+        delete($gornjiDeo);
+        System.out.println("Prikupljanje gornji deo");
+end
+
+rule "Prikupljanje donji deo"
+    salience -50
+    when
+        $donjiDeo : DonjiDeo();
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo($donjiDeo));}
+        delete($donjiDeo);
+        System.out.println("Prikupljanje donji deo");
+end
+
+rule "Prikupljanje jakna"
+    salience -50
+    when
+        $jakna : Jakna();
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna($jakna));}
+        delete($jakna)
+        System.out.println("Prikupljanje jakna deo");
+end
+
+rule "Prikupljanje obuca"
+    salience -50
+    when
+        $obuca: Obuca();
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca($obuca));}
+        delete($obuca)
+        System.out.println("Prikupljanje obuca deo");
 end

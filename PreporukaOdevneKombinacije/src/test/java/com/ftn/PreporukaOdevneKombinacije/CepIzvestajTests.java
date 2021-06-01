@@ -157,6 +157,7 @@ public class CepIzvestajTests {
         DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
         DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
 
+        System.out.println(GornjiDeo.class.getName());
         IzabranKomadOdeceEvent izabranKomadOdeceEvent = new IzabranKomadOdeceEvent(gornjiDeo);
         IzabranKomadOdeceEvent izabranKomadOdeceEvent1 = new IzabranKomadOdeceEvent(gornjiDeo);
         IzabranKomadOdeceEvent izabranKomadOdeceEvent2 = new IzabranKomadOdeceEvent(gornjiDeo2);
@@ -193,6 +194,15 @@ public class CepIzvestajTests {
         assertEquals( 2, preporuceniKomadi1.getPreporuceniGornjiDelovi().size());
 
         assertEquals( 2, preporuceniKomadi1.getPreporuceniDonjiDelovi().size());
+
+        clock.advanceTime(1, TimeUnit.HOURS);
+        kSession.getAgenda().getAgendaGroup( "24sataSvePreporucivano" ).setFocus();
+        PreporuceniKomadi preporuceniKomadi2 = new PreporuceniKomadi();
+        kSession.insert(preporuceniKomadi2);
+        kSession.fireAllRules();
+        assertEquals( 0, preporuceniKomadi2.getPreporuceniGornjiDelovi().size());
+
+        assertEquals( 0, preporuceniKomadi2.getPreporuceniDonjiDelovi().size());
 
     }
 

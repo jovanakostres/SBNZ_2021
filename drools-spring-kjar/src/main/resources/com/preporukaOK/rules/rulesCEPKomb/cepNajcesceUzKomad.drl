@@ -51,15 +51,16 @@ rule "Najvise preporucivan gornji deo uz komad poslednjih 7 dana"
         			$events : collectList( $e )
         		)
 		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
-		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+		not UcestalostKombinacije(brojPonavljanja > $brojP) from $events;
+		?getKomad($komad1.getId(), $komad2.getId(), GornjiDeo.class, $komadIzabran;)
 	then
-	    KomadOdece gornji;
-	    if( $komad1.getId() != $id)
-            gornji = $komad1;
-        else
-            gornji = $komad2;
-        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo(gornji, $brojP));}
-        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + gornji.getId() + " ucestalost : " + $brojP);
+	    //KomadOdece gornji;
+	    //if( $komad1.getId() != $id)
+        //    gornji = $komad1;
+        //else
+        //    gornji = $komad2;
+        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($komadIzabran, $brojP));}
+        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana, id: " + $komadIzabran.getId() + " ucestalost : " + $brojP);
 end
 
 rule "Najvise preporucivan donji deo uz komad poslednjih 7 dana"
@@ -74,14 +75,15 @@ rule "Najvise preporucivan donji deo uz komad poslednjih 7 dana"
         		)
 		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
 		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+		?getKomad($komad1.getId(), $komad2.getId(), DonjiDeo.class, $komadIzabran;)
 	then
-	    KomadOdece donji;
-	    if( $komad1.getId() != $id)
-            donji = $komad1;
-        else
-            donji = $komad2;
-        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo(donji, $brojP));}
-        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + donji.getId() + " ucestalost : " + $brojP);
+	    //KomadOdece donji;
+	    //if( $komad1.getId() != $id)
+        //    donji = $komad1;
+        //else
+        //    donji = $komad2;
+        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo($komadIzabran, $brojP));}
+        System.out.println("Najvise preporucivani donji deo poslednjih 7 dana : " + $komadIzabran.getId() + " ucestalost : " + $brojP);
 end
 
 
@@ -97,14 +99,15 @@ rule "Najvise preporucivana jakna uz komad poslednjih 7 dana"
         		)
 		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
 		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+		?getKomad($komad1.getId(), $komad2.getId(), Jakna.class, $komadIzabran;)
 	then
-	    KomadOdece jakna;
-	    if( $komad1.getId() != $id)
-            jakna = $komad1;
-        else
-            jakna = $komad2;
-        modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna(jakna, $brojP));}
-        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + jakna.getId() + " ucestalost : " + $brojP);
+	    //KomadOdece jakna;
+	    //if( $komad1.getId() != $id)
+        //    jakna = $komad1;
+        //else
+        //    jakna = $komad2;
+        modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna($komadIzabran, $brojP));}
+        System.out.println("Najvise preporucivana jakna poslednjih 7 dana : " + $komadIzabran.getId() + " ucestalost : " + $brojP);
 end
 
 rule "Najvise preporucivana obuca uz komad poslednjih 7 dana"
@@ -119,13 +122,22 @@ rule "Najvise preporucivana obuca uz komad poslednjih 7 dana"
         		)
 		UcestalostKombinacije( $komad1 : komadOdece1, $komad2 : komadOdece2 , $brojP : brojPonavljanja) from $events;
 		not UcestalostKombinacije( brojPonavljanja > $brojP) from $events;
+		?getKomad($komad1.getId(), $komad2.getId(), Obuca.class, $komadIzabran;)
 	then
-	    KomadOdece obuca;
-	    if( $komad1.getId() != $id)
-            obuca = $komad1;
-        else
-            obuca = $komad2;
-        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(obuca, $brojP));}
-        System.out.println("Najvise preporucivani gornji deo poslednjih 7 dana : " + obuca.getId() + " ucestalost : " + $brojP);
+	    //KomadOdece obuca;
+	    //if( $komad1.getId() != $id)
+        //    obuca = $komad1;
+        //else
+        //    obuca = $komad2;
+        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca($komadIzabran, $brojP));}
+        System.out.println("Najvise preporucivana obuca poslednjih 7 dana : " + $komadIzabran.getId() + " ucestalost : " + $brojP);
 end
+
+
+query getKomad (Long id1, Long id2, Class klasaOdece, KomadOdece $komadIzabran)
+	UcestalostKombinacije( $komadIzabran := komadOdece1, komadOdece1.getId() == id1, komadOdece2.getId() == id2 , komadOdece1.getClass() == klasaOdece);
+	or
+	UcestalostKombinacije( $komadIzabran := komadOdece2, komadOdece1.getId() == id1, komadOdece2.getId() == id2 , komadOdece2.getClass() == klasaOdece);
+end
+
 

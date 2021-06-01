@@ -379,7 +379,7 @@ end
 
 
 rule "G - Biranje komada prema koeficijentu preporuke"
-	salience -10
+	salience ($poeni*10)
 	lock-on-active
     when
     	$donjiDeo : DonjiDeo();
