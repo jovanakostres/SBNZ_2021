@@ -32,5 +32,34 @@ INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet,
 
 INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, ot, stikla, dtype) VALUES (11, 4, 2, 5, 0, 0, 1, '', 1, 1, 3,'Obuca');
 
-SELECT pg_catalog.setval('public.komadi_odece_id_seq', 11, true);
-SELECT pg_catalog.setval('public.platform_user_id_seq', 3, true);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (12, 0, 2, 0, 1, 0, 1, '', 2, 1, 0, 0,'GornjiDeo', 0, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (13, 0, 2, 6, 1, 0, 1, '', 2, 1, 0, 0,'GornjiDeo', 1, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (14, 0, 2, 10, 1, 0, 1, '', 2, 1, 0, 0,'GornjiDeo', 2, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (15, 0, 2, 0, 1, 0, 1, '', 2, 1, 1, 1,'GornjiDeo', 0, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (16, 0, 2, 3, 1, 0, 1, '', 2, 1, 1, 1,'GornjiDeo', 1, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (17, 0, 2, 6, 1, 0, 1, '', 2, 1, 1, 1,'GornjiDeo', 2, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (18, 0, 2, 1, 1, 0, 1, '', 2, 1, 0, 2,'GornjiDeo', 0, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (19, 0, 2, 1, 1, 0, 1, '', 2, 1, 0, 2,'GornjiDeo', 1, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (20, 0, 2, 3, 1, 0, 1, '', 2, 1, 0, 2,'GornjiDeo', 2, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (21, 0, 2, 2, 1, 0, 1, '', 2, 1, 0, 6,'GornjiDeo', 0, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (22, 0, 2, 1, 1, 0, 1, '', 2, 1, 0, 7,'GornjiDeo', 0, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, izrez, opt, ot, dtype, duzr, pol) VALUES (23, 0, 2, 3, 1, 0, 1, '', 2, 1, 0, 8,'GornjiDeo', 0, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (24, 3, 2, 3, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',6, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (25, 3, 2, 7, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',6, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (26, 3, 2, 3, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',7, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (27, 3, 2, 7, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',7, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (28, 3, 2, 3, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',8, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (29, 3, 2, 7, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',8, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (30, 3, 2, 3, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',9, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (31, 3, 2, 7, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',9, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (32, 3, 2, 3, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',10, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, duzina, dubina, opt, ot, dtype, tdd, pol) VALUES (33, 3, 2, 7, 0, 0, 1, '', 2,0, 1, 1, 0,'DonjiDeo',10, 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype, pol) VALUES (34, 10, 2, 5, 0, 0, 1, '', 2, 0, 0,'Jakna', 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype, pol) VALUES (35, 10, 2, 1, 0, 0, 1, '', 2, 0, 3,'Jakna', 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype, pol) VALUES (36, 10, 2, 1, 0, 0, 1, '', 2, 0, 1,'Jakna', 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype, pol) VALUES (37, 10, 2, 8, 0, 0, 1, '', 2, 0, 7,'Jakna', 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype, pol) VALUES (38, 10, 2, 3, 0, 0, 1, '', 2, 0, 9,'Jakna', 1);
+INSERT INTO public.komadi_odece (id, boja, bojaint, materijal, vreme, prioritet, koefod, image, korisnik_id, opt, ot, dtype, pol) VALUES (39, 10, 2, 1, 0, 0, 1, '', 2, 0, 9,'Jakna', 1);
+
+SELECT pg_catalog.setval('public.komadi_odece_id_seq', 39, true);
+SELECT pg_catalog.setval('public.platform_user_id_seq', 2, true);

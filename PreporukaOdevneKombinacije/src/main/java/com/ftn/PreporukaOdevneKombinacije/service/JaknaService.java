@@ -2,12 +2,11 @@ package com.ftn.PreporukaOdevneKombinacije.service;
 
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
-import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.Jakna;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
-import com.ftn.PreporukaOdevneKombinacije.repository.DonjiDeoRepository;
 import com.ftn.PreporukaOdevneKombinacije.repository.JaknaRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -130,4 +129,29 @@ public class JaknaService {
         map.put(DressCode.SPORTSKI, 250);
         return map;
     }
+
+    public PreporuceniKomadi getPreporucenaJaknaOpste(UnosNeulogovanDTO unosDTO, List<Jakna> komadi, PreporuceniKomadi preporuceniKomadi) {
+        KieSession kieSession = kieContainer.newKieSession("joPersRulesSession");
+        for(Jakna komadOdece : komadi){
+            kieSession.insert(komadOdece);
+        }
+
+        insertTipTela(kieSession);
+        insertOdecaTip(kieSession);
+
+
+        kieSession.insert(preporuceniKomadi);
+        kieSession.insert(unosDTO);
+
+        kieSession.fireAllRules();
+
+//        HashMap<Long, Double> a = new HashMap<>();
+//        a.entrySet().forEach(entry -> {
+//            System.out.println((Long)entry.getKey() + " " + entry.getValue());
+//        });
+
+        kieSession.dispose();
+        return preporuceniKomadi;
+    }
+
 }

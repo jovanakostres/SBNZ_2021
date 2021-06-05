@@ -19,11 +19,11 @@ public class DonjiDeo extends KomadOdece {
     @Column
     private DuzinaDonjegDela duzina;
 
-    @Column
+    @Column(name = "tdd")
     private TipDonjegDela tipDonjegDela;
 
-    public DonjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip, Dubina dubina, DuzinaDonjegDela duzina, TipDonjegDela tipDonjegDela) {
-        super(boja, bojaIntenzitet, materijal, vreme, prioritet, image);
+    public DonjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DonjiDeoEnum tip, OdecaPodTip odecaPodTip, Dubina dubina, DuzinaDonjegDela duzina, TipDonjegDela tipDonjegDela, Pol pol) {
+        super(boja, bojaIntenzitet, materijal, vreme, prioritet, image, pol);
         this.odecaTip = tip;
         this.odecaPodTip = odecaPodTip;
         this.dubina = dubina;

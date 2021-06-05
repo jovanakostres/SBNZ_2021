@@ -31,8 +31,8 @@ public class KomadOdeceNeulogovanController {
     public ResponseEntity<?> getPreporukaPersonalizovano(@RequestBody UnosNeulogovanDTO unosDTO) {
         //User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //User user = userService.findOne(1L);
-        Boolean prep = komadOdeceService.getPreporukaOpste(unosDTO);
-        if(!prep){
+        PreporuceniKomadi prep = komadOdeceService.getPreporukaOpste(unosDTO);
+        if(prep==null){
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
         }else{
             return new ResponseEntity<>(HttpStatus.OK);

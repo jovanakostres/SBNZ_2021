@@ -19,8 +19,8 @@ public class GornjiDeo extends KomadOdece{
     @Column(name = "ot")
     private GornjiDeoEnum odecaTip;
 
-    public GornjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DuzinaRukava duzina, Izrez izrez, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip) {
-        super(boja, bojaIntenzitet, materijal, vreme, prioritet, image);
+    public GornjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, DuzinaRukava duzina, Izrez izrez, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip, Pol pol) {
+        super(boja, bojaIntenzitet, materijal, vreme, prioritet, image, pol);
         this.duzinaRukava = duzina;
         this.izrez = izrez;
         this.odecaPodTip = odecaPodTip;

@@ -1,0 +1,307 @@
+package com.preporukaOK.rules.rulesGornjiDeoOpste
+
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import accumulate com.ftn.PreporukaOdevneKombinacije.droolsFunction.SumPerClothingItem sumPerItem;
+
+declare TipTelaIzabran
+	tipTela: TipTela
+end
+
+declare GornjiDeoTipIzabran
+    gornjiDeo : GornjiDeoEnum
+end
+
+declare MaterijalIzabran
+	materijal: Materijal
+end
+
+declare DuzinaRukavaIzabrana
+    duzinaRukava : DuzinaRukava
+end
+
+declare Marker
+    uniqueIdentifier : String
+end
+
+rule "A1 - Tip tela - trougao"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(kukovi >= ramena + 5/100 * kukovi);
+    then
+    	insert(new TipTelaIzabran(TipTela.TROUGAO));
+        System.out.println("Tip tela - trougao");
+end
+
+rule "A2 - Tip tela - pravougaonik"
+    salience 490
+    when
+        $unos : UnosNeulogovanDTO( ramena <= 25/100 * ramena + struk, ramena <= 5/100 * ramena + kukovi);
+        not (TipTelaIzabran())
+    then
+    	insert(new TipTelaIzabran(TipTela.PRAVOUGAONIK));
+        System.out.println("Tip tela - pravougaonik");
+end
+
+rule "A3 - Tip tela - obrnuti trougao"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO( ramena >= kukovi + 5/100 * ramena);
+        not (TipTelaIzabran())
+    then
+    	insert(new TipTelaIzabran(TipTela.OB_TROUGAO));
+        System.out.println("Tip tela - ob trougao");
+end
+
+rule "A4 - Tip tela - pescani sat"
+     salience 500
+     when
+         $unos : UnosNeulogovanDTO( ramena > 25/100 * ramena + struk, ramena  <= 5/100 * ramena + kukovi);
+         not (TipTelaIzabran())
+     then
+     	insert(new TipTelaIzabran(TipTela.PES_SAT));
+         System.out.println("Tip tela - pescani sat");
+ end
+
+rule "A5 - Tip tela - krug"
+     salience 480
+     when
+         not(TipTelaIzabran())
+     then
+     	insert(new TipTelaIzabran(TipTela.KRUG));
+         System.out.println("Tip tela - krug");
+end
+
+rule "B1 - 1 - Biranje materijala ako je dresscode formalan "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN );
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.KOSULJA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.BLUZA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.TUNIKA));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.PAMUK));
+        System.out.println("B1 formalan");
+end
+
+rule "B1 - 2 - Biranje materijala ako je dresscode sportski "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.SPORTSKI );
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.MAJICA));
+        insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        System.out.println("c2 sportski");
+end
+
+rule "B1 - 3 - Biranje materijala ako je dresscode lezeran "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN );
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.KOSULJA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.MAJICA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.TUNIKA));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.PAMUK));
+        System.out.println("B3 lezeran");
+end
+
+rule "B1 - 4 - Biranje materijala ako je dresscode blacktie "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE );
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.KOSULJA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.BLUZA));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.CIPKA));
+        System.out.println("B4 blacktie");
+end
+
+rule "B1 - 5 - Biranje materijala ako je dresscode izlazak "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.IZLAZAK );
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.KOSULJA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.MAJICA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.TUNIKA));
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.BLUZA));
+        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new MaterijalIzabran(Materijal.PAMUK));
+        insert(new MaterijalIzabran(Materijal.TEKSAS));
+        insert(new MaterijalIzabran(Materijal.CIPKA));
+        insert(new MaterijalIzabran(Materijal.KOZA));
+        System.out.println("B5 izlazak");
+end
+
+rule "B2 - 1 - Biranje materijala ako je leto "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.IZLAZAK || dressCode == DressCode.LEZERAN || dressCode == DressCode.FORMALAN, vreme == 'leto' );
+    then
+        insert(new MaterijalIzabran(Materijal.LAN));
+        System.out.println("B21 leto materijal");
+end
+
+rule "B2 - 2 - Biranje materijala ako je prolece/jesen "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN || dressCode == DressCode.SPORTSKI, vreme == 'prolece' || vreme == 'jesen');
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.DUKS));
+        System.out.println("B22 prolece jesen");
+end
+
+rule "B2 - 3 - Biranje materijala ako je zima "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN || dressCode == DressCode.FORMALAN, vreme == 'zima' );
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.DZEMPER));
+        insert(new MaterijalIzabran(Materijal.VUNA));
+        System.out.println("B23 zima");
+end
+
+rule "B2 - 4 - Biranje materijala ako je zima "
+	salience 380
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN || dressCode == DressCode.SPORTSKI, vreme == 'zima' );
+    then
+        insert(new GornjiDeoTipIzabran(GornjiDeoEnum.DUKS));
+        System.out.println("B24 zima");
+end
+
+rule "B - Dodavanje bodova za tip odece"
+    salience 350
+    no-loop
+    when
+        $gornjiDeo : GornjiDeo();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	MaterijalIzabran( materijal == $gornjiDeo.getMaterijal()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $gornjiDeo));
+        System.out.println("B bodovi");
+end
+
+rule "C1 - Duzina rukava ako dresscode utice "
+	salience 300
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN || dressCode == DressCode.BLACKTIE );
+    then
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.DUGI));
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.SREDNJI));
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.KRATKI));
+        insert(new Marker("C1"));
+        System.out.println("C1 zima");
+end
+
+rule "C2 - Duzina rukava ako dresscode utice leto"
+	salience 300
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(vreme == 'leto');
+        not Marker(uniqueIdentifier == "C1")
+    then
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.BRETELE));
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.NONE));
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.KRATKI));
+        System.out.println("C2 leto");
+end
+
+rule "C3 - Duzina rukava ako dresscode utice prolece/jesen"
+	salience 300
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(vreme == 'prolece' || vreme == 'jesen');
+        not Marker(uniqueIdentifier == "C1")
+    then
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.SREDNJI));
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.DUGI));
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.KRATKI));
+        System.out.println("C3 prolece/jesen");
+end
+
+rule "C4 - Duzina rukava ako dresscode utice zima"
+	salience 300
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(vreme == 'zima');
+        not Marker(uniqueIdentifier == "C1")
+    then
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.DUGI));
+        insert(new DuzinaRukavaIzabrana(DuzinaRukava.SREDNJI));
+        System.out.println("C4 zima");
+end
+
+rule "C - Dodavanje bodova za duzinu rukava"
+    salience 290
+    no-loop
+    when
+        $gornjiDeo : GornjiDeo();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	DuzinaRukavaIzabrana( duzinaRukava == $gornjiDeo.getDuzinaRukava()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $gornjiDeo));
+        System.out.println("C bodovi");
+end
+
+rule "G - Biranje komada prema koeficijentu preporuke"
+	salience -10
+	lock-on-active
+    when
+        $gornjiDeo : GornjiDeo();
+        accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
+        Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
+                        average($d) );
+        $poeni : Double(this >= $avg) from accumulate(
+                    KoeficijentPreporuke(komad.getId() == $gornjiDeo.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
+                    sum($b1)
+                );
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporuceniGornjiDelovi().add(new PreporuceniGornjiDeo($gornjiDeo, $poeni));}
+        System.out.println($ukupneVrednosti);
+    	System.out.println("G Biranje komada prema koeficijentu preporuke, izabran komad : " + $gornjiDeo.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
+end
+
+rule "Brisanje poena nakon odabira"
+	salience -20
+	no-loop
+	when
+		$koeficijentPreporuke:KoeficijentPreporuke();
+	then
+		delete($koeficijentPreporuke);
+end
+
+rule "Provera uspesnosti"
+	salience -30
+	no-loop
+    when
+        preporuceniKomadi : PreporuceniKomadi( preporuceniGornjiDelovi.size > 0);
+    then
+    	System.out.println("Uspesno zavrsena preporuka");
+end

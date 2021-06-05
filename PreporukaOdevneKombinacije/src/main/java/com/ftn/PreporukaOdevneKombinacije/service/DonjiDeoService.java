@@ -3,12 +3,10 @@ package com.ftn.PreporukaOdevneKombinacije.service;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
-import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.repository.DonjiDeoRepository;
-import com.ftn.PreporukaOdevneKombinacije.repository.GornjiDeoRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +121,7 @@ public class DonjiDeoService {
 
     public void insertTipDonjegDela(KieSession kieSession){
         kieSession.insert(TipDonjegDela.PLEATED);
-        kieSession.insert(TipDonjegDela.POODLE);
+        kieSession.insert(TipDonjegDela.TULIP);
         kieSession.insert(TipDonjegDela.PENCIL);
         kieSession.insert(TipDonjegDela.ALINE);
         kieSession.insert(TipDonjegDela.WRAP);
@@ -133,6 +131,7 @@ public class DonjiDeoService {
         kieSession.insert(TipDonjegDela.FLARED);
         kieSession.insert(TipDonjegDela.STRAIGHT);
         kieSession.insert(TipDonjegDela.BAGGY);
+        kieSession.insert(TipDonjegDela.NONE);
     }
 
     public void insertDuzinaDonjegDela(KieSession kieSession){
@@ -145,6 +144,7 @@ public class DonjiDeoService {
         kieSession.insert(Dubina.MAXI);
         kieSession.insert(Dubina.MINI);
         kieSession.insert(Dubina.MIDI);
+        kieSession.insert(Dubina.NONE);
     }
 
     public void insertBojaIntenzitet(KieSession kieSession){
@@ -164,8 +164,12 @@ public class DonjiDeoService {
         return map;
     }
 
-    public boolean getPreporuceniDonjiDeoOpste(UnosNeulogovanDTO unosDTO, List<DonjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
-        KieSession kieSession = kieContainer.newKieSession("ddoPersRulesSession");
+    public PreporuceniKomadi getPreporuceniDonjiDeoOpste(UnosNeulogovanDTO unosDTO, List<DonjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
+        KieSession kieSession;
+        if(unosDTO.getPol()==Pol.ZENSKI)
+            kieSession = kieContainer.newKieSession("ddoPersRulesSession");
+        else
+            kieSession = kieContainer.newKieSession("ddomPersRulesSession");
         for(DonjiDeo komadOdece : komadi){
             kieSession.insert(komadOdece);
         }
@@ -176,6 +180,7 @@ public class DonjiDeoService {
         insertDuzinaDonjegDela(kieSession);
         insertBojaIntenzitet(kieSession);
 
+        kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);
 
         kieSession.fireAllRules();
@@ -188,6 +193,6 @@ public class DonjiDeoService {
 
         kieSession.dispose();
 
-        return true;
+        return preporuceniKomadi;
     }
 }

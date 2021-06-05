@@ -1,0 +1,282 @@
+package com.preporukaOK.rules.rulesJaknaOpste
+
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import accumulate com.ftn.PreporukaOdevneKombinacije.droolsFunction.SumPerClothingItem sumPerItem;
+
+declare TipTelaIzabran
+	tipTela: TipTela
+end
+
+declare JaknaIzabran
+    jakna : JaknaEnum
+end
+
+declare MaterijalIzabran
+	materijal: Materijal
+end
+
+declare Marker
+    uniqueIdentifier : String
+end
+
+rule "A1 - 1 - Dresscode lezeran leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN, vreme == "leto");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new JaknaIzabran(JaknaEnum.KARDIGAN));
+    	insert(new JaknaIzabran(JaknaEnum.TRENERKA));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.PLIS));
+        System.out.println("lezeran leto");
+end
+
+rule "A1 - 2 - Dresscode lezeran prolece/jesen"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN, vreme == "prolece" || vreme == "jesen");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new JaknaIzabran(JaknaEnum.JAKNA));
+    	insert(new JaknaIzabran(JaknaEnum.PRSLUK));
+    	insert(new JaknaIzabran(JaknaEnum.JAKNA_PRELAZNI));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.KOZA));
+        System.out.println("lezeran prolece jesen");
+end
+
+rule "A1 - 3 - Dresscode lezeran zima"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN, vreme == "zima");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.ZIMSKA_JAKNA));
+    	insert(new JaknaIzabran(JaknaEnum.KAPUT));
+    	insert(new JaknaIzabran(JaknaEnum.MONTON));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.VUNA));
+    	insert(new MaterijalIzabran(Materijal.KOZA));
+        System.out.println("lezeran zima");
+end
+
+rule "A2 - 1 - Dresscode blacktie leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE, vreme == "leto");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	System.out.println("blacktie leto");
+end
+
+rule "A2 - 2 - Dresscode blacktie prolece/jesen"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE, vreme == "prolece" || vreme == "jesen");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	System.out.println("blacktie prolece jesen");
+end
+
+rule "A2 - 3 - Dresscode blacktie zima"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE, vreme == "zima");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.KAPUT));
+    	insert(new JaknaIzabran(JaknaEnum.BUNDA));
+    	insert(new MaterijalIzabran(Materijal.KOZA));
+    	insert(new MaterijalIzabran(Materijal.KRZNO));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+        System.out.println("blacktie zima");
+end
+
+rule "A3 - 1 - Dresscode sportski leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.SPORTSKI, vreme == "leto");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.TRENERKA));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.PLIS));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	System.out.println("sportski leto");
+end
+
+rule "A3 - 2 - Dresscode sportski prolece/jesen"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.SPORTSKI, vreme == "prolece" || vreme == "jesen");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.TRENERKA));
+    	insert(new JaknaIzabran(JaknaEnum.PRSLUK));
+    	insert(new JaknaIzabran(JaknaEnum.JAKNA_PRELAZNI));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	System.out.println("sportski prolece jesen");
+end
+
+rule "A3 - 3 - Dresscode sportski zima"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.SPORTSKI, vreme == "zima");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.ZIMSKA_JAKNA));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+        System.out.println("sportski zima");
+end
+
+rule "A4 - 1 - Dresscode izlazak leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.IZLAZAK, vreme == "leto");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	System.out.println("izlazak leto");
+end
+
+rule "A4 - 2 - Dresscode izlazak prolece/jesen"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.IZLAZAK, vreme == "prolece" || vreme == "jesen");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new JaknaIzabran(JaknaEnum.JAKNA));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.KOZA));
+    	System.out.println("izlazak prolece jesen");
+end
+
+rule "A4 - 3 - Dresscode izlazak zima"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.IZLAZAK, vreme == "zima");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.KAPUT));
+    	insert(new JaknaIzabran(JaknaEnum.MONTON));
+    	insert(new JaknaIzabran(JaknaEnum.BUNDA));
+    	insert(new MaterijalIzabran(Materijal.KOZA));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.KRZNO));
+        System.out.println("izlazak zima");
+end
+
+rule "A5 - 1 - Dresscode formalan leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN, vreme == "leto");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	System.out.println("formalan leto");
+end
+
+rule "A5 - 2 - Dresscode formalan prolece/jesen"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN, vreme == "prolece" || vreme == "jesen");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.SAKO));
+    	insert(new JaknaIzabran(JaknaEnum.JAKNA));
+    	insert(new MaterijalIzabran(Materijal.PAMUK));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+    	insert(new MaterijalIzabran(Materijal.KOZA));
+    	System.out.println("formalan prolece jesen");
+end
+
+rule "A5 - 3 - Dresscode formalan zima"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN, vreme == "zima");
+    then
+    	insert(new JaknaIzabran(JaknaEnum.KAPUT));
+    	insert(new JaknaIzabran(JaknaEnum.MONTON));
+    	insert(new JaknaIzabran(JaknaEnum.BUNDA));
+    	insert(new MaterijalIzabran(Materijal.KOZA));
+    	insert(new MaterijalIzabran(Materijal.KRZNO));
+    	insert(new MaterijalIzabran(Materijal.POLIESTER));
+        System.out.println("formalan zima");
+end
+
+rule "AT - Dodavanje bodova za tip odece"
+    salience 350
+    no-loop
+    when
+        $jakna : Jakna();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	JaknaIzabran( jakna == $jakna.getOdecaTip()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $jakna));
+        System.out.println("A bodovi");
+end
+
+rule "AM - Dodavanje bodova za materijal"
+    salience 340
+    no-loop
+    when
+        $jakna : Jakna();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                           MaterijalIzabran( materijal == $jakna.getMaterijal()),
+                           count(1)
+        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $jakna));
+    	System.out.println("AM bodovi");
+end
+
+rule "G - Biranje komada prema koeficijentu preporuke"
+	salience ($poeni*10)
+	lock-on-active
+    when
+    	$jakna : Jakna();
+    	 accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
+    	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
+                       	average($d) );
+        $poeni : Double(this >= $avg) from accumulate(
+                	KoeficijentPreporuke(komad.getId() == $jakna.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
+                	sum($b1)
+                );
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporuceneJakne().add(new PreporucenaJakna($jakna, $poeni));}
+        System.out.println($ukupneVrednosti);
+    	System.out.println("G Biranje komada prema koeficijentu preporuke, izabran komad : " + $jakna.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
+end
+
+rule "Brisanje poena nakon odabira"
+	salience -20
+	no-loop
+	when
+		$koeficijentPreporuke:KoeficijentPreporuke();
+	then
+		delete($koeficijentPreporuke);
+end
+
+rule "Provera uspesnosti"
+	salience -30
+	no-loop
+    when
+        preporuceniKomadi : PreporuceniKomadi( preporuceneJakne.size > 0);
+    then
+    	System.out.println("Uspesno zavrsena preporuka");
+end
