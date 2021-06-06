@@ -1,5 +1,5 @@
 package com.ftn.PreporukaOdevneKombinacije.model.enums;
 
 public enum Dubina {
-    MAXI, MINI, MIDI
+    MAXI, MINI, MIDI, NONE
 }

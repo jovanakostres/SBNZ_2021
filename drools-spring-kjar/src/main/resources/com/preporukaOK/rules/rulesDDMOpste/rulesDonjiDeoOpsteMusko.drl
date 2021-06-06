@@ -1,4 +1,4 @@
-package com.preporukaOK.rules.rulesDonjiDeoOpste
+package com.preporukaOK.rules.rulesDDMOpste
 
 import com.ftn.PreporukaOdevneKombinacije.model.*;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
@@ -52,9 +52,9 @@ rule "A1 - Tip tela - trougao"
 end
 
 rule "A2 - Tip tela - pravougaonik"
-    salience 490
+    salience 500
     when
-        $unos : UnosNeulogovanDTO( ramena <= 25/100 * ramena + struk, ramena <= 5/100 * ramena + kukovi);
+        $unos : UnosNeulogovanDTO( ramena-kukovi < 10 && ramena-kukovi>-10);
         not (TipTelaIzabran())
     then
     	insert(new TipTelaIzabran(TipTela.PRAVOUGAONIK));
@@ -71,18 +71,8 @@ rule "A3 - Tip tela - obrnuti trougao"
         System.out.println("Tip tela - ob trougao");
 end
 
-rule "A4 - Tip tela - pescani sat"
-     salience 500
-     when
-         $unos : UnosNeulogovanDTO( ramena > 25/100 * ramena + struk, ramena  <= 5/100 * ramena + kukovi);
-         not (TipTelaIzabran())
-     then
-     	insert(new TipTelaIzabran(TipTela.PES_SAT));
-         System.out.println("Tip tela - pescani sat");
- end
-
 rule "A5 - Tip tela - krug"
-     salience 480
+     salience 490
      when
          not(TipTelaIzabran())
      then
@@ -94,27 +84,15 @@ rule "B1 - Tip donjeg dela ako je tip tela trougao"
 	salience 450
     no-loop
     when
-        $tipTela : TipTelaIzabran(tipTela == TipTela.TROUGAO);
+        $tipTela : TipTelaIzabran(tipTela == TipTela.TROUGAO || tipTela == TipTela.OB_TROUGAO || tipTela == TipTela.KRUG);
         $unos : UnosNeulogovanDTO(dressCode != DressCode.SPORTSKI);
     then
-        insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.PANTALONE, DonjiDeoEnum.SUKNJA}));
-        insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.FLARED,TipDonjegDela.SKINY,TipDonjegDela.PENCIL,TipDonjegDela.ALINE}));
+        insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.PANTALONE}));
+        insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.STRAIGHT}));
         System.out.println("b1 trougao");
 end
 
-rule "B2 - Tip donjeg dela ako je tip tela obrnuti trougao"
-	salience 450
-    no-loop
-    when
-        $tipTela : TipTelaIzabran(tipTela == TipTela.OB_TROUGAO);
-        $unos : UnosNeulogovanDTO(dressCode != DressCode.SPORTSKI);
-    then
-        insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.PANTALONE, DonjiDeoEnum.SUKNJA}));
-        insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.PLEATED,TipDonjegDela.TULIP,TipDonjegDela.STRAIGHT,TipDonjegDela.BAGGY}));
-        System.out.println("b2 obrnuti trougao");
-end
-
-rule "B3 - Tip donjeg dela ako je tip tela PRAVOUGAONIK"
+rule "B2 - Tip donjeg dela ako je tip tela PRAVOUGAONIK"
 	salience 450
     no-loop
     when
@@ -122,41 +100,17 @@ rule "B3 - Tip donjeg dela ako je tip tela PRAVOUGAONIK"
         $unos : UnosNeulogovanDTO(dressCode != DressCode.SPORTSKI);
     then
         insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.PANTALONE, DonjiDeoEnum.SUKNJA}));
-        insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.PLEATED,TipDonjegDela.TULIP,TipDonjegDela.STRAIGHT}));
-        System.out.println("b3 pravougaonik");
+        insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.SKINY,TipDonjegDela.STRAIGHT}));
+        System.out.println("b2 pravougaonik");
 end
 
-rule "B4 - Tip donjeg dela ako je tip tela PES_SAT"
-	salience 450
-    no-loop
-    when
-        $tipTela : TipTelaIzabran(tipTela == TipTela.PES_SAT);
-        $unos : UnosNeulogovanDTO(dressCode != DressCode.SPORTSKI);
-    then
-        insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.PANTALONE, DonjiDeoEnum.SUKNJA}));
-        insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.WRAP,TipDonjegDela.TRUMPET,TipDonjegDela.SKINY,TipDonjegDela.FLARED}));
-        System.out.println("b4 pescanis sat");
-end
-
-rule "B5 - Tip donjeg dela ako je tip tela krug"
-	salience 450
-    no-loop
-    when
-        $tipTela : TipTelaIzabran(tipTela == TipTela.KRUG);
-        $unos : UnosNeulogovanDTO(dressCode != DressCode.SPORTSKI);
-    then
-        insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.PANTALONE, DonjiDeoEnum.SUKNJA}));
-        insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.PENCIL,TipDonjegDela.ALINE,TipDonjegDela.WRAP,TipDonjegDela.SKINY,TipDonjegDela.BOOTCUT}));
-        System.out.println("b5 krug");
-end
-
-rule "B6 - dresscode sportski"
+rule "B3 - dresscode sportski"
 	salience 450
     no-loop
     when
         $unos : UnosNeulogovanDTO(dressCode == DressCode.SPORTSKI);
     then
-        insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.TRENERKA, DonjiDeoEnum.HELANKE, DonjiDeoEnum.SORC}));
+        insert(new TipDonjegDelaIzabran(new DonjiDeoEnum[]{ DonjiDeoEnum.TRENERKA, DonjiDeoEnum.SORC}));
         insert(new PodtipDonjegDelaIzabran(new TipDonjegDela[] {TipDonjegDela.NONE}));
         System.out.println("b5 krug");
 end
@@ -208,7 +162,6 @@ rule "C1 - 3 - Biranje materijala ako je dresscode formalan "
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.TEKSAS));
-        insert(new MaterijalIzabran(Materijal.CIPKA));
         System.out.println("c3 formalan");
 end
 
@@ -219,7 +172,6 @@ rule "C1 - 4 - Biranje materijala ako je dresscode blacktie "
         $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE );
     then
         insert(new MaterijalIzabran(Materijal.POLIESTER));
-        insert(new MaterijalIzabran(Materijal.CIPKA));
         System.out.println("c4 blacktie");
 end
 
@@ -232,8 +184,6 @@ rule "C1 - 5 - Biranje materijala ako je dresscode izlazak "
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.TEKSAS));
-        insert(new MaterijalIzabran(Materijal.CIPKA));
-        insert(new MaterijalIzabran(Materijal.KOZA));
         System.out.println("c5 izlazak");
 end
 
@@ -245,16 +195,6 @@ rule "C2 - 1 - Biranje materijala ako je leto "
     then
         insert(new MaterijalIzabran(Materijal.LAN));
         System.out.println("c21 leto materijal");
-end
-
-rule "C2 - 2 - Biranje materijala ako je prolece/jesen "
-	salience 380
-    no-loop
-    when
-        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN || dressCode == DressCode.FORMALAN, vreme == 'prolece' || vreme == 'jesen');
-    then
-        insert(new MaterijalIzabran(Materijal.KOZA));
-        System.out.println("c22 prolece jesen");
 end
 
 rule "C2 - 3 - Biranje materijala ako je zima "
@@ -281,85 +221,28 @@ rule "C - Dodavanje bodova za tip odece"
         System.out.println("C bodovi");
 end
 
-rule "D1 - Dubina ako je visina manje od 165"
-	salience 300
-    no-loop
-    when
-        $unos : UnosNeulogovanDTO(visina < 165);
-    then
-        insert(new DubinaIzabrana(new Dubina[]{Dubina.MAXI,Dubina.MIDI}));
-        System.out.println("d1 visina niska");
-end
-
-rule "D2 - Dubina ako je visina veca od 175"
-	salience 300
-    no-loop
-    when
-        $unos : UnosNeulogovanDTO(visina > 175);
-    then
-        insert(new DubinaIzabrana(new Dubina[]{Dubina.MINI,Dubina.MIDI}));
-        System.out.println("d2 visina visoka");
-end
-
-rule "D3 - Dubina ako je visina izmedju 165 i 175"
-	salience 300
-    no-loop
-    when
-        $unos : UnosNeulogovanDTO(visina >= 165 && visina <=175);
-    then
-        insert(new DubinaIzabrana(new Dubina[]{Dubina.MAXI,Dubina.MIDI, Dubina.MINI}));
-        System.out.println("d3 visina visoka");
-end
-
-rule "D - Dodavanje bodova za dubinu odece"
-    salience 260
-    no-loop
-    when
-        $donjiDeo : DonjiDeo();
-        $brojponavljanja : Long( this > 0) from accumulate(
-                        	DubinaIzabrana( dubina contains $donjiDeo.getDubina()),
-                        	count(1)
-                        );
-    then
-    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $donjiDeo));
-        System.out.println("D bodovi");
-end
-
-rule "E1 - Duzina ako dresscode utice"
+rule "D1 - Duzina ako dresscode utice"
 	salience 300
     no-loop
     when
         $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE || dressCode == DressCode.FORMALAN);
     then
-        insert(new DuzinaIzabrana(new DuzinaDonjegDela[]{DuzinaDonjegDela.MAXI,DuzinaDonjegDela.MIDI}));
+        insert(new DuzinaIzabrana(new DuzinaDonjegDela[]{DuzinaDonjegDela.MAXI}));
         insert(new Marker("E1"));
         System.out.println("e1 dresscode");
 end
 
-rule "E2-1 - Duzina ako dresscode ne utice visina nisko"
+rule "D2-1 - Duzina ako dresscode ne utice visina nisko"
 	salience 300
     no-loop
     when
-        $unos : UnosNeulogovanDTO(visina < 165);
         not Marker(uniqueIdentifier == "E1")
     then
-        insert(new DuzinaIzabrana(new DuzinaDonjegDela[]{DuzinaDonjegDela.MAXI,DuzinaDonjegDela.MINI}));
+        insert(new DuzinaIzabrana(new DuzinaDonjegDela[]{DuzinaDonjegDela.MAXI,DuzinaDonjegDela.MIDI}));
         System.out.println("e2 nisko");
 end
 
-rule "E2-2 - Duzina ako dresscode ne utice visina srednje ili visoko"
-	salience 300
-    no-loop
-    when
-        $unos : UnosNeulogovanDTO(visina >=165);
-        not Marker(uniqueIdentifier == "E1")
-    then
-        insert(new DuzinaIzabrana(new DuzinaDonjegDela[]{DuzinaDonjegDela.MAXI,DuzinaDonjegDela.MIDI, DuzinaDonjegDela.MINI}));
-        System.out.println("e2 srednje");
-end
-
-
-rule "E - Dodavanje bodova za dubinu odece"
+rule "D - Dodavanje bodova za dubinu odece"
     salience 250
     no-loop
     when
@@ -373,7 +256,7 @@ rule "E - Dodavanje bodova za dubinu odece"
         System.out.println("E bodovi");
 end
 
-rule "G - Biranje komada prema koeficijentu preporuke"
+rule "E - Biranje komada prema koeficijentu preporuke"
 	salience -10
 	lock-on-active
     when

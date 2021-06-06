@@ -1,14 +1,12 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
-import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
-import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.repository.GornjiDeoRepository;
-import com.ftn.PreporukaOdevneKombinacije.repository.KomadOdeceRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GornjiDeoService {
@@ -133,5 +130,34 @@ public class GornjiDeoService {
         map.put(DressCode.IZLAZAK, 250);
         map.put(DressCode.SPORTSKI, 250);
         return map;
+    }
+
+    public PreporuceniKomadi getPreporuceniGornjiDeoOpste(UnosNeulogovanDTO unosDTO, List<GornjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
+        KieSession kieSession = kieContainer.newKieSession("gdoPersRulesSession");
+        for(GornjiDeo komadOdece : komadi){
+            kieSession.insert(komadOdece);
+        }
+
+        insertTipTela(kieSession);
+        insertPodTip(kieSession);
+        insertVreme(kieSession);
+        insertDresscode(kieSession);
+        insertMaterijal(kieSession);
+        insertOdecaTip(kieSession);
+
+        kieSession.insert(preporuceniKomadi);
+        kieSession.insert(unosDTO);
+
+        kieSession.fireAllRules();
+
+//        HashMap<Long, Double> a = new HashMap<>();
+//        a.entrySet().forEach(entry -> {
+//            System.out.println((Long)entry.getKey() + " " + entry.getValue());
+//        });
+
+
+        kieSession.dispose();
+
+        return preporuceniKomadi;
     }
 }

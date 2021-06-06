@@ -5,9 +5,11 @@ import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.*;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.Pol;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
 import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranKomadOdeceEvent;
 import com.ftn.PreporukaOdevneKombinacije.repository.KomadOdeceRepository;
+import com.ftn.PreporukaOdevneKombinacije.repository.UserRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,9 @@ public class KomadOdeceService {
     public KomadOdece create(KomadOdece komadOdece){
         return repository.save(komadOdece);
     }
+
+    @Autowired
+    private UserRepository userRepository;
 
     public PreporuceniKomadi getPreporukaPersonalizovano(UnosDTO unosDTO, User user) {
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
@@ -112,7 +117,7 @@ public class KomadOdeceService {
     }
 
 
-    public boolean getPreporukaOpste(UnosNeulogovanDTO unosDTO) {
+    public PreporuceniKomadi getPreporukaOpste(UnosNeulogovanDTO unosDTO) {
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
 
@@ -122,6 +127,8 @@ public class KomadOdeceService {
         List<Obuca> obucaList = new ArrayList<>();
 
         for (KomadOdece komadOdece : getKomadiById()){
+            if(komadOdece.getPol()!= unosDTO.getPol())
+                continue;
             if (komadOdece instanceof GornjiDeo)
                 gornjiDeoList.add((GornjiDeo) komadOdece);
             if (komadOdece instanceof DonjiDeo)
@@ -132,11 +139,20 @@ public class KomadOdeceService {
                 obucaList.add((Obuca) komadOdece);
         }
 
-        return donjiDeoService.getPreporuceniDonjiDeoOpste(unosDTO,donjiDeoList,preporuceniKomadi);
+        System.out.println(gornjiDeoList.size());
+        preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeoOpste(unosDTO,gornjiDeoList,preporuceniKomadi);
+        System.out.println(donjiDeoList.size());
+        preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeoOpste(unosDTO,donjiDeoList,preporuceniKomadi);
+        System.out.println(jaknaList.size());
+        preporuceniKomadi = jaknaService.getPreporucenaJaknaOpste(unosDTO,jaknaList,preporuceniKomadi);
+        //preporuceniKomadi = obucaService.getPreporuceniDonjiDeo(unosDTO,user,obucaList, preporuceniKomadi);
+
+        return preporuceniKomadi;
     }
 
     private Iterable<? extends KomadOdece> getKomadiById() {
-        return repository.findByKorisnikId(1L);
+        User user = userRepository.findById(2L).orElseGet(null);
+        return user.getKomadi();
 
     }
 

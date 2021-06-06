@@ -39,6 +39,20 @@ public abstract class KomadOdece {
     @Column
     private boolean aktivan;
 
+    @Column
+    private Pol pol;
+
+    public KomadOdece( Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet,  String image, Pol pol) {
+        this.boja = boja;
+        this.bojaIntenzitet = bojaIntenzitet;
+        this.materijal = materijal;
+        this.vreme = vreme;
+        this.prioritet = prioritet;
+        this.koeficijentOdabira = 0;
+        this.image = image;
+        this.pol = pol;
+    }
+
     public KomadOdece(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image) {
         this.boja = boja;
         this.bojaIntenzitet = bojaIntenzitet;
@@ -163,4 +177,8 @@ public abstract class KomadOdece {
     public void setAktivan(boolean aktivan) {
         this.aktivan = aktivan;
     }
+
+    public Pol getPol() { return pol; }
+
+    public void setPol(Pol pol) { this.pol = pol;  }
 }

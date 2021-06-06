@@ -42,6 +42,12 @@ public class Jakna extends KomadOdece{
         this.odecaPodTip = odecaPodTip;
     }
 
+    public Jakna(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image, JaknaEnum odecaTip, OdecaPodTip odecaPodTip, Pol pol) {
+        super(boja, bojaIntenzitet, materijal, vreme, prioritet, image, pol);
+        this.odecaTip = odecaTip;
+        this.odecaPodTip = odecaPodTip;
+    }
+
     public Jakna(){}
 
     public JaknaEnum getOdecaTip() {

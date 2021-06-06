@@ -30,14 +30,26 @@
         <ksession name="cepIzvestajKombRulesnPseudoClock" clockType="pseudo"/>
     </kbase>
 
+
     <kbase name="cepOdbijen" eventProcessingMode="stream" packages="com.preporukaOK.rules.rulesCepOdbijen">
         <ksession name="cepOdbijenRulesSession"/>
         <ksession name="cepOdbijenbRulesnPseudoClock" clockType="pseudo"/>
     </kbase>
 
-    <kbase name="izborDDO" packages="com.preporukaOK.rules.rulesDonjiDeoOpste">
+    <kbase name="izborDDOpste" packages="com.preporukaOK.rules.rulesDonjiDeoOpste">
         <ksession name="ddoPersRulesSession"/>
+    </kbase>
 
+    <kbase name="izborDDOpsteMusko" packages="com.preporukaOK.rules.rulesDDMOpste">
+        <ksession name="ddomPersRulesSession"/>
+    </kbase>
+
+    <kbase name="izborGDOpste" packages="com.preporukaOK.rules.rulesGornjiDeoOpste">
+        <ksession name="gdoPersRulesSession"/>
+    </kbase>
+
+    <kbase name="izborJakneOpste" packages="com.preporukaOK.rules.rulesJaknaOpste">
+        <ksession name="joPersRulesSession"/>
     </kbase>
 
 </kmodule>
