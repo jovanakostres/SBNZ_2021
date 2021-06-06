@@ -26,6 +26,18 @@ declare DuzinaRukavaIzabrana
     duzinaRukava : DuzinaRukava
 end
 
+declare IzrezIzabran
+    izrez : Izrez
+end
+
+declare BojaIzabran
+    boja : Boja
+end
+
+declare BojaIntenzitetIzabran
+    bojaInt : BojaIntenzitet
+end
+
 declare Marker
     uniqueIdentifier : String
 end
@@ -269,8 +281,211 @@ rule "C - Dodavanje bodova za duzinu rukava"
         System.out.println("C bodovi");
 end
 
+rule "D1 - dubina izreza zensko nisko dresscode lezeran izlazak"
+    salience 250
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO(pol == Pol.ZENSKI, dressCode == DressCode.LEZERAN || dressCode == DressCode.IZLAZAK);
+    then
+        insert(new IzrezIzabran(Izrez.PLITAK));
+        System.out.println("D1 zensko nisko lezeran izlazak");
+end
+
+rule "D - Dodavanje bodova za izrez"
+    salience 240
+    no-loop
+    when
+        $gornjiDeo : GornjiDeo();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	IzrezIzabran( izrez == $gornjiDeo.getIzrez()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $gornjiDeo));
+        System.out.println("D bodovi");
+end
+
+rule "E1 - 1 intenzitet leto tip tela != obrnuti trougao"
+    salience 200
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(tipTela != TipTela.OB_TROUGAO)
+        $unos : UnosNeulogovanDTO(vreme == 'leto');
+    then
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.PASTELNA));
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SVETLA));
+        System.out.println("E1-1");
+end
+
+rule "E1 - 2 intenzitet leto tip tela == obrnuti trougao"
+    salience 200
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(tipTela == TipTela.OB_TROUGAO)
+        $unos : UnosNeulogovanDTO(vreme == 'leto');
+    then
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SREDNJE));
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SVETLA));
+        System.out.println("E1-2");
+end
+
+rule "E2 - 1 intenzitet prolece/jesen tip tela != obrnuti trougao"
+    salience 200
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(tipTela != TipTela.OB_TROUGAO)
+        $unos : UnosNeulogovanDTO(vreme == 'prolece' || vreme == 'jesen');
+    then
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SREDNJE));
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SVETLA));
+        System.out.println("E2-1");
+end
+
+rule "E2 - 2 intenzitet prolece/jesen tip tela == obrnuti trougao"
+    salience 200
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(tipTela == TipTela.OB_TROUGAO)
+        $unos : UnosNeulogovanDTO(vreme == 'prolece' || vreme == 'jesen');
+    then
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SREDNJE));
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.TAMNA));
+        System.out.println("E2-2");
+end
+
+rule "E3 - 1 intenzitet zima tip tela != obrnuti trougao"
+    salience 200
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(tipTela != TipTela.OB_TROUGAO && tipTela!=TipTela.TROUGAO)
+        $unos : UnosNeulogovanDTO(vreme == 'zima');
+    then
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SREDNJE));
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.TAMNA));
+        System.out.println("E3-1");
+end
+
+rule "E3 - 2 intenzitet zima tip tela == obrnuti trougao"
+    salience 200
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(tipTela == TipTela.OB_TROUGAO)
+        $unos : UnosNeulogovanDTO(vreme == 'zima');
+    then
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.SREDNJE));
+        System.out.println("E3-2");
+end
+
+rule "E3 - 3 intenzitet zima tip tela == obrnuti trougao"
+    salience 200
+    no-loop
+    when
+        $tipTela : TipTelaIzabran(tipTela == TipTela.TROUGAO)
+        $unos : UnosNeulogovanDTO(vreme == 'zima');
+    then
+        insert(new BojaIntenzitetIzabran(BojaIntenzitet.TAMNA));
+        System.out.println("E3-3");
+end
+
+rule "E - Dodavanje bodova za boja intenzitet"
+    salience 180
+    no-loop
+    when
+        $gornjiDeo : GornjiDeo();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	BojaIntenzitetIzabran( bojaInt == $gornjiDeo.getBojaIntenzitet()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $gornjiDeo));
+        System.out.println("E bodovi");
+end
+
+rule "F1-1 boje dresscode utice"
+    salience 150
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( dressCode == DressCode.BLACKTIE );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.SIVA));
+        System.out.println("F1-1");
+end
+
+rule "F2-1 boje dresscode ne utice prolece"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( dressCode != DressCode.BLACKTIE, vreme == 'prolece' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.ZELENA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-1");
+end
+
+rule "F2-2 boje dresscode ne utice leto"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( dressCode != DressCode.BLACKTIE, vreme == 'leto' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-2");
+end
+
+rule "F2-3 boje dresscode ne utice jesen"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( dressCode != DressCode.BLACKTIE, vreme == 'jesen' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ZUTA));
+        System.out.println("F2-3");
+end
+
+rule "F2-4 boje dresscode ne utice zima"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( dressCode != DressCode.BLACKTIE, vreme == 'zima' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        System.out.println("F2-4");
+end
+
+rule "F - Dodavanje bodova za boju"
+    salience 100
+    no-loop
+    when
+        $gornjiDeo : GornjiDeo();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	BojaIzabran( boja == $gornjiDeo.getBoja()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $gornjiDeo));
+        System.out.println("F bodovi");
+end
+
 rule "G - Biranje komada prema koeficijentu preporuke"
-	salience -10
+	salience ($poeni*10)
 	lock-on-active
     when
         $gornjiDeo : GornjiDeo();

@@ -4,6 +4,7 @@ import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.repository.DonjiDeoRepository;
@@ -48,6 +49,7 @@ public class DonjiDeoService {
         insertVreme(kieSession);
         insertDresscode(kieSession);
         insertMaterijal(kieSession);
+
 
 
         kieSession.insert(preporuceniKomadi);
@@ -164,14 +166,38 @@ public class DonjiDeoService {
         return map;
     }
 
+    public HashMap<Boja, Integer> makeHashMapColorColor(){
+        HashMap<Boja, Integer> map = new HashMap<>();
+        map.put(Boja.BELA, 0);
+        map.put(Boja.CRNA, 0);
+        map.put(Boja.SIVA, 0);
+        map.put(Boja.ZELENA, 0);
+        map.put(Boja.LJUBICASTA, 0);
+        map.put(Boja.ROZA, 0);
+        map.put(Boja.PLAVA, 0);
+        map.put(Boja.NARANDZASTA, 0);
+        map.put(Boja.ZUTA, 0);
+        map.put(Boja.CRVENA, 0);
+        map.put(Boja.BRAON, 0);
+
+        return map;
+    }
+
     public PreporuceniKomadi getPreporuceniDonjiDeoOpste(UnosNeulogovanDTO unosDTO, List<DonjiDeo> komadi, PreporuceniKomadi preporuceniKomadi) {
         KieSession kieSession;
         if(unosDTO.getPol()==Pol.ZENSKI)
             kieSession = kieContainer.newKieSession("ddoPersRulesSession");
         else
             kieSession = kieContainer.newKieSession("ddomPersRulesSession");
+        kieSession.getAgenda().getAgendaGroup( "bojeMapa" ).setFocus();
         for(DonjiDeo komadOdece : komadi){
             kieSession.insert(komadOdece);
+        }
+
+        kieSession.setGlobal("hashMapColor", makeHashMapColorColor());
+
+        for(PreporuceniGornjiDeo pgd : preporuceniKomadi.getPreporuceniGornjiDelovi()){
+            kieSession.insert(pgd);
         }
 
         insertTipTela(kieSession);
@@ -180,9 +206,12 @@ public class DonjiDeoService {
         insertDuzinaDonjegDela(kieSession);
         insertBojaIntenzitet(kieSession);
 
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(unosDTO);
 
+        kieSession.fireAllRules();
+
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
 //        HashMap<Long, Double> a = new HashMap<>();

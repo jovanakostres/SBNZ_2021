@@ -121,6 +121,32 @@ public class GornjiDeoService {
         kieSession.insert(Materijal.GUMA);
     }
 
+    public void insertIzrez(KieSession kieSession){
+        kieSession.insert(Izrez.DUBOK);
+        kieSession.insert(Izrez.PLITAK);
+        kieSession.insert(Izrez.NONE);
+    }
+
+    public void insertBojaIntenzitet(KieSession kieSession){
+        kieSession.insert(BojaIntenzitet.TAMNA);
+        kieSession.insert(BojaIntenzitet.SREDNJE);
+        kieSession.insert(BojaIntenzitet.SVETLA);
+        kieSession.insert(BojaIntenzitet.PASTELNA);
+    }
+
+    public void insertBoje(KieSession kieSession){
+        kieSession.insert(Boja.CRNA);
+        kieSession.insert(Boja.BELA);
+        kieSession.insert(Boja.SIVA);
+        kieSession.insert(Boja.ZELENA);
+        kieSession.insert(Boja.LJUBICASTA);
+        kieSession.insert(Boja.ROZA);
+        kieSession.insert(Boja.PLAVA);
+        kieSession.insert(Boja.NARANDZASTA);
+        kieSession.insert(Boja.ZUTA);
+        kieSession.insert(Boja.CRVENA);
+    }
+
     public HashMap<DressCode, Integer> makeHashMapColor(){
         HashMap<DressCode, Integer> map = new HashMap<>();
         map.put(DressCode.LEZERAN, 250);
@@ -143,6 +169,11 @@ public class GornjiDeoService {
         insertDresscode(kieSession);
         insertMaterijal(kieSession);
         insertOdecaTip(kieSession);
+        insertBojaIntenzitet(kieSession);
+        insertBoje(kieSession);
+        insertIzrez(kieSession);
+
+
 
         kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);

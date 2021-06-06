@@ -8,6 +8,8 @@ import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.util.HashMap;
+
 import accumulate com.ftn.PreporukaOdevneKombinacije.droolsFunction.SumPerClothingItem sumPerItem;
 
 declare TipTelaIzabran
@@ -34,12 +36,29 @@ declare DubinaIzabrana
 	dubina: Dubina[]
 end
 
+declare BojaIzabran
+    boja : Boja
+end
+
 declare BojaIntenzitetIzabran
 	intenzitet: BojaIntenzitet
 end
 
 declare Marker
     uniqueIdentifier : String
+end
+
+global HashMap<Boja, Integer> hashMapColor
+
+rule "Boja - Dodavanje bodova za tip odece"
+    salience ((1/$poeni)*1000)
+    agenda-group "bojeMapa"
+    no-loop
+    when
+        $gornjiDeo : PreporuceniGornjiDeo($poeni : poeni);
+    then
+        hashMapColor.put($gornjiDeo.getGornjiDeo().getBoja(),$poeni);
+    	System.out.println("Boja mapa");
 end
 
 rule "A1 - Tip tela - trougao"
@@ -373,12 +392,95 @@ rule "E - Dodavanje bodova za dubinu odece"
         System.out.println("E bodovi");
 end
 
-rule "G - Biranje komada prema koeficijentu preporuke"
-	salience -10
+rule "F1-1 boje korisnik nizak"
+    salience 150
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina < 165 );
+    then
+        insert(new Marker("F1-1"));
+        System.out.println("F1-1");
+        System.out.println(hashMapColor.get(Boja.BELA));
+end
+
+rule "F2-1 boje dresscode ne utice prolece"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'prolece' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.ZELENA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-1");
+end
+
+rule "F2-2 boje dresscode ne utice leto"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'leto' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-2");
+end
+
+rule "F2-3 boje dresscode ne utice jesen"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'jesen' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ZUTA));
+        System.out.println("F2-3");
+end
+
+rule "F2-4 boje dresscode ne utice zima"
+    salience 140
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'zima' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        System.out.println("F2-4");
+end
+
+rule "F - Dodavanje bodova za boju"
+    salience 100
+    no-loop
+    when
+        $donjiDeo : DonjiDeo();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	BojaIzabran( boja == $donjiDeo.getBoja()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $donjiDeo));
+        System.out.println("F bodovi");
+end
+
+rule "G1 - Biranje komada prema koeficijentu preporuke"
+	salience ($poeni*10)
 	lock-on-active
     when
+        not Marker(uniqueIdentifier == "F1-1")
     	$donjiDeo : DonjiDeo();
-    	 accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
+    	accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
     	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
                        	average($d) );
         $poeni : Double(this >= $avg) from accumulate(
@@ -392,11 +494,32 @@ rule "G - Biranje komada prema koeficijentu preporuke"
     	System.out.println("G Biranje komada prema koeficijentu preporuke, izabran komad : " + $donjiDeo.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
 end
 
+rule "G2 - Biranje komada prema koeficijentu preporuke"
+	salience (hashMapColor.get($boja))
+	lock-on-active
+    when
+        Marker(uniqueIdentifier == "F1-1")
+    	$donjiDeo : DonjiDeo($boja : boja);
+    	accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
+    	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
+                       	average($d) );
+        $poeni : Double(this >= $avg) from accumulate(
+                	KoeficijentPreporuke(komad.getId() == $donjiDeo.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
+                	sum($b1)
+                );
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporuceniDonjiDelovi().add(new PreporuceniDonjiDeo($donjiDeo, $poeni));}
+        System.out.println($ukupneVrednosti);
+    	System.out.println("G2 Biranje komada prema koeficijentu preporuke, izabran komad : " + $donjiDeo.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
+end
+
 rule "Brisanje poena nakon odabira"
 	salience -20
 	no-loop
 	when
 		$koeficijentPreporuke:KoeficijentPreporuke();
+		$preporuceniKomadi : PreporuceniKomadi();
 	then
 		delete($koeficijentPreporuke);
 end
