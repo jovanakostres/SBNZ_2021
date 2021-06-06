@@ -1,0 +1,35 @@
+@import "../../app.component.scss";
+
+.dashboard-container {
+    padding: 10px 50px 50px 50px;
+}
+
+.dashboard-container table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.action-cell {
+    width: 50px;
+}
+
+h1{
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.error-style{
+    margin-top:5%;
+}
+
+.mat-toolbar{
+    .button-class-yellow{
+        margin: 0;
+    }
+    max-width:fit-content;
+    .mat-toolbar-row{
+        background-color: white;
+        padding: 0px 0px 0px 0px;
+    }
+    margin: 20px 50px 20px 50px;
+}

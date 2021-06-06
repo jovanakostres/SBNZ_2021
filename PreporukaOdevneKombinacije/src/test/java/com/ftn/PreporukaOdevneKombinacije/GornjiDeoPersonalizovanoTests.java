@@ -56,7 +56,7 @@ public class GornjiDeoPersonalizovanoTests {
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
         KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
         kieSession.insert(user);
-        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
+        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -85,7 +85,7 @@ public class GornjiDeoPersonalizovanoTests {
         kieSession.addEventListener(agendaEventListener);
 
         kieSession.insert(user);
-        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
+        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -187,10 +187,10 @@ public class GornjiDeoPersonalizovanoTests {
 
     public List<GornjiDeo> createGornjiDelovi(){
         List<GornjiDeo> gornjiDeoList = new ArrayList<>();
-        gornjiDeoList.add(new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
-        gornjiDeoList.add(new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.DUKS));
-        gornjiDeoList.add(new GornjiDeo(3L, Boja.CRVENA, Materijal.POLIESTER,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.MAJICA_DUGI));
-        gornjiDeoList.add(new GornjiDeo(4L, Boja.NARANDZASTA, Materijal.TEKSAS,0,Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.KOSULJA));
+        gornjiDeoList.add(new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
+        gornjiDeoList.add(new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS));
+        gornjiDeoList.add(new GornjiDeo(3L, Boja.CRVENA, Materijal.POLIESTER,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.MAJICA_DUGI));
+        gornjiDeoList.add(new GornjiDeo(4L, Boja.NARANDZASTA, Materijal.TEKSAS,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.KOSULJA));
         return gornjiDeoList;
     }
 

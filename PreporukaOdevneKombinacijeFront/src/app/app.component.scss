@@ -1,23 +1,24 @@
+$color-green-text: #00695C;
+
 .menu-spacer {
     flex: 1 1 auto;
 }
 
-button{
-    border-radius: 10%;
-}
+// button{
+//     border-radius: 5px;
+// }
 
-.button-class {
-    margin: 10px;    
-    font-size: 25px;
-    line-height: 40px;
-    height: auto;
-    width: auto;
-    background-color: lavenderblush;
-}
+// .button-class {
+//     margin: 10px;    
+//     font-size: 25px;
+//     line-height: 40px;
+//     height: auto;
+//     width: auto;
+// }
     
 
 .menu-spacer {
     flex: 1 1 auto;
 }
 
-.text-class  {  font-size: 40px; text-decoration: none; color: lavender;}
+.text-class  {  font-size: 60px; font-family: 'Times New Roman', Times, serif; text-decoration: none; color: $color-green-text; margin: 10px;}

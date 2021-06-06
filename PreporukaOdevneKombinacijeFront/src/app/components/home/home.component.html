@@ -1,0 +1,51 @@
+<mat-grid-list cols="2" style="width: auto;">
+    <mat-grid-tile>
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>Opšta preporuka prema Vašem izgledu!</mat-card-title>
+            </mat-card-header>
+          
+            <mat-card-content>
+                <p>
+                    
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus vestibulum pharetra. Sed pretium, erat cursus porta volutpat, velit dolor sollicitudin nibh, sed gravida turpis augue vitae sem. Phasellus libero nisl, ullamcorper et nisi pharetra, aliquam sodales massa. Sed tempus viverra interdum.
+                </p>
+            </mat-card-content>
+          
+            <mat-card-actions align=center>
+                <button mat-raised-button color='primary'>
+                    Pređite na opštu preporuku
+                </button>
+          
+                <!-- <button mat-raised-button color='primary'>
+                    Log in za personalizovanu preporuku
+                </button> -->
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>Personalizovana preporuka za Vašu odeću!</mat-card-title>
+            </mat-card-header>
+          
+            <mat-card-content>
+                <p>
+                    
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc cursus vestibulum pharetra. Sed pretium, erat cursus porta volutpat, velit dolor sollicitudin nibh, sed gravida turpis augue vitae sem. Phasellus libero nisl, ullamcorper et nisi pharetra, aliquam sodales massa. Sed tempus viverra interdum.
+                </p>
+            </mat-card-content>
+          
+            <mat-card-actions align=center>
+                <button mat-raised-button color='primary' [routerLink]="'/login'">
+                    Ulogujte se za personalizovanu preporuku
+                </button>
+          
+                <!-- <button mat-raised-button color='primary'>
+                    Log in za personalizovanu preporuku
+                </button> -->
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+

@@ -51,9 +51,10 @@ public class ObucaService {
         insertMaterijal(kieSession);
         insertBoje(kieSession);
 
-        kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);
         kieSession.insert(user);
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
 //        HashMap<Long, Double> a = new HashMap<>();

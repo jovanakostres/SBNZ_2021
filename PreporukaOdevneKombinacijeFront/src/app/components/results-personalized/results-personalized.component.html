@@ -1,0 +1,64 @@
+<h2 style="margin: 3% 16px; color: #73cb90;">Izabrani komadi: </h2>
+
+<div style="display:flex; flex-direction: row;">
+    <mat-card class="example-card">
+        <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
+        <img mat-card-image src='{{gornjiDeo.image}}'/>
+        <mat-card-content>
+          <p>Gornji Deo</p>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+          <button mat-icon-button color="warn" (click)="odbijKomad(gornjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countGD > data.preporuceniGornjiDeoDTO.length">
+            <mat-icon class="icon-class-fill">clear</mat-icon>
+          </button>
+          <button mat-icon-button  color="accent" aria-label="Accept action" matTooltip="Prihvaćanje odevnog komada">
+            <mat-icon class="icon-class-fill">done_all</mat-icon>
+          </button>
+        </mat-card-actions>
+    </mat-card>
+    <mat-card class="example-card">
+        <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
+        <img mat-card-image src='{{donjiDeo.image}}'/>
+        <mat-card-content>
+          <p>Donji Deo</p>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+          <button mat-icon-button color="warn" (click)="odbijKomad(donjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada">
+            <mat-icon class="icon-class-fill">clear</mat-icon>
+          </button>
+          <button mat-icon-button  color="accent" aria-label="Accept action" matTooltip="Prihvaćanje odevnog komada">
+            <mat-icon class="icon-class-fill">done_all</mat-icon>
+          </button>
+        </mat-card-actions>
+    </mat-card>
+    <mat-card class="example-card">
+        <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
+        <img mat-card-image src='{{jakna.image}}'/>
+        <mat-card-content>
+          <p>Jakna</p>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+          <button mat-icon-button color="warn" (click)="odbijKomad(jakna)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada">
+            <mat-icon class="icon-class-fill">clear</mat-icon>
+          </button>
+          <button mat-icon-button  color="accent" aria-label="Accept action" matTooltip="Prihvaćanje odevnog komada">
+            <mat-icon class="icon-class-fill">done_all</mat-icon>
+          </button>
+        </mat-card-actions>
+    </mat-card>
+    <mat-card class="example-card">
+        <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
+        <img mat-card-image src='{{obuca.image}}'/>
+        <mat-card-content>
+          <p>Obuca</p>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+          <button mat-icon-button color="warn" (click)="odbijKomad(obuca)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada">
+            <mat-icon class="icon-class-fill">clear</mat-icon>
+          </button>
+          <button mat-icon-button  color="accent" aria-label="Accept action" matTooltip="Prihvaćanje odevnog komada">
+            <mat-icon class="icon-class-fill">done_all</mat-icon>
+          </button>
+        </mat-card-actions>
+    </mat-card>
+ </div>

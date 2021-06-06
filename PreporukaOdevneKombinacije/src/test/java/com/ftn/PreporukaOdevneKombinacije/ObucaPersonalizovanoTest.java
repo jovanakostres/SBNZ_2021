@@ -55,7 +55,7 @@ public class ObucaPersonalizovanoTest {
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
         KieSession kieSession = kieContainer.newKieSession("obucaPersRulesSession");
         kieSession.insert(user);
-        kieSession.insert(new Obuca(Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", ObucaEnum.CIZME ));
+        kieSession.insert(new Obuca(Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, ObucaEnum.CIZME ));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -84,7 +84,7 @@ public class ObucaPersonalizovanoTest {
         kieSession.addEventListener(agendaEventListener);
 
         kieSession.insert(user);
-        kieSession.insert(new Obuca(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", ObucaEnum.CIZME));
+        kieSession.insert(new Obuca(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, ObucaEnum.CIZME));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -188,10 +188,10 @@ public class ObucaPersonalizovanoTest {
 
     public List<Obuca> createObuca(){
         List<Obuca> obucaList = new ArrayList<>();
-        obucaList.add(new Obuca(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", ObucaEnum.CIZME));
-        obucaList.add(new Obuca(2L, Boja.CRNA, Materijal.POLIESTER, Vreme.SUVO, 0,  1, "", ObucaEnum.SANDALE));
-        obucaList.add(new Obuca(3L, Boja.BRAON, Materijal.KOZA, Vreme.SUVO, 0,  1, "", ObucaEnum.CIPELE));
-        obucaList.add(new Obuca(4L, Boja.PLAVA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", ObucaEnum.PATIKE));
+        obucaList.add(new Obuca(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, ObucaEnum.CIZME));
+        obucaList.add(new Obuca(2L, Boja.CRNA, Materijal.POLIESTER, Vreme.SUVO, 0,  1, "", true, ObucaEnum.SANDALE));
+        obucaList.add(new Obuca(3L, Boja.BRAON, Materijal.KOZA, Vreme.SUVO, 0,  1, "", true, ObucaEnum.CIPELE));
+        obucaList.add(new Obuca(4L, Boja.PLAVA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, ObucaEnum.PATIKE));
         return obucaList;
     }
 

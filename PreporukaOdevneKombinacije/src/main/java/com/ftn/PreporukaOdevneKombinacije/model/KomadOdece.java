@@ -36,6 +36,9 @@ public abstract class KomadOdece {
     @JoinColumn(name="korisnik_id", nullable=false)
     private User korisnik;
 
+    @Column
+    private boolean aktivan;
+
     public KomadOdece(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, String image) {
         this.boja = boja;
         this.bojaIntenzitet = bojaIntenzitet;
@@ -45,16 +48,17 @@ public abstract class KomadOdece {
         this.image = image;
     }
 
-    public KomadOdece(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image) {
+    public KomadOdece(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, boolean aktivan) {
         this.boja = boja;
         this.materijal = materijal;
         this.prioritet = prioritet;
         this.vreme  = vreme;
         this.koeficijentOdabira = koeficijentOdabira;
         this.image = image;
+        this.aktivan = aktivan;
     }
 
-    public KomadOdece(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image) {
+    public KomadOdece(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, boolean aktivan) {
         this.id = id;
         this.boja = boja;
         this.materijal = materijal;
@@ -62,6 +66,7 @@ public abstract class KomadOdece {
         this.vreme  = vreme;
         this.koeficijentOdabira = koeficijentOdabira;
         this.image = image;
+        this.aktivan = aktivan;
     }
 
     public KomadOdece(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, User korisnik) {
@@ -149,5 +154,13 @@ public abstract class KomadOdece {
 
     public void setKorisnik(User korisnik) {
         this.korisnik = korisnik;
+    }
+
+    public boolean isAktivan() {
+        return aktivan;
+    }
+
+    public void setAktivan(boolean aktivan) {
+        this.aktivan = aktivan;
     }
 }

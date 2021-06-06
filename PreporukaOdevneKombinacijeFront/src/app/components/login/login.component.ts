@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       resData => {
         console.log(resData);
         this.isLoading = false;
-        this.router.navigate(['/register-form']);
+        this.router.navigate(['/home-user']);
       },
       errorMessage => {
         console.log(errorMessage);

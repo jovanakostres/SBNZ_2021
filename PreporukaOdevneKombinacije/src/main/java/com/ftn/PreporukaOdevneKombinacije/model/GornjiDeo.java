@@ -27,14 +27,14 @@ public class GornjiDeo extends KomadOdece{
         this.odecaTip = odecaTip;
     }
 
-    public GornjiDeo(Boja boja, Materijal materijal, int prioritet, Vreme vreme, double koeficijentOdabira, String image, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip) {
-        super(boja, materijal,vreme, prioritet, koeficijentOdabira, image);
+    public GornjiDeo(Boja boja, Materijal materijal, int prioritet, Vreme vreme, double koeficijentOdabira, String image, boolean aktivan, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip) {
+        super(boja, materijal,vreme, prioritet, koeficijentOdabira, image, aktivan);
         this.odecaPodTip = odecaPodTip;
         this.odecaTip = odecaTip;
     }
 
-    public GornjiDeo(Long id, Boja boja, Materijal materijal, int prioritet, Vreme vreme, double koeficijentOdabira, String image, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip) {
-        super(id, boja, materijal,vreme, prioritet, koeficijentOdabira, image);
+    public GornjiDeo(Long id, Boja boja, Materijal materijal, int prioritet, Vreme vreme, double koeficijentOdabira, String image, boolean aktivan, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip) {
+        super(id, boja, materijal,vreme, prioritet, koeficijentOdabira, image, aktivan);
         this.odecaPodTip = odecaPodTip;
         this.odecaTip = odecaTip;
     }

@@ -19,13 +19,13 @@ public class Obuca extends KomadOdece{
         this.stikla = stikla;
     }
 
-    public Obuca(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, ObucaEnum obucaTip) {
-        super(boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+    public Obuca(Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, boolean aktivan, ObucaEnum obucaTip) {
+        super(boja, materijal, vreme, prioritet, koeficijentOdabira, image, aktivan);
         this.obucaTip = obucaTip;
     }
 
-    public Obuca(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, ObucaEnum obucaTip) {
-        super(id, boja, materijal, vreme, prioritet, koeficijentOdabira, image);
+    public Obuca(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, boolean aktivan, ObucaEnum obucaTip) {
+        super(id, boja, materijal, vreme, prioritet, koeficijentOdabira, image, aktivan);
         this.obucaTip = obucaTip;
     }
 

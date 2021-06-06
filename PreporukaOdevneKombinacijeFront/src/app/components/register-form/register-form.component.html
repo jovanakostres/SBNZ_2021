@@ -1,4 +1,4 @@
-<div class = "glavni">
+<div class = "glavni" *ngIf="dataSourceActive == 0">
     <form [formGroup]="myForm">
         <ng-container *ngIf="step == 1" >
             <mat-form-field>
@@ -29,7 +29,12 @@
                 </div>       
         </ng-container>
         <br>
-        <button mat-button *ngIf="step <= 2" (click)="step = step + 1; invalid = true;" [disabled] = "invalid" >Next</button>
-        <button mat-button *ngIf="step == 3" [disabled] = "checkedNumber < 2" (click) = onSubmit(myForm)>Submit</button>
+        <button mat-raised-button color="primary" *ngIf="step <= 2" (click)="step = step + 1; invalid = true;" [disabled] = "invalid" >Next</button>
+        <button mat-raised-button color="primary" *ngIf="step == 3" [disabled] = "checkedNumber < 2" (click) = onSubmit(myForm)>Submit</button>
     </form>
 </div>
+
+<app-results-personalized
+  *ngIf="dataSource"
+  [data]="dataSource">
+</app-results-personalized> 

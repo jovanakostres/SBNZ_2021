@@ -46,6 +46,13 @@ public class KomadOdeceService {
     @Autowired
     private KieContainer kieContainer;
 
+    public KomadOdece findOne(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+    public KomadOdece create(KomadOdece komadOdece){
+        return repository.save(komadOdece);
+    }
+
     public PreporuceniKomadi getPreporukaPersonalizovano(UnosDTO unosDTO, User user) {
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
 
@@ -55,13 +62,13 @@ public class KomadOdeceService {
         List<Obuca> obucaList = new ArrayList<>();
 
         for (KomadOdece komadOdece : user.getKomadi()){
-            if (komadOdece instanceof GornjiDeo)
+            if (komadOdece instanceof GornjiDeo && komadOdece.isAktivan())
                 gornjiDeoList.add((GornjiDeo) komadOdece);
-            if (komadOdece instanceof DonjiDeo)
+            if (komadOdece instanceof DonjiDeo && komadOdece.isAktivan())
                 donjiDeoList.add((DonjiDeo) komadOdece);
-            if (komadOdece instanceof Jakna)
-                jaknaList.add((Jakna) komadOdece);
-            if (komadOdece instanceof Obuca)
+            if (komadOdece instanceof Jakna && komadOdece.isAktivan())
+                jaknaList.add((Jakna) komadOdece );
+            if (komadOdece instanceof Obuca && komadOdece.isAktivan())
                 obucaList.add((Obuca) komadOdece);
         }
 

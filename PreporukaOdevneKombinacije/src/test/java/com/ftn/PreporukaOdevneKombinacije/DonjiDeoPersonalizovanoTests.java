@@ -53,7 +53,7 @@ public class DonjiDeoPersonalizovanoTests {
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
         KieSession kieSession = kieContainer.newKieSession("dDPersRulesSession");
         kieSession.insert(user);
-        kieSession.insert(new DonjiDeo(Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
+        kieSession.insert(new DonjiDeo(Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -82,7 +82,7 @@ public class DonjiDeoPersonalizovanoTests {
         kieSession.addEventListener(agendaEventListener);
 
         kieSession.insert(user);
-        kieSession.insert(new DonjiDeo(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
+        kieSession.insert(new DonjiDeo(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -184,10 +184,10 @@ public class DonjiDeoPersonalizovanoTests {
 
     public List<DonjiDeo> createDonjiDelovi(){
         List<DonjiDeo> donjiDeoList = new ArrayList<>();
-        donjiDeoList.add(new DonjiDeo(1L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
-        donjiDeoList.add(new DonjiDeo(2L, Boja.BRAON, Materijal.SOMOT, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.KRATKA_SUKNJA ,OdecaPodTip.USKA));
-        donjiDeoList.add(new DonjiDeo(3L, Boja.ZELENA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.TRENERKA ,OdecaPodTip.SIROKA));
-        donjiDeoList.add(new DonjiDeo(4L, Boja.CRNA, Materijal.POLIESTER, Vreme.VLAZNO, 0,  1, "", DonjiDeoEnum.HELANKE ,OdecaPodTip.USKA));
+        donjiDeoList.add(new DonjiDeo(1L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
+        donjiDeoList.add(new DonjiDeo(2L, Boja.BRAON, Materijal.SOMOT, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.KRATKA_SUKNJA ,OdecaPodTip.USKA));
+        donjiDeoList.add(new DonjiDeo(3L, Boja.ZELENA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.TRENERKA ,OdecaPodTip.SIROKA));
+        donjiDeoList.add(new DonjiDeo(4L, Boja.CRNA, Materijal.POLIESTER, Vreme.VLAZNO, 0,  1, "", true, DonjiDeoEnum.HELANKE ,OdecaPodTip.USKA));
         return donjiDeoList;
     }
 

@@ -7,16 +7,19 @@ import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranKomadOdeceEvent;
 import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranaKombinacijaEvent;
+import com.ftn.PreporukaOdevneKombinacije.model.event.OdbijenKomadEvent;
 import org.drools.core.time.SessionPseudoClock;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.KieSessionConfiguration;
+import org.kie.api.runtime.conf.TimedRuleExecutionOption;
 import org.springframework.security.core.parameters.P;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class CepIzvestajTests {
 
@@ -28,11 +31,11 @@ public class CepIzvestajTests {
         kSession.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
         SessionPseudoClock clock = kSession.getSessionClock();
 
-        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
-        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
+        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", true,OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
+        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
 
-        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
-        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
 
         IzabranKomadOdeceEvent izabranKomadOdeceEvent = new IzabranKomadOdeceEvent(gornjiDeo);
         IzabranKomadOdeceEvent izabranKomadOdeceEvent1 = new IzabranKomadOdeceEvent(gornjiDeo);
@@ -90,11 +93,11 @@ public class CepIzvestajTests {
         kSession.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
         SessionPseudoClock clock = kSession.getSessionClock();
 
-        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
-        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
+        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
+        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
 
-        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
-        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
 
         IzabranKomadOdeceEvent izabranKomadOdeceEvent = new IzabranKomadOdeceEvent(gornjiDeo);
         IzabranKomadOdeceEvent izabranKomadOdeceEvent1 = new IzabranKomadOdeceEvent(gornjiDeo);
@@ -151,11 +154,11 @@ public class CepIzvestajTests {
         kSession.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
         SessionPseudoClock clock = kSession.getSessionClock();
 
-        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
-        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
+        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
+        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
 
-        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
-        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
 
         System.out.println(GornjiDeo.class.getName());
         IzabranKomadOdeceEvent izabranKomadOdeceEvent = new IzabranKomadOdeceEvent(gornjiDeo);
@@ -214,14 +217,14 @@ public class CepIzvestajTests {
         KieSession kSession = kc.newKieSession("cepIzvestajKombRulesnPseudoClock");
         SessionPseudoClock clock = kSession.getSessionClock();
 
-        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
-        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
+        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
+        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
 
-        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
-        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true,DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
 
-        Jakna jakna = new Jakna(5L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
-        Jakna jakna1 = new Jakna(6L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
+        Jakna jakna = new Jakna(5L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
+        Jakna jakna1 = new Jakna(6L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
 
         IzabranaKombinacijaEvent izabranaKombinacijaEvent = new IzabranaKombinacijaEvent(gornjiDeo, donjiDeo);
         IzabranaKombinacijaEvent izabranaKombinacijaEvent1 = new IzabranaKombinacijaEvent(gornjiDeo, donjiDeo2);
@@ -268,4 +271,48 @@ public class CepIzvestajTests {
         assertEquals( 0, preporuceniKomadi2.getPreporuceniGornjiDelovi().size());
 
     }
+
+    @Test
+    public void odbijenKomad3Puta5DanaTest() {
+        KieServices ks = KieServices.Factory.get();
+        KieContainer kc = ks.newKieClasspathContainer();
+        KieSession kSession = kc.newKieSession("cepOdbijenbRulesnPseudoClock");
+        SessionPseudoClock clock = kSession.getSessionClock();
+//        KieSessionConfiguration ksconf = ks.newKieSessionConfiguration();
+//        ksconf.setOption( TimedRuleExecutionOption.YES );
+
+        GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
+        GornjiDeo gornjiDeo2 = new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS);
+
+        DonjiDeo donjiDeo = new DonjiDeo(3L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true,DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+        DonjiDeo donjiDeo2 = new DonjiDeo(4L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA);
+
+        Jakna jakna = new Jakna(5L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
+        Jakna jakna1 = new Jakna(6L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA);
+
+        OdbijenKomadEvent odbijenKomadEvent = new OdbijenKomadEvent(gornjiDeo);
+        OdbijenKomadEvent odbijenKomadEvent1 = new OdbijenKomadEvent(gornjiDeo);
+        OdbijenKomadEvent odbijenKomadEvent2 = new OdbijenKomadEvent(gornjiDeo);
+
+
+        kSession.insert(odbijenKomadEvent);
+        kSession.insert(odbijenKomadEvent1);
+        kSession.insert(odbijenKomadEvent2);
+        kSession.insert(gornjiDeo);
+
+        kSession.fireAllRules();
+
+        assertFalse(gornjiDeo.isAktivan());
+
+        clock.advanceTime(13, TimeUnit.DAYS);
+        kSession.fireAllRules();
+        assertFalse(gornjiDeo.isAktivan());
+
+        clock.advanceTime(16, TimeUnit.DAYS);
+        kSession.fireAllRules();
+        assertTrue(gornjiDeo.isAktivan());
+
+    }
+
+
 }

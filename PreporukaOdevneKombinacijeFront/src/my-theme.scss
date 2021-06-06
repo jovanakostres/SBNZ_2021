@@ -1,0 +1,37 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$mat-primary-scheme: (
+  100: #73cb90,
+  500: #fff,
+  700: #16341f,
+  contrast: (
+    100: rgba(0,0,0,0.87),
+    500: #1d694a,
+    700: #ffffff,
+  )
+);
+$mat-accent-scheme: (
+  100: #c4ffe2,
+  500: #599a6e,
+  700: #4e7d5e,
+  contrast: (
+    100: rgba(0,0,0,0.87),
+    500: rgba(255,255,255,0.87),
+    700: #ffffff,
+  )
+);
+$mat-primary-palette: mat-palette($mat-primary-scheme);
+$mat-accent-palette: mat-palette($mat-accent-scheme);
+
+$app-light-theme: mat-light-theme($mat-primary-palette, $mat-accent-palette);
+
+@include angular-material-theme($app-light-theme);
+
+// following section is for dark mode.
+// use appropriate class name for darkMode
+$app-dark-theme: mat-dark-theme($mat-primary-palette, $mat-accent-palette);
+.darkMode {
+  @include angular-material-theme($app-dark-theme);
+}
+    
