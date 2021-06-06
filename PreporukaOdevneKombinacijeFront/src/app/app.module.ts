@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule} from '@angular/material/card';   
+import { MatSnackBarModule} from '@angular/material/snack-bar';  
 import { MatGridListModule} from '@angular/material/grid-list';   
 import { AuthentificationService } from './service/authentification.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -60,6 +61,7 @@ import { MatIconModule} from '@angular/material/icon';
     MatCardModule,
     MatGridListModule,
     MatIconModule,
+    MatSnackBarModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

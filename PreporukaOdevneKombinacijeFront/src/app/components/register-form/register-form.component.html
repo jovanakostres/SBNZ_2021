@@ -1,9 +1,9 @@
 <div class = "glavni" *ngIf="dataSourceActive == 0">
     <form [formGroup]="myForm">
         <ng-container *ngIf="step == 1" >
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Dresscode</mat-label>
-                <mat-select style="width: 150px;" formControlName = "dresscode" (ngModelChange)="changed()">
+                <mat-select  style="width: 150px;" formControlName = "dresscode" (ngModelChange)="changed()">
                     <mat-option *ngFor="let food of dresscode;" [value]="food.value">
                     {{food.viewValue}}
                     </mat-option>
@@ -14,7 +14,7 @@
             </mat-form-field>
         </ng-container>
         <ng-container *ngIf="step == 2"> 
-            <mat-form-field>
+            <mat-form-field color="accent">
                 <mat-label>Unesite mesto:</mat-label>
                 <input matInput type="text" formControlName="mesto" placeholder="Mesto" (keyup)="onKey($event)"/>
                 <mat-error>

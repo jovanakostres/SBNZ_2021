@@ -19,11 +19,14 @@ declare window petdana
 end
 
 declare DeaktiviranKomad
+    @event()
+    @expires(14d)
     komad: KomadOdece
 end
 
 rule "Odbijen tri puta poslednjih 5 dana"
     salience 100
+    agenda-group "deaktiviranje"
 	when
 		$odbijeni : OdbijenKomadEvent( $komadOdece : komadOdece );
 		KomadOdece( id == $komadOdece.getId(), aktivan == true);
@@ -38,11 +41,13 @@ rule "Odbijen tri puta poslednjih 5 dana"
 end
 
 rule "Aktiviraj komad 14 dana posle deaktivacije"
-    timer ( int: 14d)
+    timer ( int: 1s)
+    agenda-group "aktiviranje"
+    lock-on-active
 when
-    $k : DeaktiviranKomad( $komadOdece : komad )
+    $k : DeaktiviranKomad( $komadOdece : komad, komad.isAktivan() == false )
+    KomadOdece( id == $komadOdece.getId(), aktivan == false);
 then
-    delete($k);
     modify($komadOdece) {setAktivan(true);}
     System.out.println("Aktiviran komad : " + $komadOdece.getId());
 end

@@ -62,22 +62,25 @@ public class KomadOdeceController {
             //User user = userService.findOne(1L);
             KomadOdece komadOdece = komadOdeceService.findOne(preporuceniGornjiDeo.getId());
             komadOdece.setKoeficijentOdabira(komadOdece.getKoeficijentOdabira() - komadOdece.getKoeficijentOdabira() * 5 / 100);
-            komadOdeceService.create(komadOdece);
+            komadOdeceService.odbijenKomad(komadOdece);
+            //komadOdeceService.create(komadOdece);
             return new ResponseEntity<>(komadOdece.getKoeficijentOdabira(),HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/chosen")
-    public ResponseEntity<?> getOdabrano(@RequestBody IzabranoDTO izabranoDTO) {
+    @PostMapping("/accepted")
+    public ResponseEntity<?> postOdabrano(@RequestBody IzabranoDTO izabranoDTO) {
+        try {
+            System.out.println("ovde");
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //User user = userService.findOne(1L);
-        PreporuceniKomadi prep = komadOdeceService.getPreporukaPersonalizovano(new UnosDTO(25, Vreme.SUVO, "Novi Sad", DressCode.LEZERAN, new ArrayList<Boja>() {{ add(Boja.LJUBICASTA); add(Boja.BELA);}}), userDetails);
-        if(prep.getPreporuceniGornjiDelovi().size() <= 0){
+        komadOdeceService.izabraniKomadi(izabranoDTO);
+        komadOdeceService.izabraniKomadiKomb(izabranoDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e) {
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(preporuceniKomadiMapper.toDto(prep),HttpStatus.OK);
         }
     }
 

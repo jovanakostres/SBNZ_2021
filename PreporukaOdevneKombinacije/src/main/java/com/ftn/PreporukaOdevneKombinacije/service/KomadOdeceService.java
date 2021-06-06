@@ -8,11 +8,17 @@ import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Pol;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
 import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranKomadOdeceEvent;
+import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranaKombinacijaEvent;
+import com.ftn.PreporukaOdevneKombinacije.model.event.OdbijenKomadEvent;
 import com.ftn.PreporukaOdevneKombinacije.repository.KomadOdeceRepository;
 import com.ftn.PreporukaOdevneKombinacije.repository.UserRepository;
+import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.KieSessionConfiguration;
+import org.kie.api.runtime.conf.ClockTypeOption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonArray;
@@ -47,6 +53,18 @@ public class KomadOdeceService {
 
     @Autowired
     private KieContainer kieContainer;
+
+    @Autowired
+    @Qualifier(value = "cepOdbijen")
+    private KieSession cepOdbijenKomad;
+
+    @Autowired
+    @Qualifier(value = "cepIzvestajRulesSession")
+    private KieSession cepIzvestaj;
+
+    @Autowired
+    @Qualifier(value = "cepIzvestajKombRulesSession")
+    private KieSession cepIzvestajKomb;
 
     public KomadOdece findOne(Long id) {
         return repository.findById(id).orElse(null);
@@ -104,7 +122,42 @@ public class KomadOdeceService {
         return preporuceniKomadi;
     }
 
+    public void odbijenKomad(KomadOdece komadOdece) throws InterruptedException {
 
+//        KieSessionConfiguration config = KieServices.Factory.get().newKieSessionConfiguration();
+//        config.setOption( ClockTypeOption.get("realtime") );
+//        KieSession session = kieContainer.newKieSession( "cepOdbijenRulesSession", null, config);
+
+        cepOdbijenKomad.getAgenda().getAgendaGroup( "deaktiviranje" ).setFocus();
+
+        cepOdbijenKomad.insert(new OdbijenKomadEvent(komadOdece));
+        cepOdbijenKomad.insert(komadOdece);
+
+        new Thread(new Runnable() {
+            public void run() {
+                cepOdbijenKomad.fireAllRules();
+            }
+        }).start();
+
+        Thread.sleep(2000L);
+
+        System.out.println(komadOdece.isAktivan());
+
+        if(!komadOdece.isAktivan()){
+            repository.save(komadOdece);
+            Thread.sleep(2000L);
+            cepOdbijenKomad.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
+            cepOdbijenKomad.fireAllRules();
+            System.out.println(komadOdece.isAktivan());
+
+            repository.save(komadOdece);
+//            cepOdbijenKomad.dispose();
+        }
+
+        repository.save(komadOdece);
+
+
+    }
 
     public void saveIzabrano(IzabranoDTO izabranoDTO) {
         KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
@@ -114,6 +167,48 @@ public class KomadOdeceService {
         kieSession.insert(new IzabranKomadOdeceEvent(obucaService.findOne(izabranoDTO.getIdObuca())));
 
         kieSession.fireAllRules();
+    }
+
+    public void izabraniKomadi(IzabranoDTO izabranoDTO) {
+        cepIzvestaj.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
+        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdGornjiDeo())));
+        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdDonjiDeo())));
+        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdJakna())));
+        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdObuca())));
+
+        cepIzvestaj.fireAllRules();
+
+    }
+
+    public void izabraniKomadiKomb(IzabranoDTO izabranoDTO) {
+
+        if(izabranoDTO.getIdGornjiDeo() != -1){
+            if (izabranoDTO.getIdDonjiDeo() != -1){
+                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdDonjiDeo())));
+            }
+            if (izabranoDTO.getIdJakna() != -1){
+                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdJakna())));
+            }
+            if (izabranoDTO.getIdObuca() != -1){
+                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdObuca())));
+            }
+        }
+        if(izabranoDTO.getIdDonjiDeo() != -1){
+            if (izabranoDTO.getIdJakna() != -1){
+                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdDonjiDeo()), findOne(izabranoDTO.getIdJakna())));
+            }
+            if (izabranoDTO.getIdObuca() != -1){
+                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdDonjiDeo()), findOne(izabranoDTO.getIdObuca())));
+            }
+        }
+        if(izabranoDTO.getIdJakna() != -1){
+            if (izabranoDTO.getIdObuca() != -1){
+                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdJakna()), findOne(izabranoDTO.getIdObuca())));
+            }
+        }
+
+        cepIzvestajKomb.fireAllRules();
+
     }
 
 
@@ -155,5 +250,7 @@ public class KomadOdeceService {
         return user.getKomadi();
 
     }
+
+
 
 }

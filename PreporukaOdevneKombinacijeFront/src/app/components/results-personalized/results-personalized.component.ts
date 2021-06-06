@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { IzabranaKombinacija } from 'src/app/model/izabranaKombinacija';
 import { PreporuceniKomad } from 'src/app/model/preporuceniKomad';
 import { PreporuceniKomadi } from 'src/app/model/preporuceniKomadi';
 import { KomadOdeceLogedinService } from 'src/app/service/komad-odece-logedin.service';
@@ -20,8 +23,10 @@ export class ResultsPersonalizedComponent implements OnInit {
   countDD : number = 0;
   countJakna : number = 0;
   countObuca : number = 0;
+
+  izabrano : IzabranaKombinacija;
   
-  constructor(private komadService: KomadOdeceLogedinService) { }
+  constructor(private komadService: KomadOdeceLogedinService, private router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.countGD = 0;
@@ -40,6 +45,7 @@ export class ResultsPersonalizedComponent implements OnInit {
       if(this.countGD >= this.data.preporuceniGornjiDeoDTO.length){
         this.countGD = this.data.preporuceniGornjiDeoDTO.length + 1;
         this.gornjiDeo.image = "";
+        this.gornjiDeo.id = -1;
       }
       else{
         this.gornjiDeo = this.data.preporuceniGornjiDeoDTO[this.countGD];
@@ -49,6 +55,7 @@ export class ResultsPersonalizedComponent implements OnInit {
       this.countDD += 1;
       if(this.countDD >= this.data.preporuceniDonjiDeoDTO.length){
         this.countDD = this.data.preporuceniDonjiDeoDTO.length + 1;
+        this.donjiDeo.id = -1;
         this.donjiDeo.image = "";
       }
       else{
@@ -59,6 +66,7 @@ export class ResultsPersonalizedComponent implements OnInit {
       this.countJakna += 1;
       if(this.countJakna >= this.data.preporucenaJaknaDTO.length){
         this.countJakna = this.data.preporucenaJaknaDTO.length + 1;
+        this.jakna.id = -1;
         this.jakna.image = "";
       }
       else{
@@ -69,6 +77,7 @@ export class ResultsPersonalizedComponent implements OnInit {
       this.countObuca += 1;
       if(this.countObuca >= this.data.preporucenaObucaDTO.length){
         this.countObuca = this.data.preporucenaObucaDTO.length + 1;
+        this.obuca.id = -1;
         this.obuca.image = "";
       }
       else{
@@ -86,6 +95,19 @@ export class ResultsPersonalizedComponent implements OnInit {
     )
   }
 
+  prihvatiKombinaciju(){
+    this.izabrano = new IzabranaKombinacija(this.gornjiDeo.id, this.donjiDeo.id, this.jakna.id, this.obuca.id);
+    this.komadService.postAccepted(this.izabrano).subscribe(
+      result => {
+        console.log("OK");
+        this._snackBar.open("Uspešno izabrana kombinacija!", "Close");
+        this.router.navigate(['/home-user']);
+      },
+      err => {
+        console.log("ERROR");
+      }
+    )
+  }
 
 
 }
