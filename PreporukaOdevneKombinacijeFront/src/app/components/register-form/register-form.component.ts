@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { PreporuceniKomadi } from 'src/app/model/preporuceniKomadi';
 import { Unos } from 'src/app/model/unos';
 import { KomadOdeceLogedinService } from 'src/app/service/komad-odece-logedin.service';
 //import { PlaceResult } from '@google.maps.places.PlaceResult';
@@ -15,6 +16,8 @@ export class RegisterFormComponent implements OnInit {
   myForm: FormGroup;
   step = 1;
   invalid = true;
+  dataSource: PreporuceniKomadi = null;
+  dataSourceActive : number = 0;
   checkedNumber = 0;
   dresscode = [
     {value: 'LEZERAN', viewValue: 'LEZERAN'},
@@ -71,6 +74,8 @@ export class RegisterFormComponent implements OnInit {
 
     this.unosService.getCombination(unos).subscribe(
       result => {
+        this.dataSource = result.body; 
+        this.dataSourceActive = 1;
         console.log("OK");
       },
       err => {

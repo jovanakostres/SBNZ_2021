@@ -15,7 +15,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatButtonModule } from '@angular/material/button' 
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule} from '@angular/material/card';   
+import { MatGridListModule} from '@angular/material/grid-list';   
 import { AuthentificationService } from './service/authentification.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';  
@@ -23,6 +25,10 @@ import { TokenInterceptorService } from './service/token-interceptor.service';
 import { KomadOdeceLogedinService } from './service/komad-odece-logedin.service';
 import { JwtUtilsService } from './service/jwt-utils.service';
 import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { HomeComponent } from './components/home/home.component';
+import { HomeLoggedinUserComponent } from './components/home-loggedin-user/home-loggedin-user.component';
+import { ResultsPersonalizedComponent } from './components/results-personalized/results-personalized.component';
+import { MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,7 +36,10 @@ import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
     AppComponent,
     LoginComponent,
     RegisterFormComponent,
-    UnregFormComponent
+    UnregFormComponent,
+    HomeComponent,
+    HomeLoggedinUserComponent,
+    ResultsPersonalizedComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +57,9 @@ import { JwtHelperService, JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
     MatButtonModule,
     HttpClientModule,
     CommonModule,
+    MatCardModule,
+    MatGridListModule,
+    MatIconModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

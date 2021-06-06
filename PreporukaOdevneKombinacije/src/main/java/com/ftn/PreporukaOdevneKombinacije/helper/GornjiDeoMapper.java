@@ -13,7 +13,7 @@ import com.ftn.PreporukaOdevneKombinacije.model.enums.OdecaPodTip;
 public class GornjiDeoMapper implements MapperInterface<GornjiDeo, GornjiDeoUnosDTO>{
     @Override
     public GornjiDeo toEntity(GornjiDeoUnosDTO dto) {
-        return new GornjiDeo(dto.getBoja(), dto.getMaterijal(), dto.getPrioritet(), dto.getVreme(), dto.getKoeficijentOdabira(), dto.getImage(),
+        return new GornjiDeo(dto.getBoja(), dto.getMaterijal(), dto.getPrioritet(), dto.getVreme(), dto.getKoeficijentOdabira(), dto.getImage(), true,
                 dto.getOdecaPodTip(), dto.getOdecaTip());
     }
 

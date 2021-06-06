@@ -55,7 +55,7 @@ public class JaknaPersonalizovanoTest {
         KieContainer kieContainer = KieServices.Factory.get().getKieClasspathContainer();
         KieSession kieSession = kieContainer.newKieSession("jaknaPersRulesSession");
         kieSession.insert(user);
-        kieSession.insert(new Jakna(Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.JAKNA_PRELAZNI , OdecaPodTip.SIROKA));
+        kieSession.insert(new Jakna(Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.JAKNA_PRELAZNI , OdecaPodTip.SIROKA));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -84,7 +84,7 @@ public class JaknaPersonalizovanoTest {
         kieSession.addEventListener(agendaEventListener);
 
         kieSession.insert(user);
-        kieSession.insert(new Jakna(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA));
+        kieSession.insert(new Jakna(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -186,10 +186,10 @@ public class JaknaPersonalizovanoTest {
 
     public List<Jakna> createJakne(){
         List<Jakna> jaknaList = new ArrayList<>();
-        jaknaList.add(new Jakna(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA));
-        jaknaList.add(new Jakna(2L, Boja.CRNA, Materijal.POLIESTER, Vreme.VLAZNO, 0,  1, "", JaknaEnum.TRENERKA ,OdecaPodTip.USKA));
-        jaknaList.add(new Jakna(3L, Boja.LJUBICASTA, Materijal.PLIS, Vreme.SUVO, 0,  1, "", JaknaEnum.KARDIGAN ,OdecaPodTip.SIROKA));
-        jaknaList.add(new Jakna(4L, Boja.ROZA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", JaknaEnum.KAPUT ,OdecaPodTip.USKA));
+        jaknaList.add(new Jakna(1L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA));
+        jaknaList.add(new Jakna(2L, Boja.CRNA, Materijal.POLIESTER, Vreme.VLAZNO, 0,  1, "", true, JaknaEnum.TRENERKA ,OdecaPodTip.USKA));
+        jaknaList.add(new Jakna(3L, Boja.LJUBICASTA, Materijal.PLIS, Vreme.SUVO, 0,  1, "", true, JaknaEnum.KARDIGAN ,OdecaPodTip.SIROKA));
+        jaknaList.add(new Jakna(4L, Boja.ROZA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, JaknaEnum.KAPUT ,OdecaPodTip.USKA));
         return jaknaList;
     }
 

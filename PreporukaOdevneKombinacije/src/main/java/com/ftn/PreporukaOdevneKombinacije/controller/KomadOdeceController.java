@@ -2,12 +2,14 @@ package com.ftn.PreporukaOdevneKombinacije.controller;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.GornjiDeoUnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.IzabranoDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.PreporuceniGornjiDeoDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.helper.GornjiDeoMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Boja;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.DressCode;
@@ -50,6 +52,20 @@ public class KomadOdeceController {
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
         }else{
             return new ResponseEntity<>(preporuceniKomadiMapper.toDto(prep),HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/reject")
+    public ResponseEntity<?> rejectClothes(@RequestBody PreporuceniGornjiDeoDTO preporuceniGornjiDeo) {
+        try {
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            //User user = userService.findOne(1L);
+            KomadOdece komadOdece = komadOdeceService.findOne(preporuceniGornjiDeo.getId());
+            komadOdece.setKoeficijentOdabira(komadOdece.getKoeficijentOdabira() - komadOdece.getKoeficijentOdabira() * 5 / 100);
+            komadOdeceService.create(komadOdece);
+            return new ResponseEntity<>(komadOdece.getKoeficijentOdabira(),HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
         }
     }
 

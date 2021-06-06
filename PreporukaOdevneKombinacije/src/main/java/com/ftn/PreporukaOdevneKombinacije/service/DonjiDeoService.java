@@ -52,11 +52,11 @@ public class DonjiDeoService {
 
 
 
-        kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);
         kieSession.insert(user);
         kieSession.fireAllRules();
-
+        kieSession.insert(preporuceniKomadi);
+        kieSession.fireAllRules();
 //        HashMap<Long, Double> a = new HashMap<>();
 //        a.entrySet().forEach(entry -> {
 //            System.out.println((Long)entry.getKey() + " " + entry.getValue());

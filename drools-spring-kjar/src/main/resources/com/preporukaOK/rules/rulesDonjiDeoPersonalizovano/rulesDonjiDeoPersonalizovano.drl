@@ -402,6 +402,7 @@ rule "Brisanje poena nakon odabira"
 	no-loop
 	when
 		$koeficijentPreporuke:KoeficijentPreporuke();
+		$preporuceniKomadi : PreporuceniKomadi();
 	then
 		delete($koeficijentPreporuke);
 end
