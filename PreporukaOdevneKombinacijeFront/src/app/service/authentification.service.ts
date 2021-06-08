@@ -71,6 +71,7 @@ export class AuthentificationService {
 
   getToken(): String {
     var currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    //console.log(currentUser.username == null);
     var token = currentUser && currentUser.token;
     return token ? token : "";
   }
@@ -80,7 +81,13 @@ export class AuthentificationService {
   }
 
   isLoggedIn(): boolean {
-    if (this.getToken() != '') return true;
+    //console.log(this.getToken())
+    var currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if(currentUser=="praviadmin@admin.com") {
+      console.log("PROSLO");
+      return false;
+    }
+    if (this.getToken() != '' ) return true;
     else return false;
   }
 

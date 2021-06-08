@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule} from '@angular/material/card';   
-import { MatSnackBarModule} from '@angular/material/snack-bar';  
 import { MatGridListModule} from '@angular/material/grid-list';   
 import { AuthentificationService } from './service/authentification.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -31,7 +30,8 @@ import { HomeLoggedinUserComponent } from './components/home-loggedin-user/home-
 import { ResultsPersonalizedComponent } from './components/results-personalized/results-personalized.component';
 import { MatIconModule} from '@angular/material/icon';
 import { Aktivnost24SataComponent } from './components/aktivnost24-sata/aktivnost24-sata.component';
-
+import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
+import { HomeAdminComponent } from './home-admin/home-admin.component'; 
 
 @NgModule({
   declarations: [
@@ -43,6 +43,9 @@ import { Aktivnost24SataComponent } from './components/aktivnost24-sata/aktivnos
     HomeLoggedinUserComponent,
     ResultsPersonalizedComponent,
     Aktivnost24SataComponent
+
+    AddKomadOdeceComponent,
+    HomeAdminComponent
   ],
   imports: [
     BrowserModule,
