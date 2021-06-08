@@ -1,14 +1,12 @@
 package com.ftn.PreporukaOdevneKombinacije.controller;
 
-import com.ftn.PreporukaOdevneKombinacije.dto.GornjiDeoUnosDTO;
-import com.ftn.PreporukaOdevneKombinacije.dto.IzabranoDTO;
-import com.ftn.PreporukaOdevneKombinacije.dto.PreporuceniGornjiDeoDTO;
-import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
 import com.ftn.PreporukaOdevneKombinacije.helper.GornjiDeoMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PodaciIzvestaj;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Boja;
@@ -61,7 +59,7 @@ public class KomadOdeceController {
             User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             //User user = userService.findOne(1L);
             KomadOdece komadOdece = komadOdeceService.findOne(preporuceniGornjiDeo.getId());
-            komadOdece.setKoeficijentOdabira(komadOdece.getKoeficijentOdabira() - komadOdece.getKoeficijentOdabira() * 5 / 100);
+            komadOdece.setKoeficijentOdabira(komadOdece.getKoeficijentOdabira() - komadOdece.getKoeficijentOdabira() * 3 / 100);
             komadOdeceService.odbijenKomad(komadOdece);
             //komadOdeceService.create(komadOdece);
             return new ResponseEntity<>(komadOdece.getKoeficijentOdabira(),HttpStatus.OK);
@@ -99,13 +97,30 @@ public class KomadOdeceController {
         } catch (Exception e) {
             //e.printStackTrace();
             return new ResponseEntity<>(
-                    "Error! Comment not created!",
+                    "Error! Gornji Deo not created!",
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/report24")
+    public ResponseEntity<?> getKombinacije24() {
+        try {
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            PodaciIzvestaj podaciIzvestaj = komadOdeceService.get24Repost(userDetails);
+            komadOdeceService.deleteListPreporucenih();
+            return new ResponseEntity<>(
+                    new PodaciIzvestajDTO(preporuceniKomadiMapper.toDto(podaciIzvestaj.getPreporuceniKomadi()), podaciIzvestaj.getVremeDTO().getListaVremena() ),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Error!",
                     HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getComment(@PathVariable("id") Long gornjiDeoId) {
+    public ResponseEntity<?> getGornjiDeo(@PathVariable("id") Long gornjiDeoId) {
         GornjiDeo gornjiDeo = gornjiDeoService.findOne(gornjiDeoId);
         if(gornjiDeo == null){
             return new ResponseEntity<>("Error! Comment not found!",HttpStatus.NOT_FOUND);

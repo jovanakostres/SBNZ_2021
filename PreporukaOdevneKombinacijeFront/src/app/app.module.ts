@@ -30,6 +30,7 @@ import { HomeComponent } from './components/home/home.component';
 import { HomeLoggedinUserComponent } from './components/home-loggedin-user/home-loggedin-user.component';
 import { ResultsPersonalizedComponent } from './components/results-personalized/results-personalized.component';
 import { MatIconModule} from '@angular/material/icon';
+import { Aktivnost24SataComponent } from './components/aktivnost24-sata/aktivnost24-sata.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { MatIconModule} from '@angular/material/icon';
     UnregFormComponent,
     HomeComponent,
     HomeLoggedinUserComponent,
-    ResultsPersonalizedComponent
+    ResultsPersonalizedComponent,
+    Aktivnost24SataComponent
   ],
   imports: [
     BrowserModule,

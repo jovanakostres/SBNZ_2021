@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IzabranaKombinacija } from '../model/izabranaKombinacija';
 import { PreporuceniKomad } from '../model/preporuceniKomad';
+import { PreporuceniKomadi } from '../model/preporuceniKomadi';
 import { Unos } from '../model/unos';
 
 @Injectable({
@@ -51,6 +52,18 @@ export class KomadOdeceLogedinService {
 		};
 
 		return this.http.post<IzabranaKombinacija>( this.newsPath + "/accepted", komad, httpOptions);
+  }
+
+  get24Combinations() : Observable<any>{
+    let httpOptions = {};
+
+		httpOptions = {
+			headers: this.headers,
+			observe: 'response',
+
+		};
+
+		return this.http.get<PreporuceniKomadi>( this.newsPath + "/report24", httpOptions);
   }
 
 }

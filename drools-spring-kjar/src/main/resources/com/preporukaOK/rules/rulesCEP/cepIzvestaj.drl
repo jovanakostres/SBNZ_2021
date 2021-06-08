@@ -141,7 +141,7 @@ rule "Preporucivani komadi poslednjih 7 dana"
         //        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
    	    //}
 
-        System.out.println("Preporucivani gornji delovi poslednjih 7 dana, id: "+ $komad.getId());
+        System.out.println("Preporucivani komadi poslednjih 7 dana, id: "+ $komad.getId());
 end
 
 
@@ -150,11 +150,13 @@ rule "Preporucivani komadi poslednjih 24 sata"
     agenda-group "24sataSvePreporucivano"
 	when
 		$preporuceniKomadi : PreporuceniKomadi();
+		$user : User();
+		$vreme : VremeDTO();
 		accumulate(
-        			$e : IzabranKomadOdeceEvent( $komadOdece : komadOdece) from window preporucenaOdeca24sata,
-        			$events : collectSet( $komadOdece )
+        			$e : IzabranKomadOdeceEvent(komadOdece.getKorisnik().getId() == $user.getId()) from window preporucenaOdeca24sata,
+        			$events : collectList( $e )
         		)
-        $komad : KomadOdece() from  $events
+        IzabranKomadOdeceEvent($komad : komadOdece, $satnica : satnica) from  $events
 	then
 
         insert($komad);
@@ -168,8 +170,8 @@ rule "Preporucivani komadi poslednjih 24 sata"
         //    if(gd instanceof Obuca)
         //        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
 	    //}
-
-        System.out.println("Preporucivani gornji delovi poslednjih 24 sata, id: " + $komad.getId());
+        modify($vreme) {getListaVremena().add($satnica);}
+        System.out.println("Preporucivani komadi poslednjih 24 sata, id: " + $komad.getId());
 end
 
 rule "Prikupljanje gornji deo"
@@ -214,4 +216,35 @@ rule "Prikupljanje obuca"
         modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca($obuca));}
         delete($obuca)
         System.out.println("Prikupljanje obuca deo");
+end
+
+
+rule "Izbrisi listu preporucenih"
+    salience -100
+    agenda-group "brisanjeListe"
+    when
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        delete($preporuceniKomadi)
+        System.out.println("Obrisana lista preporucenih");
+end
+
+rule "Izbrisi korisnika"
+    salience -100
+    agenda-group "brisanjeListe"
+    when
+        $user : User();
+    then
+        delete($user)
+        System.out.println("Obrisan korisnik");
+end
+
+rule "Izbrisi vremedto"
+    salience -100
+    agenda-group "brisanjeListe"
+    when
+        $vreme : VremeDTO();
+    then
+        delete($vreme)
+        System.out.println("Obrisan vremedto");
 end

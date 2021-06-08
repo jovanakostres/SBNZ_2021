@@ -22,7 +22,7 @@
           <p>Gornji Deo</p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="warn" (click)="odbijKomad(gornjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countGD > data.preporuceniGornjiDeoDTO.length">
+          <button mat-icon-button color="warn" (click)="odbijKomad(gornjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countGD >= data.preporuceniGornjiDeoDTO.length - 1">
             <mat-icon class="icon-class-fill">clear</mat-icon>
           </button>
         </mat-card-actions>
@@ -34,7 +34,7 @@
           <p>Donji Deo</p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="warn" (click)="odbijKomad(donjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countDD > data.preporuceniDonjiDeoDTO.length">
+          <button mat-icon-button color="warn" (click)="odbijKomad(donjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countDD >= data.preporuceniDonjiDeoDTO.length - 1">
             <mat-icon class="icon-class-fill">clear</mat-icon>
           </button>
         </mat-card-actions>
@@ -46,7 +46,7 @@
           <p>Jakna</p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="warn" (click)="odbijKomad(jakna)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countJakna > data.preporucenaJaknaDTO.length">
+          <button mat-icon-button color="warn" (click)="odbijKomad(jakna)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countJakna >= data.preporucenaJaknaDTO.length - 1">
             <mat-icon class="icon-class-fill">clear</mat-icon>
           </button>
         </mat-card-actions>
@@ -58,7 +58,7 @@
           <p>Obuca</p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="warn" (click)="odbijKomad(obuca)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countObuca > data.preporucenaObucaDTO.length">
+          <button mat-icon-button color="warn" (click)="odbijKomad(obuca)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countObuca >= data.preporucenaObucaDTO.length - 1">
             <mat-icon class="icon-class-fill">clear</mat-icon>
           </button>
         </mat-card-actions>

@@ -1,0 +1,27 @@
+
+<div *ngFor="let kombinacija of listaKombinacija">
+    <div style="display:flex; flex-direction: row; margin-top: 3%; margin-bottom: 0px; margin-left: 1%; margin-right: 16px;">
+    <h2 style=" color: #73cb90;">Kombinacija </h2>
+    <div style="margin-left: auto; margin-right: 0; display: flex; align-items: center; ">
+        <span style="color: #4e7d5e; font-size: 30px; font-weight: bold; font-family: 'Courier New', Courier, monospace;">{{ kombinacija.vreme | date:'HH:mm' }}</span>
+    </div>
+    </div>
+    <div style="display:flex; flex-direction: row; max-width: 100%; margin-bottom: 10px;">
+        <!-- <mat-card class="example-card"> -->
+            
+            <img mat-card-image src='{{kombinacija.gornjiDeo.image}}'/>
+        <!-- </mat-card>
+        <mat-card class="example-card"> -->
+
+            <img mat-card-image src='{{kombinacija.donjiDeo.image}}'/>
+        <!-- </mat-card>
+        <mat-card class="example-card"> -->
+
+            <img mat-card-image src='{{kombinacija.jakna.image}}'/>
+        <!-- </mat-card>
+        <mat-card class="example-card"> -->
+
+            <img mat-card-image src='{{kombinacija.obuca.image}}'/>
+        <!-- </mat-card> -->
+     </div>
+</div>

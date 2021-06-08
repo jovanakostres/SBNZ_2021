@@ -3,7 +3,9 @@ package com.ftn.PreporukaOdevneKombinacije.service;
 import com.ftn.PreporukaOdevneKombinacije.dto.IzabranoDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.VremeDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PodaciIzvestaj;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Pol;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
@@ -30,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.Charset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,22 +162,44 @@ public class KomadOdeceService {
 
     }
 
-    public void saveIzabrano(IzabranoDTO izabranoDTO) {
-        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
-        kieSession.insert(new IzabranKomadOdeceEvent(gornjiDeoService.findOne(izabranoDTO.getIdGornjiDeo())));
-        kieSession.insert(new IzabranKomadOdeceEvent(donjiDeoService.findOne(izabranoDTO.getIdDonjiDeo())));
-        kieSession.insert(new IzabranKomadOdeceEvent(jaknaService.findOne(izabranoDTO.getIdJakna())));
-        kieSession.insert(new IzabranKomadOdeceEvent(obucaService.findOne(izabranoDTO.getIdObuca())));
-
-        kieSession.fireAllRules();
-    }
+//    public void saveIzabrano(IzabranoDTO izabranoDTO) {
+//        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
+//        kieSession.insert(new IzabranKomadOdeceEvent(gornjiDeoService.findOne(izabranoDTO.getIdGornjiDeo())));
+//        kieSession.insert(new IzabranKomadOdeceEvent(donjiDeoService.findOne(izabranoDTO.getIdDonjiDeo())));
+//        kieSession.insert(new IzabranKomadOdeceEvent(jaknaService.findOne(izabranoDTO.getIdJakna())));
+//        kieSession.insert(new IzabranKomadOdeceEvent(obucaService.findOne(izabranoDTO.getIdObuca())));
+//
+//        kieSession.fireAllRules();
+//    }
 
     public void izabraniKomadi(IzabranoDTO izabranoDTO) {
+
         cepIzvestaj.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
-        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdGornjiDeo())));
-        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdDonjiDeo())));
-        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdJakna())));
-        cepIzvestaj.insert(new IzabranKomadOdeceEvent(findOne(izabranoDTO.getIdObuca())));
+
+        if(izabranoDTO.getIdGornjiDeo() != -1){
+            KomadOdece gornjiDeo = findOne(izabranoDTO.getIdGornjiDeo());
+            gornjiDeo.setKoeficijentOdabira(gornjiDeo.getKoeficijentOdabira() + gornjiDeo.getKoeficijentOdabira() * 3/100);
+            cepIzvestaj.insert(new IzabranKomadOdeceEvent(gornjiDeo, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
+            repository.save(gornjiDeo);
+        }
+        if(izabranoDTO.getIdDonjiDeo() != -1){
+            KomadOdece donjiDeo = findOne(izabranoDTO.getIdDonjiDeo());
+            donjiDeo.setKoeficijentOdabira(donjiDeo.getKoeficijentOdabira() + donjiDeo.getKoeficijentOdabira() * 3/100);
+            cepIzvestaj.insert(new IzabranKomadOdeceEvent(donjiDeo, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
+            repository.save(donjiDeo);
+        }
+        if(izabranoDTO.getIdJakna() != -1){
+            KomadOdece jakna = findOne(izabranoDTO.getIdJakna());
+            jakna.setKoeficijentOdabira(jakna.getKoeficijentOdabira() + jakna.getKoeficijentOdabira() * 3/100);
+            cepIzvestaj.insert(new IzabranKomadOdeceEvent(jakna, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
+            repository.save(jakna);
+        }
+        if(izabranoDTO.getIdObuca() != -1){
+            KomadOdece obuca = findOne(izabranoDTO.getIdObuca());
+            obuca.setKoeficijentOdabira(obuca.getKoeficijentOdabira() + obuca.getKoeficijentOdabira() * 3/100);
+            cepIzvestaj.insert(new IzabranKomadOdeceEvent(obuca, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
+            repository.save(obuca);
+        }
 
         cepIzvestaj.fireAllRules();
 
@@ -208,6 +233,30 @@ public class KomadOdeceService {
         }
 
         cepIzvestajKomb.fireAllRules();
+
+    }
+
+    public PodaciIzvestaj get24Repost(User userDetails) {
+
+        cepIzvestaj.getAgenda().getAgendaGroup( "24sataSvePreporucivano" ).setFocus();
+
+        PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
+        VremeDTO vremeDTO = new VremeDTO();
+        cepIzvestaj.insert(userDetails);
+        cepIzvestaj.insert(preporuceniKomadi);
+        cepIzvestaj.insert(vremeDTO);
+
+        cepIzvestaj.fireAllRules();
+
+        return new PodaciIzvestaj(preporuceniKomadi, vremeDTO);
+
+    }
+
+    public void deleteListPreporucenih() {
+
+        cepIzvestaj.getAgenda().getAgendaGroup( "brisanjeListe" ).setFocus();
+
+        cepIzvestaj.fireAllRules();
 
     }
 

@@ -32,7 +32,7 @@ public abstract class KomadOdece {
     @Column(nullable = false, length = 1000000)
     private String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="korisnik_id", nullable=false)
     private User korisnik;
 
@@ -83,7 +83,7 @@ public abstract class KomadOdece {
         this.aktivan = aktivan;
     }
 
-    public KomadOdece(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, User korisnik) {
+    public KomadOdece(Long id, Boja boja, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, User korisnik , boolean aktivan) {
         this.id = id;
         this.boja = boja;
         this.materijal = materijal;
@@ -92,6 +92,7 @@ public abstract class KomadOdece {
         this.koeficijentOdabira = koeficijentOdabira;
         this.image = image;
         this.korisnik = korisnik;
+        this.aktivan = aktivan;
     }
 
     public KomadOdece(){

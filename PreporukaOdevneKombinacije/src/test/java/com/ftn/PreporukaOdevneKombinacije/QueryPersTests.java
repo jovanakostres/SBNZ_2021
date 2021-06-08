@@ -437,10 +437,10 @@ public class QueryPersTests {
 
     public List<KomadOdece> createKomadeOdece(User korisnik){
         List<KomadOdece> donjiDeoList = new ArrayList<>();
-        donjiDeoList.add(new DonjiDeo(1L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", korisnik, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
-        donjiDeoList.add(new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", korisnik, OdecaPodTip.USKA, GornjiDeoEnum.DUKS));
-        donjiDeoList.add(new Jakna(3L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", korisnik, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA));
-        donjiDeoList.add(new Obuca(4L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", korisnik, ObucaEnum.CIZME));
+        donjiDeoList.add(new DonjiDeo(1L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", korisnik, true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
+        donjiDeoList.add(new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", korisnik, true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS));
+        donjiDeoList.add(new Jakna(3L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", korisnik, true, JaknaEnum.JAKNA_PRELAZNI ,OdecaPodTip.SIROKA));
+        donjiDeoList.add(new Obuca(4L, Boja.BELA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", korisnik, true, ObucaEnum.CIZME));
         return donjiDeoList;
     }
 
