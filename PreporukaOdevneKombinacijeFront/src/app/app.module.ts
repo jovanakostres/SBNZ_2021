@@ -32,6 +32,7 @@ import { MatIconModule} from '@angular/material/icon';
 import { Aktivnost24SataComponent } from './components/aktivnost24-sata/aktivnost24-sata.component';
 import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
 import { HomeAdminComponent } from './home-admin/home-admin.component'; 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -42,12 +43,12 @@ import { HomeAdminComponent } from './home-admin/home-admin.component';
     HomeComponent,
     HomeLoggedinUserComponent,
     ResultsPersonalizedComponent,
-    Aktivnost24SataComponent
-
+    Aktivnost24SataComponent,
     AddKomadOdeceComponent,
     HomeAdminComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
@@ -62,7 +63,6 @@ import { HomeAdminComponent } from './home-admin/home-admin.component';
     MatCheckboxModule,
     MatButtonModule,
     HttpClientModule,
-    CommonModule,
     MatCardModule,
     MatGridListModule,
     MatIconModule,
