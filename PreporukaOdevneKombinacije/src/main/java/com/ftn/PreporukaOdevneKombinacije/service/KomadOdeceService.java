@@ -330,6 +330,8 @@ public class KomadOdeceService {
 
     }
 
-
+	public void addKomad(KomadOdece ko) {
+        repository.save(ko);
+    }
 
 }

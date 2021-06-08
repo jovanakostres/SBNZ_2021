@@ -56,6 +56,15 @@ public class DonjiDeo extends KomadOdece {
         this.odecaPodTip = odecaPodTip;
     }
 
+    public DonjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, DuzinaDonjegDela duzina,  Dubina dubina, OdecaPodTip odecaPodTip, DonjiDeoEnum donjiDeoEnum, TipDonjegDela tipDonjegDela, Pol pol){
+        super(boja,bojaIntenzitet, materijal, vreme, prioritet, koeficijentOdabira, image, pol);
+        this.odecaTip= donjiDeoEnum;
+        this.odecaPodTip = odecaPodTip;
+        this.dubina = dubina;
+        this.duzina = duzina;
+        this.tipDonjegDela = tipDonjegDela;
+    }
+
     public DonjiDeo(){}
 
     public DonjiDeoEnum getOdecaTip() {

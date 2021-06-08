@@ -8,6 +8,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { UnregFormComponent } from './components/unreg-form/unreg-form.component';
 import { AuthentificationService } from './service/authentification.service';
+import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
+import { HomeAdminComponent } from './components/home-admin/home-admin.component';
 
 const routes: Routes = [
   { 
@@ -32,7 +34,9 @@ const routes: Routes = [
     component : LoginComponent
   }, //canActivate: [AuthGuard], component: LoginComponent},
   { path: "register-form", component: RegisterFormComponent },
-  { path: "opsta-preporuka", component: UnregFormComponent }
+  { path: "opsta-preporuka", component: UnregFormComponent },
+  { path: "home-admin", component: HomeAdminComponent },
+  { path: "add-odeca", component: AddKomadOdeceComponent }
 ];
 
 @NgModule({

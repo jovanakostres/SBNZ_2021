@@ -47,6 +47,14 @@ public class GornjiDeo extends KomadOdece{
 
     public GornjiDeo(){}
 
+    public GornjiDeo(Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, Izrez izrez, OdecaPodTip odecaPodTip, GornjiDeoEnum odecaTip, DuzinaRukava duzinaRukava, Pol pol) {
+        super(boja,bojaIntenzitet, materijal, vreme, prioritet, koeficijentOdabira, image, pol);
+        this.odecaTip = odecaTip;
+        this.izrez = izrez;
+        this.odecaPodTip = odecaPodTip;
+        this.duzinaRukava = duzinaRukava;
+    }
+
     public DuzinaRukava getDuzinaRukava() {
         return duzinaRukava;
     }

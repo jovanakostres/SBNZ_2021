@@ -1,1 +1,148 @@
-<p>add-komad-odece works!</p>
+<div class = "glavni">
+    <form [formGroup]="myForm">
+        <ng-container *ngIf="step == 1" >
+            <mat-form-field>
+                <mat-label>Komad odece</mat-label>
+                <mat-select (selectionChange)="changedKomad($event)">
+                    <mat-option *ngFor="let komad of tip_odece;" [value]="komad.value">
+                        {{komad.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="step == 2" >
+            <mat-form-field>
+                <mat-label>Boja</mat-label>
+                <mat-select  formControlName = "boja" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of colors;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Boja Intenzitet</mat-label>
+                <mat-select  formControlName = "bojaIntenzitet" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of bojaint;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>materijal</mat-label>
+                <mat-select  formControlName = "materijal" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of materijal;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>pol</mat-label>
+                <mat-select  formControlName = "pol" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of pol;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            
+            <input type="file" #fileUpload id="fileUpload" name="fileUpload" accept="image/*" (change)="handleUpload($event)" />
+            
+            <br>
+            <mat-form-field *ngIf="gornji">
+                <mat-label>duzinaRukava</mat-label>
+                <mat-select  formControlName = "duzinaRukava" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of duzinaRukava;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="gornji">
+                <mat-label>izrez</mat-label>
+                <mat-select  formControlName = "izrez" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of izrez;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="gornji">
+                <mat-label>odecaPodTip</mat-label>
+                <mat-select  formControlName = "odecaTip" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of odecaTip;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="donji">
+                <mat-label>tipDonjegDela</mat-label>
+                <mat-select  formControlName = "odecadTip" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of odecadTip;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="donji">
+                <mat-label>odecadTip</mat-label>
+                <mat-select  formControlName = "tipDonjegDela" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of tipDonjegDela;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="donji">
+                <mat-label>dubina</mat-label>
+                <mat-select  formControlName = "dubina" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of dubina;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="donji">
+                <mat-label>duzina</mat-label>
+                <mat-select  formControlName = "duzina" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of duzina;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="jakna">
+                <mat-label>odecajTip</mat-label>
+                <mat-select  formControlName = "odecajTip" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of odecajTip;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="obuca">
+                <mat-label>obucaTip</mat-label>
+                <mat-select  formControlName = "obucaTip" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of obucaTip;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field *ngIf="obuca">
+                <mat-label>stikla</mat-label>
+                <mat-select  formControlName = "stikla" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of stikla;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container>
+        <br>
+        <button mat-raised-button color="primary" *ngIf="step == 1" (click)="step = step + 1; invalid = true;" [disabled] = "invalid">Next</button>
+        <button mat-raised-button color="primary" *ngIf="step == 2" [disabled] = "invalid" (click) = onSubmit(myForm)>Submit</button>
+    </form>
+</div>
