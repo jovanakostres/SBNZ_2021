@@ -106,7 +106,7 @@ public class KomadOdeceController {
     public ResponseEntity<?> getKombinacije24() {
         try {
             User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            PodaciIzvestaj podaciIzvestaj = komadOdeceService.get24Repost(userDetails);
+            PodaciIzvestaj podaciIzvestaj = komadOdeceService.get24Report(userDetails);
             komadOdeceService.deleteListPreporucenih();
             return new ResponseEntity<>(
                     new PodaciIzvestajDTO(preporuceniKomadiMapper.toDto(podaciIzvestaj.getPreporuceniKomadi()), podaciIzvestaj.getVremeDTO().getListaVremena() ),
@@ -118,6 +118,41 @@ public class KomadOdeceController {
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/report7Most")
+    public ResponseEntity<?> get7NajvisePreporucivano() {
+        try {
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            PreporuceniKomadi preporuceniKomadi = komadOdeceService.get7Most(userDetails);
+            komadOdeceService.deleteListPreporucenih();
+            return new ResponseEntity<>(
+                    preporuceniKomadiMapper.toDto(preporuceniKomadi),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Error!",
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/report7")
+    public ResponseEntity<?> getKombinacije7() {
+        try {
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            PodaciIzvestaj podaciIzvestaj = komadOdeceService.get7Report(userDetails);
+            komadOdeceService.deleteListPreporucenih();
+            return new ResponseEntity<>(
+                    new PodaciIzvestajDTO(preporuceniKomadiMapper.toDto(podaciIzvestaj.getPreporuceniKomadi()), podaciIzvestaj.getVremeDTO().getListaVremena() ),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Error!",
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getGornjiDeo(@PathVariable("id") Long gornjiDeoId) {

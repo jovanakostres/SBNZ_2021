@@ -236,7 +236,7 @@ public class KomadOdeceService {
 
     }
 
-    public PodaciIzvestaj get24Repost(User userDetails) {
+    public PodaciIzvestaj get24Report(User userDetails) {
 
         cepIzvestaj.getAgenda().getAgendaGroup( "24sataSvePreporucivano" ).setFocus();
 
@@ -249,6 +249,36 @@ public class KomadOdeceService {
         cepIzvestaj.fireAllRules();
 
         return new PodaciIzvestaj(preporuceniKomadi, vremeDTO);
+
+    }
+
+    public PodaciIzvestaj get7Report(User userDetails) {
+
+        cepIzvestaj.getAgenda().getAgendaGroup( "7danaSvePreporucivano" ).setFocus();
+
+        PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
+        VremeDTO vremeDTO = new VremeDTO();
+        cepIzvestaj.insert(userDetails);
+        cepIzvestaj.insert(preporuceniKomadi);
+        cepIzvestaj.insert(vremeDTO);
+
+        cepIzvestaj.fireAllRules();
+
+        return new PodaciIzvestaj(preporuceniKomadi, vremeDTO);
+
+    }
+
+    public PreporuceniKomadi get7Most(User userDetails) {
+
+        cepIzvestaj.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
+
+        PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
+        cepIzvestaj.insert(userDetails);
+        cepIzvestaj.insert(preporuceniKomadi);
+
+        cepIzvestaj.fireAllRules();
+
+        return preporuceniKomadi;
 
     }
 

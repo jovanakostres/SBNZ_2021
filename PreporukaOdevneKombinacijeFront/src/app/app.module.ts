@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { UnregFormComponent } from './components/unreg-form/unreg-form.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
@@ -33,6 +33,9 @@ import { Aktivnost24SataComponent } from './components/aktivnost24-sata/aktivnos
 import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
 import { HomeAdminComponent } from './home-admin/home-admin.component'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Aktivnost7DanaComponent } from './components/aktivnost7-dana/aktivnost7-dana.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -45,11 +48,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ResultsPersonalizedComponent,
     Aktivnost24SataComponent,
     AddKomadOdeceComponent,
-    HomeAdminComponent
+    HomeAdminComponent,
+    Aktivnost7DanaComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     NoopAnimationsModule,
     MatToolbarModule,
@@ -67,6 +72,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatGridListModule,
     MatIconModule,
     MatSnackBarModule,
+    MatTooltipModule,
+    MatDividerModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

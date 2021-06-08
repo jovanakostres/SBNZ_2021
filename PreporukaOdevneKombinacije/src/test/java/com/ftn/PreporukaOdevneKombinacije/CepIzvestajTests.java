@@ -58,6 +58,7 @@ public class CepIzvestajTests {
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
 
         kSession.insert(preporuceniKomadi);
+        kSession.insert(user);
         kSession.fireAllRules();
 
         assertEquals( Long.valueOf(1), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getGornjiDeo().getId());
@@ -70,6 +71,7 @@ public class CepIzvestajTests {
         kSession.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
         PreporuceniKomadi preporuceniKomadi1 = new PreporuceniKomadi();
         kSession.insert(preporuceniKomadi1);
+        kSession.insert(user);
         kSession.fireAllRules();
         assertEquals( Long.valueOf(1), preporuceniKomadi1.getPreporuceniGornjiDelovi().get(0).getGornjiDeo().getId());
         assertEquals( Double.valueOf(2), preporuceniKomadi1.getPreporuceniGornjiDelovi().get(0).getPoeni());
@@ -81,6 +83,7 @@ public class CepIzvestajTests {
         PreporuceniKomadi preporuceniKomadi2 = new PreporuceniKomadi();
         kSession.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
         kSession.insert(preporuceniKomadi2);
+        kSession.insert(user);
         kSession.fireAllRules();
         assertEquals( 0, preporuceniKomadi2.getPreporuceniGornjiDelovi().size());
 
@@ -124,6 +127,8 @@ public class CepIzvestajTests {
         kSession.fireAllRules();
 
         kSession.getAgenda().getAgendaGroup( "7danaSvePreporucivano" ).setFocus();
+        kSession.insert(user);
+        kSession.insert(new VremeDTO());
         kSession.insert(preporuceniKomadi);
         kSession.fireAllRules();
 
@@ -134,6 +139,8 @@ public class CepIzvestajTests {
         clock.advanceTime(6, TimeUnit.DAYS);
         kSession.getAgenda().getAgendaGroup( "7danaSvePreporucivano" ).setFocus();
         PreporuceniKomadi preporuceniKomadi1 = new PreporuceniKomadi();
+        kSession.insert(user);
+        kSession.insert(new VremeDTO());
         kSession.insert(preporuceniKomadi1);
         kSession.fireAllRules();
         assertEquals( 2, preporuceniKomadi1.getPreporuceniGornjiDelovi().size());
@@ -143,6 +150,8 @@ public class CepIzvestajTests {
         clock.advanceTime(1, TimeUnit.DAYS);
         PreporuceniKomadi preporuceniKomadi2 = new PreporuceniKomadi();
         kSession.getAgenda().getAgendaGroup( "7danaSvePreporucivano" ).setFocus();
+        kSession.insert(user);
+        kSession.insert(new VremeDTO());
         kSession.insert(preporuceniKomadi2);
         kSession.fireAllRules();
         assertEquals( 0, preporuceniKomadi2.getPreporuceniGornjiDelovi().size());

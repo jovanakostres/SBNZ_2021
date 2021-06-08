@@ -1,20 +1,18 @@
-@import "../../app.component.scss";
 
-img{
-  object-fit: cover;
-  height: 360px;
-  object-position: center;
-   /*this makes the image in src fit to the size specified below*/
-  width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
-  // height:100%;
-  margin: 1% 1%;
-  border-radius: 10px;
-
-}
+.img-comb{
+    object-fit: cover;
+    height: 360px;
+    object-position: center;
+     /*this makes the image in src fit to the size specified below*/
+    width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+    // height:100%;
+    margin: 1% 1%;
+  
+  }
 
 .example-card {
-    max-width: 300px;
-    max-height: 360px;
+    max-width: 350px;
+    max-height: 410px;
     margin-top: 5px;
     margin-bottom: 5px;
     
@@ -39,12 +37,9 @@ img{
     }
   
     img{
-      object-fit: cover;
-      height: 360px;
-      object-position: center;
-       /*this makes the image in src fit to the size specified below*/
-      width: 100px; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
-      // height:100%;
+      object-fit: cover; /*this makes the image in src fit to the size specified below*/
+      width: auto; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+      height:337px;
     }
   
     button {

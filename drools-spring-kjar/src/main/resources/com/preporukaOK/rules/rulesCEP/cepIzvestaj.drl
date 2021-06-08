@@ -56,8 +56,9 @@ rule "Najvise preporucivan gornji deo poslednjih 7 dana"
     agenda-group "7danaNajvise"
 	when
 		$preporuceniKomadi : PreporuceniKomadi();
+		$user : User();
 		accumulate(
-        			$e : UcestalostKomada( komadOdece.class == GornjiDeo.class ) from window najvisePreporucenaOdeca7dana,
+        			$e : UcestalostKomada( komadOdece.class == GornjiDeo.class, komadOdece.getKorisnik().getId() == $user.getId() ) from window najvisePreporucenaOdeca7dana,
         			$events : collectList( $e )
         		)
 		UcestalostKomada( $komad : komadOdece, $brojP : brojPonavljanja) from $events;
@@ -72,8 +73,9 @@ rule "Najvise preporucivana obuca poslednjih 7 dana"
     agenda-group "7danaNajvise"
 	when
 		$preporuceniKomadi : PreporuceniKomadi();
+		$user : User();
 		accumulate(
-        			$e : UcestalostKomada( komadOdece.class == Obuca.class ) from window najvisePreporucenaOdeca7dana,
+        			$e : UcestalostKomada( komadOdece.class == Obuca.class, komadOdece.getKorisnik().getId() == $user.getId() ) from window najvisePreporucenaOdeca7dana,
         			$events : collectList( $e )
         		)
 		UcestalostKomada(   $komad : komadOdece, $brojP : brojPonavljanja) from $events;
@@ -88,8 +90,9 @@ rule "Najvise preporucivani donji deo poslednjih 7 dana"
     agenda-group "7danaNajvise"
 	when
 		$preporuceniKomadi : PreporuceniKomadi( );
+		$user : User();
 		accumulate(
-        			$e : UcestalostKomada( komadOdece.class == DonjiDeo.class) from window najvisePreporucenaOdeca7dana,
+        			$e : UcestalostKomada( komadOdece.class == DonjiDeo.class, komadOdece.getKorisnik().getId() == $user.getId()) from window najvisePreporucenaOdeca7dana,
         			$events : collectList( $e )
         		)
 		UcestalostKomada(  $komad : komadOdece, $brojP : brojPonavljanja) from $events;
@@ -104,8 +107,9 @@ rule "Najvise preporucivana jakna poslednjih 7 dana"
     agenda-group "7danaNajvise"
 	when
 		$preporuceniKomadi : PreporuceniKomadi();
+		$user : User();
 		accumulate(
-        			$e : UcestalostKomada( komadOdece.class == Jakna.class ) from window najvisePreporucenaOdeca7dana,
+        			$e : UcestalostKomada( komadOdece.class == Jakna.class, komadOdece.getKorisnik().getId() == $user.getId() ) from window najvisePreporucenaOdeca7dana,
         			$events : collectList( $e )
         		)
 		UcestalostKomada(  $komad : komadOdece, $brojP : brojPonavljanja) from $events;
@@ -123,11 +127,13 @@ rule "Preporucivani komadi poslednjih 7 dana"
     agenda-group "7danaSvePreporucivano"
 	when
 		$preporuceniKomadi : PreporuceniKomadi();
+		$user : User();
+		$vreme : VremeDTO();
 		accumulate(
-        			$e : IzabranKomadOdeceEvent( $komadOdece : komadOdece) from window preporucenaOdeca7dana,
-        			$events : collectSet( $komadOdece )
+        			$e : IzabranKomadOdeceEvent( komadOdece.getKorisnik().getId() == $user.getId()) from window preporucenaOdeca7dana,
+        			$events : collectList( $e )
         		)
-        $komad : KomadOdece() from  $events
+        IzabranKomadOdeceEvent($komad : komadOdece, $satnica : satnica) from  $events
 	then
         insert($komad);
 	    //for(Object gd : $events ) {
@@ -140,7 +146,7 @@ rule "Preporucivani komadi poslednjih 7 dana"
         //    if(gd instanceof Obuca)
         //        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca(gd));}
    	    //}
-
+        modify($vreme) {getListaVremena().add($satnica);}
         System.out.println("Preporucivani komadi poslednjih 7 dana, id: "+ $komad.getId());
 end
 

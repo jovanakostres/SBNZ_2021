@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IzabranaKombinacija } from '../model/izabranaKombinacija';
+import { PodaciIzvestaj } from '../model/podaciIzvestaj';
 import { PreporuceniKomad } from '../model/preporuceniKomad';
 import { PreporuceniKomadi } from '../model/preporuceniKomadi';
 import { Unos } from '../model/unos';
@@ -63,7 +64,31 @@ export class KomadOdeceLogedinService {
 
 		};
 
-		return this.http.get<PreporuceniKomadi>( this.newsPath + "/report24", httpOptions);
+		return this.http.get<PodaciIzvestaj>( this.newsPath + "/report24", httpOptions);
+  }
+
+  get7MostUsed() : Observable<any>{
+    let httpOptions = {};
+
+		httpOptions = {
+			headers: this.headers,
+			observe: 'response',
+
+		};
+
+		return this.http.get<PreporuceniKomadi>( this.newsPath + "/report7Most", httpOptions);
+  }
+
+  get7Combinations() : Observable<any>{
+    let httpOptions = {};
+
+		httpOptions = {
+			headers: this.headers,
+			observe: 'response',
+
+		};
+
+		return this.http.get<PodaciIzvestaj>( this.newsPath + "/report7", httpOptions);
   }
 
 }
