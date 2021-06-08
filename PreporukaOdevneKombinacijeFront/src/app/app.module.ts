@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule} from '@angular/material/card';   
-import { MatSnackBarModule} from '@angular/material/snack-bar';  
 import { MatGridListModule} from '@angular/material/grid-list';   
 import { AuthentificationService } from './service/authentification.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -30,7 +29,9 @@ import { HomeComponent } from './components/home/home.component';
 import { HomeLoggedinUserComponent } from './components/home-loggedin-user/home-loggedin-user.component';
 import { ResultsPersonalizedComponent } from './components/results-personalized/results-personalized.component';
 import { MatIconModule} from '@angular/material/icon';
-
+import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
+import { HomeAdminComponent } from './home-admin/home-admin.component';
+import { MatSnackBarModule} from '@angular/material/snack-bar';  
 
 @NgModule({
   declarations: [
@@ -40,7 +41,9 @@ import { MatIconModule} from '@angular/material/icon';
     UnregFormComponent,
     HomeComponent,
     HomeLoggedinUserComponent,
-    ResultsPersonalizedComponent
+    ResultsPersonalizedComponent,
+    AddKomadOdeceComponent,
+    HomeAdminComponent
   ],
   imports: [
     BrowserModule,

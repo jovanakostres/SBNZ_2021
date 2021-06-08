@@ -35,7 +35,10 @@ export class LoginComponent implements OnInit {
       resData => {
         console.log(resData);
         this.isLoading = false;
-        this.router.navigate(['/home-user']);
+        if(email!="praviadmin@admin.com")
+          this.router.navigate(['/home-user']);
+        else
+          this.router.navigate(['/home-admin']);
       },
       errorMessage => {
         console.log(errorMessage);

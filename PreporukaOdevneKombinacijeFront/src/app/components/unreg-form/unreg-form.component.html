@@ -1,1 +1,97 @@
-<p>unreg-form works!</p>
+<div class = "glavni" *ngIf="dataSourceActive == 0">
+    <form [formGroup]="myForm">
+        <ng-container *ngIf="step == 1" >
+            <mat-form-field>
+                <mat-label>Obim ramena</mat-label>
+                <input matInput type="text" formControlName="ramena" placeholder="ramena" (keyup)="onKey($event)"/>
+                <mat-error>
+                    Dozvoljeni samo numericki karakteri!
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Obim struka</mat-label>
+                <input matInput type="text" formControlName="struk" placeholder="struk" (keyup)="onKey($event)"/>
+                <mat-error>
+                    Dozvoljeni samo numericki karakteri!
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Obim kukova</mat-label>
+                <input matInput type="text" formControlName="kukovi" placeholder="kukovi" (keyup)="onKey($event)"/>
+                <mat-error>
+                    Dozvoljeni samo numericki karakteri!
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Visina</mat-label>
+                <input matInput type="text" formControlName="visina" placeholder="visina" (keyup)="onKey($event)"/>
+                <mat-error>
+                    Dozvoljeni samo numericki karakteri!
+                </mat-error>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="step == 2" >
+            <mat-form-field>
+                <mat-label>Dresscode</mat-label>
+                <mat-select  formControlName = "dresscode" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let dress of dresscode;" [value]="dress.value">
+                    {{dress.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    Please provide a valid title
+                  </mat-error>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="step == 3" >
+            <mat-form-field>
+                <mat-label>Boja koze</mat-label>
+                <mat-select  formControlName = "bojaKoze" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let boja of bojakoze;" [value]="boja.value">
+                    {{boja.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    Please provide a valid title
+                  </mat-error>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="step == 4" >
+            <mat-form-field>
+                <mat-label>Vreme</mat-label>
+                <mat-select formControlName = "vreme" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let vreme of godisnjedoba;" [value]="vreme.value">
+                    {{vreme.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    Please provide a valid title
+                  </mat-error>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="step == 5" >
+            <mat-form-field>
+                <mat-label>Pol</mat-label>
+                <mat-select formControlName = "pol" (ngModelChange)="changed()">
+                    <mat-option *ngFor="let p of pol;" [value]="p.value">
+                    {{p.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    Please provide a valid title
+                  </mat-error>
+            </mat-form-field>
+        </ng-container>
+        <br>
+        <button mat-raised-button color="primary" *ngIf="step < 5" (click)="step = step + 1; invalid = true;" [disabled] = "invalid" >Next</button>
+        <button mat-raised-button color="primary" *ngIf="step == 5" [disabled] = "invalid" (click) = onSubmit(myForm)>Submit</button>
+    </form>
+</div>
+
+<app-results-personalized
+  *ngIf="dataSource"
+  [data]="dataSource">
+</app-results-personalized> 

@@ -4,6 +4,7 @@ import { HomeLoggedinUserComponent } from './components/home-loggedin-user/home-
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
+import { UnregFormComponent } from './components/unreg-form/unreg-form.component';
 import { AuthentificationService } from './service/authentification.service';
 
 const routes: Routes = [
@@ -16,8 +17,8 @@ const routes: Routes = [
     component: HomeLoggedinUserComponent,
   },
   { path: "login", component : LoginComponent}, //canActivate: [AuthGuard], component: LoginComponent},
-  { path: "register-form", component: RegisterFormComponent }
-
+  { path: "register-form", component: RegisterFormComponent },
+  { path: "opsta-preporuka", component: UnregFormComponent }
 ];
 
 @NgModule({

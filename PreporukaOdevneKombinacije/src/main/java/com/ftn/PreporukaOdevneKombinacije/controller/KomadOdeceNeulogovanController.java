@@ -3,6 +3,8 @@ package com.ftn.PreporukaOdevneKombinacije.controller;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
+import com.ftn.PreporukaOdevneKombinacije.helper.GornjiDeoMapper;
+import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Boja;
@@ -27,6 +29,9 @@ public class KomadOdeceNeulogovanController {
     @Autowired
     private KomadOdeceService komadOdeceService;
 
+    private PreporuceniKomadiMapper preporuceniKomadiMapper;
+
+
     @PostMapping("/recommendation")
     public ResponseEntity<?> getPreporukaPersonalizovano(@RequestBody UnosNeulogovanDTO unosDTO) {
         //User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -35,8 +40,12 @@ public class KomadOdeceNeulogovanController {
         if(prep==null){
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
         }else{
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(preporuceniKomadiMapper.toDto(prep),HttpStatus.OK);
         }
+    }
+
+    public KomadOdeceNeulogovanController(){
+        preporuceniKomadiMapper = new PreporuceniKomadiMapper();
     }
 
 }
