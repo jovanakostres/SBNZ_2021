@@ -1,0 +1,302 @@
+package com.preporukaOK.rules.rulesObucaOpste
+
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import accumulate com.ftn.PreporukaOdevneKombinacije.droolsFunction.SumPerClothingItem sumPerItem;
+
+
+declare ObucaIzabran
+    obuca : ObucaEnum
+end
+
+declare StiklaIzabran
+    stikla : Stikla
+end
+
+declare MaterijalIzabran
+	materijal: Materijal
+end
+
+declare Marker
+    uniqueIdentifier : String
+end
+
+declare BojaIzabran
+    boja : Boja
+end
+
+rule "A1 - 1 - Dresscode lezeran leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN || dressCode == DressCode.IZLAZAK, vreme == "leto");
+    then
+    	insert(new StiklaIzabran(Stikla.SREDNJA));
+        insert(new StiklaIzabran(Stikla.NISKA));
+        insert(new StiklaIzabran(Stikla.VISOKA));
+        insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.SANDALE));
+        insert(new ObucaIzabran(ObucaEnum.PAPUCE));
+        System.out.println("lezeran leto");
+end
+
+rule "A1 - 2a - Dresscode lezeran prolece/jesen"
+    salience 500
+        when
+            $unos : UnosNeulogovanDTO(dressCode == DressCode.IZLAZAK, vreme == "prolece" || vreme == "jesen");
+        then
+        	insert(new StiklaIzabran(Stikla.SREDNJA));
+            insert(new StiklaIzabran(Stikla.VISOKA));
+            insert(new StiklaIzabran(Stikla.NONE));
+            insert(new ObucaIzabran(ObucaEnum.CIPELE));
+        System.out.println("lezeran prolece jesen");
+end
+
+rule "A1 - 2b - Dresscode lezeran prolece/jesen"
+    salience 500
+        when
+            $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN, vreme == "prolece" || vreme == "jesen");
+        then
+        	insert(new StiklaIzabran(Stikla.SREDNJA));
+            insert(new StiklaIzabran(Stikla.NISKA));
+            insert(new StiklaIzabran(Stikla.NONE));
+            insert(new ObucaIzabran(ObucaEnum.CIPELE));
+            insert(new ObucaIzabran(ObucaEnum.PATIKE));
+        System.out.println("lezeran prolece jesen");
+end
+
+
+rule "A1 - 3 - Dresscode lezeran zima"
+    salience 500
+        when
+            $unos : UnosNeulogovanDTO(dressCode == DressCode.LEZERAN || dressCode == DressCode.IZLAZAK, vreme == "zima");
+        then
+        	insert(new StiklaIzabran(Stikla.SREDNJA));
+            insert(new StiklaIzabran(Stikla.NISKA));
+            insert(new StiklaIzabran(Stikla.NONE));
+            insert(new ObucaIzabran(ObucaEnum.CIZME));
+        System.out.println("lezeran zima");
+end
+
+rule "A2 - 1 - Dresscode blacktie leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE, vreme == "leto");
+    then
+    	insert(new StiklaIzabran(Stikla.SREDNJA));
+        insert(new StiklaIzabran(Stikla.NISKA));
+        insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.CIPELE));
+        insert(new ObucaIzabran(ObucaEnum.SANDALE));
+    	System.out.println("blacktie leto");
+end
+
+rule "A2 - 2 - Dresscode blacktie prolece/jesen"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.BLACKTIE, vreme == "prolece" || vreme == "jesen" || vreme == "zima");
+    then
+    	insert(new StiklaIzabran(Stikla.SREDNJA));
+        insert(new StiklaIzabran(Stikla.NISKA));
+        insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.CIPELE));
+    	System.out.println("blacktie prolece jesen zima");
+end
+
+rule "A3 - 1 - Dresscode sportski leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.SPORTSKI, vreme == "leto" || vreme == "prolece" || vreme == "jesen");
+    then
+    	insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.PATIKE));
+    	System.out.println("sportski leto prolece jesen");
+end
+
+rule "A3 - 3 - Dresscode sportski zima"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.SPORTSKI, vreme == "zima");
+    then
+    	insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.CIZME));
+        System.out.println("sportski zima");
+end
+
+rule "A5 - 1 - Dresscode formalan leto"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN, vreme == "leto");
+    then
+    	insert(new StiklaIzabran(Stikla.SREDNJA));
+        insert(new StiklaIzabran(Stikla.NISKA));
+        insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.CIPELE));
+    	System.out.println("formalan leto");
+end
+
+rule "A5 - 2 - Dresscode formalan prolece/jesen"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN, vreme == "prolece" || vreme == "jesen");
+    then
+    	insert(new StiklaIzabran(Stikla.SREDNJA));
+        insert(new StiklaIzabran(Stikla.NISKA));
+        insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.CIPELE));
+    	System.out.println("formalan prolece jesen");
+end
+
+rule "A5 - 3 - Dresscode formalan zima"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(dressCode == DressCode.FORMALAN, vreme == "zima");
+    then
+    	insert(new StiklaIzabran(Stikla.SREDNJA));
+        insert(new StiklaIzabran(Stikla.NISKA));
+        insert(new StiklaIzabran(Stikla.NONE));
+        insert(new ObucaIzabran(ObucaEnum.CIZME));
+        System.out.println("formalan zima");
+end
+
+rule "AT - Dodavanje bodova za tip odece"
+    salience 350
+    no-loop
+    when
+        $obuca : Obuca();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	ObucaIzabran( obuca == $obuca.getObucaTip()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $obuca));
+        System.out.println("A bodovi");
+end
+
+rule "AM - Dodavanje bodova za materijal"
+    salience 340
+    no-loop
+    when
+        $obuca : Obuca();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                           StiklaIzabran( stikla == $obuca.getStikla()),
+                           count(1)
+        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $obuca));
+    	System.out.println("AM bodovi");
+end
+
+rule "F2-1 boje dresscode ne utice prolece"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'prolece' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.ZELENA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-1");
+end
+
+rule "F2-2 boje dresscode ne utice leto"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'leto' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-2");
+end
+
+rule "F2-3 boje dresscode ne utice jesen"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'jesen' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ZUTA));
+        System.out.println("F2-3");
+end
+
+rule "F2-4 boje dresscode ne utice zima"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'zima' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        System.out.println("F2-4");
+end
+
+rule "F - Dodavanje bodova za boju"
+    salience 250
+    no-loop
+    when
+        $obuca : Obuca();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	BojaIzabran( boja == $obuca.getBoja()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $obuca));
+        System.out.println("F bodovi");
+end
+
+rule "G - Biranje komada prema koeficijentu preporuke"
+	salience ($poeni*10)
+	lock-on-active
+    when
+    	$obuca : Obuca();
+    	 accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
+    	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
+                       	average($d) );
+        $poeni : Double(this >= $avg) from accumulate(
+                	KoeficijentPreporuke(komad.getId() == $obuca.getId(), $b1:Double.valueOf(bodovi * komad.getKoeficijentOdabira())),
+                	sum($b1)
+                );
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        modify($preporuceniKomadi) {getPreporucenaObuca().add(new PreporucenaObuca($obuca, $poeni));}
+        System.out.println($ukupneVrednosti);
+    	System.out.println("G Biranje komada prema koeficijentu preporuke, izabran komad : " + $obuca.getId() + " broj poena : " + $poeni + "  srednja vrednost poena : " + $avg);
+end
+
+rule "Brisanje poena nakon odabira"
+	salience -20
+	no-loop
+	when
+		$koeficijentPreporuke:KoeficijentPreporuke();
+		$preporuceniKomadi : PreporuceniKomadi();
+	then
+		delete($koeficijentPreporuke);
+end
+
+rule "Provera uspesnosti"
+	salience -30
+	no-loop
+    when
+        preporuceniKomadi : PreporuceniKomadi( preporucenaObuca.size > 0);
+    then
+    	System.out.println("Uspesno zavrsena preporuka");
+end

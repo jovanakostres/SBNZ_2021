@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AddDonji } from 'src/app/model/addDonjiDeo';
 import { AddGornji } from 'src/app/model/addGornjiDeo';
 import { AddJakna } from 'src/app/model/addJakna';
@@ -109,7 +110,7 @@ export class AddKomadOdeceComponent implements OnInit {
     {value: 'TRENERKA', viewValue: 'TRENERKA'}
   ];
   
-  constructor(private fb : FormBuilder, private service: KomadOpsteService) {
+  constructor(private fb : FormBuilder, private router: Router, private service: KomadOpsteService) {
     this.myForm = this.fb.group({
       'boja': [''],
       'bojaIntenzitet': [''],
@@ -207,8 +208,8 @@ export class AddKomadOdeceComponent implements OnInit {
 
     this.service.addKomad(komad).subscribe(
       result => {
-        console.log(result);
-        console.log("OK");
+        alert("OK");
+        this.router.navigate(['/home-admin']);
       },
       err => {
         console.log("ERROR");

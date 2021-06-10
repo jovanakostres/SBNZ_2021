@@ -352,7 +352,7 @@ public class KomadOdeceService {
         preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeoOpste(unosDTO,donjiDeoList,preporuceniKomadi);
         System.out.println(jaknaList.size());
         preporuceniKomadi = jaknaService.getPreporucenaJaknaOpste(unosDTO,jaknaList,preporuceniKomadi);
-        //preporuceniKomadi = obucaService.getPreporuceniDonjiDeo(unosDTO,user,obucaList, preporuceniKomadi);
+        preporuceniKomadi = obucaService.getPreporuceniObuca(unosDTO,obucaList, preporuceniKomadi);
 
         return preporuceniKomadi;
     }

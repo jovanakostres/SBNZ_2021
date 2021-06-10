@@ -176,9 +176,11 @@ public class GornjiDeoService {
 
 
 
-        kieSession.insert(preporuceniKomadi);
+        //kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);
 
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
 //        HashMap<Long, Double> a = new HashMap<>();

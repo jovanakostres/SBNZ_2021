@@ -1,9 +1,12 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.model.Jakna;
 import com.ftn.PreporukaOdevneKombinacije.model.Obuca;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.repository.DonjiDeoRepository;
@@ -139,5 +142,50 @@ public class ObucaService {
         map.put(DressCode.IZLAZAK, 250);
         map.put(DressCode.SPORTSKI, 250);
         return map;
+    }
+
+    public void insertObucaTip(KieSession kieSession){
+        kieSession.insert(ObucaEnum.CIPELE);
+        kieSession.insert(ObucaEnum.CIZME);
+        kieSession.insert(ObucaEnum.PAPUCE);
+        kieSession.insert(ObucaEnum.SANDALE);
+        kieSession.insert(ObucaEnum.PATIKE);
+    }
+
+    public void insertStikla(KieSession kieSession){
+        kieSession.insert(Stikla.NISKA);
+        kieSession.insert(Stikla.VISOKA);
+        kieSession.insert(Stikla.SREDNJA);
+        kieSession.insert(Stikla.NONE);
+    }
+
+    public PreporuceniKomadi getPreporuceniObuca(UnosNeulogovanDTO unosDTO, List<Obuca> obucaList, PreporuceniKomadi preporuceniKomadi) {
+        KieSession kieSession = kieContainer.newKieSession("ooPersRulesSession");
+        for(Obuca komadOdece : obucaList){
+            kieSession.insert(komadOdece);
+        }
+
+        for(PreporuceniGornjiDeo pgd : preporuceniKomadi.getPreporuceniGornjiDelovi()){
+            kieSession.insert(pgd);
+        }
+
+        insertStikla(kieSession);
+        insertObucaTip(kieSession);
+
+
+        //kieSession.insert(preporuceniKomadi);
+        kieSession.insert(unosDTO);
+
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
+        kieSession.fireAllRules();
+
+//        HashMap<Long, Double> a = new HashMap<>();
+//        a.entrySet().forEach(entry -> {
+//            System.out.println((Long)entry.getKey() + " " + entry.getValue());
+//        });
+
+        kieSession.dispose();
+        return preporuceniKomadi;
     }
 }
