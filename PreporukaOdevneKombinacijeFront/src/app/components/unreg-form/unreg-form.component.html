@@ -49,11 +49,14 @@
         <ng-container *ngIf="step == 3" >
             <mat-form-field>
                 <mat-label>Boja koze</mat-label>
-                <mat-select  formControlName = "bojaKoze" (ngModelChange)="changed()">
+                <mat-radio-group formControlName = "bojaKoze">
+                    <mat-radio-button *ngFor="let boja of bojakoze;" [value]="boja.value">{{boja.viewValue}}</mat-radio-button>
+                  </mat-radio-group>
+                <!--<mat-select  formControlName = "bojaKoze" (ngModelChange)="changed()">
                     <mat-option *ngFor="let boja of bojakoze;" [value]="boja.value">
                     {{boja.viewValue}}
                     </mat-option>
-                </mat-select>
+                </mat-select>-->
                 <mat-error>
                     Please provide a valid title
                   </mat-error>

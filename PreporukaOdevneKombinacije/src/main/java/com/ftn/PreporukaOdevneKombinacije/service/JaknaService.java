@@ -5,6 +5,7 @@ import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.Jakna;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.repository.JaknaRepository;
@@ -135,13 +136,19 @@ public class JaknaService {
             kieSession.insert(komadOdece);
         }
 
+        for(PreporuceniGornjiDeo pgd : preporuceniKomadi.getPreporuceniGornjiDelovi()){
+            kieSession.insert(pgd);
+        }
+
         insertTipTela(kieSession);
         insertOdecaTip(kieSession);
 
 
-        kieSession.insert(preporuceniKomadi);
+        //kieSession.insert(preporuceniKomadi);
         kieSession.insert(unosDTO);
 
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
 //        HashMap<Long, Double> a = new HashMap<>();

@@ -52,4 +52,8 @@
         <ksession name="joPersRulesSession"/>
     </kbase>
 
+    <kbase name="izborObuceOpste" packages="com.preporukaOK.rules.rulesObucaOpste">
+        <ksession name="ooPersRulesSession"/>
+    </kbase>
+
 </kmodule>

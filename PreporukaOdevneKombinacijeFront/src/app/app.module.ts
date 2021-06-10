@@ -39,6 +39,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PrikazOdeceComponent } from './components/prikaz-odece/prikaz-odece.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
+import {MatRadioModule} from '@angular/material/radio';
+
 
 @NgModule({
   declarations: [
@@ -80,6 +82,7 @@ import { HomeAdminComponent } from './components/home-admin/home-admin.component
     MatTooltipModule,
     MatDividerModule,
     MatDialogModule,
+    MatRadioModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

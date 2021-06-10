@@ -26,6 +26,10 @@ declare Marker
     uniqueIdentifier : String
 end
 
+declare BojaIzabran
+    boja : Boja
+end
+
 rule "A1 - 1 - Dresscode lezeran leto"
     salience 500
     when
@@ -244,6 +248,77 @@ rule "AM - Dodavanje bodova za materijal"
     	System.out.println("AM bodovi");
 end
 
+rule "F2-1 boje dresscode ne utice prolece"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'prolece' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.ZELENA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-1");
+end
+
+rule "F2-2 boje dresscode ne utice leto"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'leto' );
+    then
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.BELA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ROZA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        System.out.println("F2-2");
+end
+
+rule "F2-3 boje dresscode ne utice jesen"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'jesen' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        insert(new BojaIzabran(Boja.NARANDZASTA));
+        insert(new BojaIzabran(Boja.ZUTA));
+        System.out.println("F2-3");
+end
+
+rule "F2-4 boje dresscode ne utice zima"
+    salience 280
+    no-loop
+    when
+        $unos : UnosNeulogovanDTO( visina >= 165, vreme == 'zima' );
+    then
+        insert(new BojaIzabran(Boja.CRNA));
+        insert(new BojaIzabran(Boja.SIVA));
+        insert(new BojaIzabran(Boja.LJUBICASTA));
+        insert(new BojaIzabran(Boja.PLAVA));
+        System.out.println("F2-4");
+end
+
+rule "F - Dodavanje bodova za boju"
+    salience 250
+    no-loop
+    when
+        $jakna : Jakna();
+        $brojponavljanja : Long( this > 0) from accumulate(
+                        	BojaIzabran( boja == $jakna.getBoja()),
+                        	count(1)
+                        );
+    then
+    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $jakna));
+        System.out.println("F bodovi");
+end
+
 rule "G - Biranje komada prema koeficijentu preporuke"
 	salience ($poeni*10)
 	lock-on-active
@@ -268,6 +343,7 @@ rule "Brisanje poena nakon odabira"
 	no-loop
 	when
 		$koeficijentPreporuke:KoeficijentPreporuke();
+		$preporuceniKomadi : PreporuceniKomadi();
 	then
 		delete($koeficijentPreporuke);
 end

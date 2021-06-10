@@ -58,6 +58,7 @@ public class KomadOdeceNeulogovanController {
         User user = userService.findOne(2L);
         KomadOdece ko = komadiMapper.toEntity(unosDTO);
         ko.setKorisnik(user);
+        ko.setAktivan(true);
         try{
             komadOdeceService.addKomad(ko);
             return new ResponseEntity<>(HttpStatus.OK);
