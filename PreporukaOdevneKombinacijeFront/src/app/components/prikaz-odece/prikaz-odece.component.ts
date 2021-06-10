@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FilterOdeca } from 'src/app/model/filter';
 import { PreporuceniKomad } from 'src/app/model/preporuceniKomad';
 import { PreporuceniKomadi } from 'src/app/model/preporuceniKomadi';
+import { AuthentificationService } from 'src/app/service/authentification.service';
 import { KomadOdeceLogedinService } from 'src/app/service/komad-odece-logedin.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class PrikazOdeceComponent implements OnInit {
 
   invalid = true;
   selektovanTip : number = 0;
+  praviadmin = false;
 
   delovi = [
     {value: 'SVE', viewValue: 'SVE'},
@@ -104,12 +106,19 @@ export class PrikazOdeceComponent implements OnInit {
     //LAN, PAMUK, VUNA, POLIESTER, SOMOT, KOZA, SVILA, TEKSAS, KRZNO, PLIS, CIPKA, GUMA
   ];
 
-  constructor(private combService: KomadOdeceLogedinService, private fb : FormBuilder,) {
+  pol = [
+    {value: 'SVE', viewValue: 'SVE'},
+    {value: 'MUSKI', viewValue: 'MUSKI'},
+    {value: 'ZENSKI', viewValue: 'ZENSKI'},
+  ];
+
+  constructor(private combService: KomadOdeceLogedinService, private fb : FormBuilder, private service: AuthentificationService) {
     this.myForm = this.fb.group({
       'delovi': ['SVE', [Validators.required]],
       'colors': ['SVE', [Validators.required]],
       'materijali': ['SVE', [Validators.required]],
       'tipovi': [{value: "SVE",disabled: true}, [Validators.required] ],
+      'pol': [{value: "SVE",disabled: false}, [Validators.required] ],
       'podtipovi': [{value: "SVE",disabled: true}, [Validators.required] ],
     })
     //this.myForm.get('delovi').setValue(this.delovi[0].value);
@@ -118,6 +127,12 @@ export class PrikazOdeceComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    console.log(this.service.isPraviAdmin());
+    if(this.service.isPraviAdmin() == "praviadmin@admin.com") 
+    {
+      console.log("OKK");
+      this.praviadmin = true;
+    }
     this.combService.getAll().subscribe(
       result => {
         console.log(result.body)
@@ -133,7 +148,7 @@ export class PrikazOdeceComponent implements OnInit {
 
   onSubmit(form) {
     
-    var unos = new FilterOdeca(this.myForm.get('delovi').value, this.myForm.get('colors').value, this.myForm.get('materijali').value, this.myForm.get('tipovi').value, this.myForm.get('podtipovi').value);
+    var unos = new FilterOdeca(this.myForm.get('delovi').value, this.myForm.get('colors').value, this.myForm.get('materijali').value, this.myForm.get('tipovi').value, this.myForm.get('podtipovi').value, this.myForm.get('pol').value);
     console.log(unos);
 
 

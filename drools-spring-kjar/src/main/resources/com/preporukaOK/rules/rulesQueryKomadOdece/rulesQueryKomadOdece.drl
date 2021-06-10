@@ -50,6 +50,10 @@ query "getJaknaByPodTip" (OdecaPodTip b)
 	$komad : Jakna( odecaPodTip == b);
 end
 
+query "getOdecaByPol" (Pol b)
+	$komad : KomadOdece( pol == b);
+end
+
 rule "Izbrisi unet komad"
     when
         $ulaz : KomadOdece()

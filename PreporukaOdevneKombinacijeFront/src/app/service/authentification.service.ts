@@ -167,7 +167,8 @@ export class AuthentificationService {
     return JSON.parse(localStorage.getItem('currentUser') || '{}');
   }
 
-  public nesto() : any{
+
+  public isPraviAdmin(): any{
     return JSON.parse(localStorage.getItem('currentUser') || '{}').username;
   }
 }

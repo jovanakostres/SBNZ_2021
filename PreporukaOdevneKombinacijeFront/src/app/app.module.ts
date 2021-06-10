@@ -40,6 +40,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PrikazOdeceComponent } from './components/prikaz-odece/prikaz-odece.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { RatingModule } from 'ng-starrating';
+import { ResultsOpsteComponent } from './components/results-opste/results-opste.component';
 
 
 @NgModule({
@@ -56,7 +58,8 @@ import {MatRadioModule} from '@angular/material/radio';
     HomeAdminComponent,
     Aktivnost7DanaComponent,
     DialogBoxComponentComponent,
-    PrikazOdeceComponent
+    PrikazOdeceComponent,
+    ResultsOpsteComponent
   ],
   imports: [
     CommonModule,
@@ -83,6 +86,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatDividerModule,
     MatDialogModule,
     MatRadioModule,
+    RatingModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

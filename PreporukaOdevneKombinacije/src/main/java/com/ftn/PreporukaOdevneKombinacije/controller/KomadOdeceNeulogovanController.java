@@ -2,18 +2,22 @@ package com.ftn.PreporukaOdevneKombinacije.controller;
 
 
 import com.ftn.PreporukaOdevneKombinacije.dto.OdecaAddAdminDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.PreporuceniKomadiOpsteDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
 import com.ftn.PreporukaOdevneKombinacije.helper.GornjiDeoMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.KomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
+import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiOpsteMapper;
 import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
+import com.ftn.PreporukaOdevneKombinacije.model.SlikeBojaKoze;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Boja;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.DressCode;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
 import com.ftn.PreporukaOdevneKombinacije.service.KomadOdeceService;
+import com.ftn.PreporukaOdevneKombinacije.service.SlikeService;
 import com.ftn.PreporukaOdevneKombinacije.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +40,10 @@ public class KomadOdeceNeulogovanController {
     @Autowired
     private UserService userService;
 
-    private PreporuceniKomadiMapper preporuceniKomadiMapper;
+    @Autowired
+    private SlikeService slikeService;
+
+    private PreporuceniKomadiOpsteMapper preporuceniKomadiMapper;
 
     private KomadiMapper komadiMapper;
 
@@ -49,7 +56,13 @@ public class KomadOdeceNeulogovanController {
         if(prep==null){
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
         }else{
-            return new ResponseEntity<>(preporuceniKomadiMapper.toDto(prep),HttpStatus.OK);
+            PreporuceniKomadiOpsteDTO preporuceniKomadiOpsteDTO = preporuceniKomadiMapper.toDto(prep);
+            Long id = Long.parseLong(String.valueOf(unosDTO.getBojaKoze().ordinal()));
+            SlikeBojaKoze sbk = slikeService.findById(id);
+            preporuceniKomadiOpsteDTO.setImage(sbk.getImage());
+            String tips = komadOdeceService.getTips(unosDTO);
+            preporuceniKomadiOpsteDTO.setTips(tips);
+            return new ResponseEntity<>(preporuceniKomadiOpsteDTO,HttpStatus.OK);
         }
     }
 
@@ -70,7 +83,7 @@ public class KomadOdeceNeulogovanController {
 
     public KomadOdeceNeulogovanController(){
         komadiMapper = new KomadiMapper();
-        preporuceniKomadiMapper = new PreporuceniKomadiMapper();
+        preporuceniKomadiMapper = new PreporuceniKomadiOpsteMapper();
     }
 
 }

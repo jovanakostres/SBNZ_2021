@@ -56,4 +56,8 @@
         <ksession name="ooPersRulesSession"/>
     </kbase>
 
+    <kbase name="tipsOpste" packages="com.preporukaOK.rules.rulesTips">
+        <ksession name="tipsPersRulesSession"/>
+    </kbase>
+
 </kmodule>

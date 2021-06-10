@@ -11,6 +11,7 @@ import { UnregFormComponent } from './components/unreg-form/unreg-form.component
 import { AuthentificationService } from './service/authentification.service';
 import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
+import { ResultsOpsteComponent } from './components/results-opste/results-opste.component';
 
 const routes: Routes = [
   { 
@@ -41,7 +42,8 @@ const routes: Routes = [
   { path: "register-form", component: RegisterFormComponent },
   { path: "opsta-preporuka", component: UnregFormComponent },
   { path: "home-admin", component: HomeAdminComponent },
-  { path: "add-odeca", component: AddKomadOdeceComponent }
+  { path: "add-odeca", component: AddKomadOdeceComponent },
+  { path: "home-admin/prikaz", component: PrikazOdeceComponent },
 ];
 
 @NgModule({

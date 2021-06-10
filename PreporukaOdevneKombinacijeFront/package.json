@@ -27,6 +27,7 @@
     "@schematics/angular": "^9.1.0",
     "@types/googlemaps": "^3.43.3",
     "google-maps-ng2": "^1.0.10",
+    "ng-starrating": "^1.0.20",
     "ngx-google-places-autocomplete": "^2.0.5",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

@@ -488,8 +488,27 @@ public class KomadOdeceService {
             }
         }
 
+        if(!filterDTO.getPol().equals("SVE")) {
+            for (KomadOdece komadOdece : komadOdeces) {
+                queryFilter.insert(komadOdece);
+            }
+            QueryResults results = queryFilter.getQueryResults("getOdecaByPol", Pol.valueOf(filterDTO.getPol()));
+            komadOdeces = new ArrayList<>();
+            for (QueryResultsRow resultsRow : results) {
+                KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
+                komadOdeces.add(komadOdece);
+            }
+        }
+
+        queryFilter.fireAllRules();
+
+
         queryFilter.dispose();
 
         return komadOdeces;
+    }
+
+    public String getTips(UnosNeulogovanDTO unosDTO) {
+        return obucaService.getTips(unosDTO);
     }
 }

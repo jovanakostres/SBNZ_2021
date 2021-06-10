@@ -1,0 +1,90 @@
+
+.example-card {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 250px;
+    width: 200px;
+  }
+  
+  
+  mat-card {
+    margin: 10px;
+    position: relative;
+    overflow: auto;
+    display:flex;
+    flex-direction: column;
+    height: 180px;
+  
+    mat-card-header {
+      flex-shrink: 0;
+    }
+    
+    mat-card-content{
+      flex-grow: 1;
+      overflow: auto;
+    }
+  
+    img{
+      object-fit: cover; /*this makes the image in src fit to the size specified below*/
+      max-width: 200px; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+      max-height:250px;
+    }
+  
+    button {
+        float: right;
+        
+    }
+  }
+  
+  
+  
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
+  
+  .card-deck-container{
+    display: flex;
+    flex-flow: row wrap;
+    background-color: transparent;
+    -webkit-box-orient: horizontal;
+    -ms-box-orient:horizontal;
+    -moz-box-orient:horizontal;
+    -webkit-box-direction: normal;
+    -ms-box-direction: normal;
+    -moz-box-direction: normal;
+    
+    flex: 1 1 1;
+    box-sizing: border-box;
+    -webkit-box-flex: 1;
+    -ms-box-flex: 1;
+    -moz-box-flex: 1;
+    
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+    border-radius: 0px;
+    
+    padding: 10px 10px 30px;
+    margin: auto;
+  
+    
+  }
+  
+  .card-item{
+    flex: 1;
+    box-sizing: border-box;
+    -webkit-box-flex: 1;
+    -ms-box-flex: 1;
+    -moz-box-flex: 1;
+  
+  }
+  
+  .card-actions {
+      align-items: flex-end;
+  }
+  
+  .mat-paginator {
+    display: flex;
+    justify-content: center;
+  }
