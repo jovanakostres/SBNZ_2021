@@ -194,7 +194,7 @@ public class DonjiDeoService {
             kieSession.insert(komadOdece);
         }
 
-        kieSession.setGlobal("hashMapColor", makeHashMapColorColor());
+        if(unosDTO.getPol()==Pol.ZENSKI) kieSession.setGlobal("hashMapColor", makeHashMapColorColor());
 
         for(PreporuceniGornjiDeo pgd : preporuceniKomadi.getPreporuceniGornjiDelovi()){
             kieSession.insert(pgd);
