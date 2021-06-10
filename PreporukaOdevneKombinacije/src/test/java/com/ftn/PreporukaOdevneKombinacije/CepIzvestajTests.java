@@ -292,13 +292,11 @@ public class CepIzvestajTests {
     }
 
     @Test
-    public void odbijenKomad3Puta5DanaTest() {
+    public void odbijenKomad3Puta5DanaTest() throws InterruptedException {
         KieServices ks = KieServices.Factory.get();
         KieContainer kc = ks.newKieClasspathContainer();
         KieSession kSession = kc.newKieSession("cepOdbijenbRulesnPseudoClock");
         SessionPseudoClock clock = kSession.getSessionClock();
-//        KieSessionConfiguration ksconf = ks.newKieSessionConfiguration();
-//        ksconf.setOption( TimedRuleExecutionOption.YES );
         kSession.getAgenda().getAgendaGroup( "deaktiviranje" ).setFocus();
 
         GornjiDeo gornjiDeo = new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0, Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI);
@@ -324,13 +322,15 @@ public class CepIzvestajTests {
 
         assertFalse(gornjiDeo.isAktivan());
 
-//        clock.advanceTime(13, TimeUnit.DAYS);
-//        kSession.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
-//        kSession.fireAllRules();
-//        assertFalse(gornjiDeo.isAktivan());
-
-        clock.advanceTime(16, TimeUnit.DAYS);
+        clock.advanceTime(13, TimeUnit.DAYS);
         kSession.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
+        kSession.insert(gornjiDeo);
+        kSession.fireAllRules();
+        assertFalse(gornjiDeo.isAktivan());
+
+        clock.advanceTime(2, TimeUnit.DAYS);
+        kSession.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
+        kSession.insert(gornjiDeo);
         kSession.fireAllRules();
         assertTrue(gornjiDeo.isAktivan());
 

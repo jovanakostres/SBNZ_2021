@@ -34,8 +34,11 @@ import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-o
 import { HomeAdminComponent } from './home-admin/home-admin.component'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Aktivnost7DanaComponent } from './components/aktivnost7-dana/aktivnost7-dana.component';
+import { DialogBoxComponentComponent } from './components/dialog-box-component/dialog-box-component.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { PrikazOdeceComponent } from './components/prikaz-odece/prikaz-odece.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import { MatDividerModule } from '@angular/material/divider';
     Aktivnost24SataComponent,
     AddKomadOdeceComponent,
     HomeAdminComponent,
-    Aktivnost7DanaComponent
+    Aktivnost7DanaComponent,
+    DialogBoxComponentComponent,
+    PrikazOdeceComponent
   ],
   imports: [
     CommonModule,
@@ -74,6 +79,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSnackBarModule,
     MatTooltipModule,
     MatDividerModule,
+    MatDialogModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

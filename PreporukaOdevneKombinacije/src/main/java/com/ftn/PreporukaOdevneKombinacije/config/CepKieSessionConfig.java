@@ -28,5 +28,10 @@ public class CepKieSessionConfig {
         return kieContainer.newKieSession("cepOdbijenRulesSession");
     }
 
+    @Bean(name = "queryFilter")
+    public KieSession queryFilter() {
+        return kieContainer.newKieSession("queryKomadOdeceRulesSession");
+    }
+
 
 }

@@ -4,7 +4,6 @@
     <span class="menu-spacer"></span>
     <div>      
       <button mat-raised-button color="accent" *ngIf="!loggedIn()" [routerLink]="'/login'"> Log in </button>
-      <button mat-raised-button color="primary" *ngIf="loggedIn()" [routerLink]="'/register-form'">Odabir kombinacije</button>  
       <button mat-raised-button color="accent" *ngIf="loggedIn()" (click)="logout()"> Log out </button>          
     </div>
   </mat-toolbar-row>

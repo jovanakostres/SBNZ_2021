@@ -11,43 +11,47 @@ import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.model.event.*;
 import com.ftn.PreporukaOdevneKombinacije.dto.*;
-import org.kie.api.runtime.rule.Match
 
 declare window petdana
 	@doc("Odbijanja poslednjih 5 dana")
 	OdbijenKomadEvent() over window:time( 5d )
 end
 
-declare DeaktiviranKomad
-    @event()
-    @expires(14d)
-    komad: KomadOdece
-end
+
 
 rule "Odbijen tri puta poslednjih 5 dana"
     salience 100
     agenda-group "deaktiviranje"
 	when
 		$odbijeni : OdbijenKomadEvent( $komadOdece : komadOdece );
-		KomadOdece( id == $komadOdece.getId(), aktivan == true);
-		accumulate(
-        			$e : OdbijenKomadEvent( komadOdece.getId() == $komadOdece.getId()) from window petdana;
-        			$cnt : count( 1 ); $cnt >= 3
-        		)
+		$k : KomadOdece( id == $komadOdece.getId(), aktivan == true);
+		Number(this >= 3) from accumulate(
+        			OdbijenKomadEvent( komadOdece.getId() == $komadOdece.getId()) from window petdana,
+        			count( 1 )
+        		);
 	then
-        insert(new DeaktiviranKomad($komadOdece));
-        modify($komadOdece) {setAktivan(false);}
-        System.out.println("Deaktiviran komad : " + $komadOdece.getId() + "     " + $cnt);
+        insert(new DeaktiviranKomadEvent($k));
+        modify($k) {setAktivan(false);}
+        System.out.println("Deaktiviran komad : " + $komadOdece.getId());
 end
 
 rule "Aktiviraj komad 14 dana posle deaktivacije"
-    timer ( int: 1s)
+    salience 100
     agenda-group "aktiviranje"
-    lock-on-active
 when
-    $k : DeaktiviranKomad( $komadOdece : komad, komad.isAktivan() == false )
-    KomadOdece( id == $komadOdece.getId(), aktivan == false);
+    $k : KomadOdece( $id : id);
+    //not DeaktiviranKomadEvent( komad.getId() == $id );
+    List( size == 0 ) from collect(DeaktiviranKomadEvent( komad.getId() == $id ));
 then
-    modify($komadOdece) {setAktivan(true);}
-    System.out.println("Aktiviran komad : " + $komadOdece.getId());
+    modify($k) {setAktivan(true);}
+    System.out.println("Aktiviran komad : " + $id);
+end
+
+rule "Izbrisi unet komad"
+    salience -100
+    when
+        $ulaz : KomadOdece()
+    then
+        delete($ulaz)
+        System.out.println("Obrisan ulaz");
 end

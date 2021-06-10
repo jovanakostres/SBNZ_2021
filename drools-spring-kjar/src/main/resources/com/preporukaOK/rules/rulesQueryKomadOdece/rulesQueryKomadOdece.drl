@@ -10,39 +10,49 @@ import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.dto.*;
 
-
-query "getKomadOdeceByMaterijal" (Materijal mat, Long id)
-	$komad : KomadOdece( materijal == mat, korisnik.getId() == id );
+query "getDelovi" (Class klasa)
+	$komad : KomadOdece( class == klasa );
 end
 
-query "getKomadOdeceByBoja" (Boja b, Long id)
-	$komad : KomadOdece( boja == b, korisnik.getId() == id );
+query "getKomadOdeceByMaterijal" (Materijal mat)
+	$komad : KomadOdece( materijal == mat);
 end
 
-query "getGornjiDeoByTip" (GornjiDeoEnum b, Long id)
-	$komad : GornjiDeo( odecaTip == b, korisnik.getId() == id );
+query "getKomadOdeceByBoja" (Boja b)
+	$komad : KomadOdece( boja == b);
 end
 
-query "getDonjiDeoByTip" (DonjiDeoEnum b, Long id)
-	$komad : DonjiDeo( odecaTip == b, korisnik.getId() == id );
+query "getGornjiDeoByTip" (GornjiDeoEnum b)
+	$komad : GornjiDeo( odecaTip == b);
 end
 
-query "getJaknaByTip" (JaknaEnum b, Long id)
-	$komad : Jakna( odecaTip == b, korisnik.getId() == id );
+query "getDonjiDeoByTip" (DonjiDeoEnum b)
+	$komad : DonjiDeo( odecaTip == b);
 end
 
-query "getObucaByTip" (ObucaEnum b, Long id)
-	$komad : Obuca( obucaTip == b, korisnik.getId() == id );
+query "getJaknaByTip" (JaknaEnum b)
+	$komad : Jakna( odecaTip == b);
 end
 
-query "getGornjiDeoByPodTip" (OdecaPodTip b, Long id)
-	$komad : GornjiDeo( odecaPodTip == b, korisnik.getId() == id );
+query "getObucaByTip" (ObucaEnum b)
+	$komad : Obuca( obucaTip == b);
 end
 
-query "getDonjiDeoByPodTip" (OdecaPodTip b, Long id)
-	$komad : DonjiDeo( odecaPodTip == b, korisnik.getId() == id );
+query "getGornjiDeoByPodTip" (OdecaPodTip b)
+	$komad : GornjiDeo( odecaPodTip == b );
 end
 
-query "getJaknaByPodTip" (OdecaPodTip b, Long id)
-	$komad : Jakna( odecaPodTip == b, korisnik.getId() == id );
+query "getDonjiDeoByPodTip" (OdecaPodTip b)
+	$komad : DonjiDeo( odecaPodTip == b);
+end
+
+query "getJaknaByPodTip" (OdecaPodTip b)
+	$komad : Jakna( odecaPodTip == b);
+end
+
+rule "Izbrisi unet komad"
+    when
+        $ulaz : KomadOdece()
+    then
+        delete($ulaz)
 end

@@ -6,10 +6,10 @@
         <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
         <img mat-card-image src='{{gornjiDeoNajvise.image}}'/>
         <mat-card-content>
-          <p>Izabrano puta : {{gornjiDeoNajvise.poeni}}</p>
+          <p>Izabrano puta : <strong>{{gornjiDeoNajvise.poeni}}</strong></p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+          <button mat-icon-button color="accent" (click)="otvoriDijalog(gornjiDeoNajvise.id)"  matTooltip="Najviše kombinovano sa..." >
             <mat-icon class="icon-class-fill">help_outline</mat-icon>
           </button>
         </mat-card-actions>
@@ -18,10 +18,10 @@
         <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
         <img mat-card-image src='{{donjiDeoNajvise.image}}'/>
         <mat-card-content>
-          <p>Izabrano puta : {{donjiDeoNajvise.poeni}}</p>
+          <p>Izabrano puta : <strong>{{donjiDeoNajvise.poeni}}</strong></p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+          <button mat-icon-button color="accent" (click)="otvoriDijalog(donjiDeoNajvise.id)"  matTooltip="Najviše kombinovano sa..." >
             <mat-icon class="icon-class-fill">help_outline</mat-icon>
           </button>
         </mat-card-actions>
@@ -30,10 +30,10 @@
         <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
         <img mat-card-image src='{{jaknaNajvise.image}}'/>
         <mat-card-content>
-          <p>Izabrano puta : {{jaknaNajvise.poeni}}</p>
+          <p>Izabrano puta : <strong>{{jaknaNajvise.poeni}}</strong></p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+          <button mat-icon-button color="accent" (click)="otvoriDijalog(jaknaNajvise.id)" matTooltip="Najviše kombinovano sa..." >
             <mat-icon class="icon-class-fill">help_outline</mat-icon>
           </button>
         </mat-card-actions>
@@ -42,10 +42,10 @@
         <!-- <img mat-card-image src="https://placekitten.com/g/350/200"> -->
         <img mat-card-image src='{{obucaNajvise.image}}'/>
         <mat-card-content>
-          <p>Izabrano puta : {{obucaNajvise.poeni}}</p>
+          <p>Izabrano puta : <strong>{{obucaNajvise.poeni}}</strong></p>
         </mat-card-content>
         <mat-card-actions class="card-actions">
-          <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+          <button mat-icon-button color="accent" (click)="otvoriDijalog(obucaNajvise.id)" matTooltip="Najviše kombinovano sa..." >
             <mat-icon class="icon-class-fill">help_outline</mat-icon>
           </button>
         </mat-card-actions>
@@ -66,7 +66,7 @@
             
             <img mat-card-image src='{{kombinacija.gornjiDeo.image}}'/>
             <mat-card-actions class="card-actions">
-                <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+                <button mat-icon-button color="accent" (click)="otvoriDijalog(kombinacija.gornjiDeo.id)" matTooltip="Najviše kombinovano sa..." >
                   <mat-icon class="icon-class-fill">help_outline</mat-icon>
                 </button>
               </mat-card-actions>
@@ -75,7 +75,7 @@
 
             <img mat-card-image src='{{kombinacija.donjiDeo.image}}'/>
             <mat-card-actions class="card-actions">
-                <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+                <button mat-icon-button color="accent" (click)="otvoriDijalog(kombinacija.donjiDeo.id)"  matTooltip="Najviše kombinovano sa..." >
                   <mat-icon class="icon-class-fill">help_outline</mat-icon>
                 </button>
               </mat-card-actions>
@@ -84,7 +84,7 @@
 
             <img mat-card-image src='{{kombinacija.jakna.image}}'/>
             <mat-card-actions class="card-actions">
-                <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+                <button mat-icon-button color="accent" (click)="otvoriDijalog(kombinacija.jakna.id)"  matTooltip="Najviše kombinovano sa..." >
                   <mat-icon class="icon-class-fill">help_outline</mat-icon>
                 </button>
               </mat-card-actions>
@@ -93,7 +93,7 @@
 
             <img mat-card-image src='{{kombinacija.obuca.image}}'/>
             <mat-card-actions class="card-actions">
-                <button mat-icon-button color="accent"  matTooltip="Najviše kombinovano sa..." >
+                <button mat-icon-button color="accent" (click)="otvoriDijalog(kombinacija.obuca.id)"  matTooltip="Najviše kombinovano sa..." >
                   <mat-icon class="icon-class-fill">help_outline</mat-icon>
                 </button>
               </mat-card-actions>

@@ -5,6 +5,7 @@ import { Aktivnost7DanaComponent } from './components/aktivnost7-dana/aktivnost7
 import { HomeLoggedinUserComponent } from './components/home-loggedin-user/home-loggedin-user.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { PrikazOdeceComponent } from './components/prikaz-odece/prikaz-odece.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { UnregFormComponent } from './components/unreg-form/unreg-form.component';
 import { AuthentificationService } from './service/authentification.service';
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'aktivnost7', // child route path
         component: Aktivnost7DanaComponent, // child route component that the router renders
+      },
+      {
+        path: 'prikaz', // child route path
+        component: PrikazOdeceComponent, // child route component that the router renders
       },
     ],
   },

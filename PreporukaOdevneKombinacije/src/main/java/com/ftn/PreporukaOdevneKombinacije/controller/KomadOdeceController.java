@@ -102,6 +102,18 @@ public class KomadOdeceController {
         }
     }
 
+    @PostMapping("/filter")
+    public ResponseEntity<?> filterClothes(@RequestBody FilterDTO filterDTO) {
+        try {
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            List<KomadOdece> komadOdeceList = komadOdeceService.filterOdeca(filterDTO, userDetails);
+            return new ResponseEntity<>(toDtoList(komadOdeceList),HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Server error!", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/report24")
     public ResponseEntity<?> getKombinacije24() {
         try {
@@ -153,6 +165,23 @@ public class KomadOdeceController {
         }
     }
 
+    @GetMapping("/combined/{id}")
+    public ResponseEntity<?> getMostCombined(@PathVariable("id") Long id) {
+        try {
+            //User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            PreporuceniKomadi preporuceniKomadi = komadOdeceService.getMostComb(id);
+            komadOdeceService.deleteListPreporucenihKomb();
+            return new ResponseEntity<>(
+                    preporuceniKomadiMapper.toDto(preporuceniKomadi),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return new ResponseEntity<>(
+                    "Error!",
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getGornjiDeo(@PathVariable("id") Long gornjiDeoId) {
@@ -165,18 +194,19 @@ public class KomadOdeceController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getComments() {
-        List<GornjiDeo> gornjiDeoList = gornjiDeoService.findAll();
-        return new ResponseEntity<>(toGDDtoList(gornjiDeoList), HttpStatus.OK);
+    public ResponseEntity<?> getOdeca() {
+        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<KomadOdece> komadOdeceList = userDetails.getKomadi();
+        return new ResponseEntity<>(toDtoList(komadOdeceList), HttpStatus.OK);
     }
 
 
-    private List<GornjiDeoUnosDTO> toGDDtoList(List<GornjiDeo> gornjiDeos) {
-        List<GornjiDeoUnosDTO> gornjiDeoUnosDTOS = new ArrayList<>();
-        for(GornjiDeo gornjiDeo : gornjiDeos){
-            gornjiDeoUnosDTOS.add(gornjiDeoMapper.toDto(gornjiDeo));
+    private List<PrikazDTO> toDtoList(List<KomadOdece> komadOdeceList) {
+        List<PrikazDTO> preporuceniKomadi = new ArrayList<>();
+        for(KomadOdece komadOdece : komadOdeceList){
+            preporuceniKomadi.add(new PrikazDTO(komadOdece.getId(), komadOdece.getImage()));
         }
-        return gornjiDeoUnosDTOS;
+        return preporuceniKomadi;
     }
 
     public KomadOdeceController(){

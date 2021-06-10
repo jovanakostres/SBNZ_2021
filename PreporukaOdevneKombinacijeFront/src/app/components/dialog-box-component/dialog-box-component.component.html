@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Najčešće kombinovano sa: </h1>
+<div mat-dialog-content>
+    <div style="display:flex; flex-direction: row; max-width: 100%; margin-bottom: 10px;">
+        <!-- <mat-card class="example-card"> -->
+            
+            <img *ngIf="this.local_data?.preporuceniGornjiDeoDTO[0]"  src='{{gornjiDeo?.image}}'/>
+        <!-- </mat-card>
+        <mat-card class="example-card"> -->
+
+            <img *ngIf="this.local_data?.preporuceniDonjiDeoDTO[0]" src='{{donjiDeo?.image}}'/>
+        <!-- </mat-card>
+        <mat-card class="example-card"> -->
+
+            <img  *ngIf="this.local_data?.preporucenaJaknaDTO[0]" src='{{jakna?.image}}'/>
+        <!-- </mat-card>
+        <mat-card class="example-card"> -->
+
+            <img *ngIf="this.local_data?.preporucenaObucaDTO[0]" src='{{obuca?.image}}'/>
+        <!-- </mat-card> -->
+     </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="closeDialog()">Izađi</button>
+</div>

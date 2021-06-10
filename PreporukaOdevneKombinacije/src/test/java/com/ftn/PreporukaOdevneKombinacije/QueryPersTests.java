@@ -35,7 +35,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getKomadOdeceByMaterijal", Materijal.PAMUK, user.getId());
+        QueryResults results = kieSession.getQueryResults("getKomadOdeceByMaterijal", Materijal.PAMUK);
         for(QueryResultsRow resultsRow : results){
             KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -63,7 +63,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getKomadOdeceByBoja", Boja.BELA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getKomadOdeceByBoja", Boja.BELA);
         for(QueryResultsRow resultsRow : results){
             KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -91,7 +91,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getGornjiDeoByTip", GornjiDeoEnum.DZEMPER, user.getId());
+        QueryResults results = kieSession.getQueryResults("getGornjiDeoByTip", GornjiDeoEnum.DZEMPER);
         for(QueryResultsRow resultsRow : results){
             GornjiDeo komadOdece = (GornjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -119,7 +119,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getGornjiDeoByTip", GornjiDeoEnum.DUKS, user.getId());
+        QueryResults results = kieSession.getQueryResults("getGornjiDeoByTip", GornjiDeoEnum.DUKS);
         for(QueryResultsRow resultsRow : results){
             GornjiDeo komadOdece = (GornjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -147,7 +147,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getDonjiDeoByTip", DonjiDeoEnum.HELANKE, user.getId());
+        QueryResults results = kieSession.getQueryResults("getDonjiDeoByTip", DonjiDeoEnum.HELANKE);
         for(QueryResultsRow resultsRow : results){
             DonjiDeo komadOdece = (DonjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -175,7 +175,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getDonjiDeoByTip", DonjiDeoEnum.PANTALONE, user.getId());
+        QueryResults results = kieSession.getQueryResults("getDonjiDeoByTip", DonjiDeoEnum.PANTALONE);
         for(QueryResultsRow resultsRow : results){
             DonjiDeo komadOdece = (DonjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -203,7 +203,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getJaknaByTip", JaknaEnum.BUNDA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getJaknaByTip", JaknaEnum.BUNDA);
         for(QueryResultsRow resultsRow : results){
             Jakna komadOdece = (Jakna) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -231,7 +231,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getJaknaByTip", JaknaEnum.JAKNA_PRELAZNI, user.getId());
+        QueryResults results = kieSession.getQueryResults("getJaknaByTip", JaknaEnum.JAKNA_PRELAZNI);
         for(QueryResultsRow resultsRow : results){
             Jakna komadOdece = (Jakna) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -259,7 +259,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getGornjiDeoByPodTip", OdecaPodTip.SIROKA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getGornjiDeoByPodTip", OdecaPodTip.SIROKA);
         for(QueryResultsRow resultsRow : results){
             GornjiDeo komadOdece = (GornjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -287,7 +287,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getGornjiDeoByPodTip", OdecaPodTip.USKA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getGornjiDeoByPodTip", OdecaPodTip.USKA);
         for(QueryResultsRow resultsRow : results){
             GornjiDeo komadOdece = (GornjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -315,7 +315,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getDonjiDeoByPodTip", OdecaPodTip.USKA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getDonjiDeoByPodTip", OdecaPodTip.USKA);
         for(QueryResultsRow resultsRow : results){
             DonjiDeo komadOdece = (DonjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -343,7 +343,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getDonjiDeoByPodTip", OdecaPodTip.SIROKA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getDonjiDeoByPodTip", OdecaPodTip.SIROKA);
         for(QueryResultsRow resultsRow : results){
             DonjiDeo komadOdece = (DonjiDeo) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -371,7 +371,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getJaknaByPodTip", OdecaPodTip.USKA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getJaknaByPodTip", OdecaPodTip.USKA);
         for(QueryResultsRow resultsRow : results){
             Jakna komadOdece = (Jakna) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());
@@ -399,7 +399,7 @@ public class QueryPersTests {
         for(KomadOdece komadOdece : createKomadeOdece(user)){
             kieSession.insert(komadOdece);
         }
-        QueryResults results = kieSession.getQueryResults("getJaknaByPodTip", OdecaPodTip.SIROKA, user.getId());
+        QueryResults results = kieSession.getQueryResults("getJaknaByPodTip", OdecaPodTip.SIROKA);
         for(QueryResultsRow resultsRow : results){
             Jakna komadOdece = (Jakna) resultsRow.get("$komad");
             System.out.println(komadOdece.getId());

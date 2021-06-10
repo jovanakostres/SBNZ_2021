@@ -5,6 +5,7 @@ import com.ftn.PreporukaOdevneKombinacije.dto.UserLoginDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UserTokenStateDTO;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.security.TokenUtils;
+import com.ftn.PreporukaOdevneKombinacije.service.KomadOdeceService;
 import com.ftn.PreporukaOdevneKombinacije.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -40,6 +41,9 @@ public class AuthenticationController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
+    @Autowired
+    private KomadOdeceService komadOdeceService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody UserLoginDTO authenticationRequest,
@@ -56,6 +60,7 @@ public class AuthenticationController {
         String jwt = tokenUtils.generateToken(user); // prijavljujemo se na sistem sa email adresom
         int expiresIn = tokenUtils.getExpiredIn();
 
+        komadOdeceService.checkNeaktivnost();
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenStateDTO(user.getId(), jwt, expiresIn));
     }

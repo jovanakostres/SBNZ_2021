@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { FilterOdeca } from '../model/filter';
 import { IzabranaKombinacija } from '../model/izabranaKombinacija';
 import { PodaciIzvestaj } from '../model/podaciIzvestaj';
 import { PreporuceniKomad } from '../model/preporuceniKomad';
@@ -89,6 +90,42 @@ export class KomadOdeceLogedinService {
 		};
 
 		return this.http.get<PodaciIzvestaj>( this.newsPath + "/report7", httpOptions);
+  }
+
+  getCombinationsWithId(Id : number) : Observable<any>{
+    let httpOptions = {};
+
+		httpOptions = {
+			headers: this.headers,
+			observe: 'response',
+
+		};
+
+		return this.http.get<PreporuceniKomadi>( this.newsPath + "/combined/" + Id, httpOptions);
+  }
+
+  getAll() : Observable<any>{
+    let httpOptions = {};
+
+		httpOptions = {
+			headers: this.headers,
+			observe: 'response',
+
+		};
+
+		return this.http.get<PreporuceniKomad[]>( this.newsPath, httpOptions);
+  }
+
+  postFilter(podaci : FilterOdeca) : Observable<any>{
+    let httpOptions = {};
+
+		httpOptions = {
+			headers: this.headers,
+			observe: 'response',
+
+		};
+
+		return this.http.post<PreporuceniKomad[]>( this.newsPath + "/filter", podaci , httpOptions);
   }
 
 }

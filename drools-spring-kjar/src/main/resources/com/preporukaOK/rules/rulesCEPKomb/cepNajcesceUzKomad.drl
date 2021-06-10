@@ -140,4 +140,24 @@ query getKomad (Long id1, Long id2, Class klasaOdece, KomadOdece $komadIzabran)
 	UcestalostKombinacije( $komadIzabran := komadOdece2, komadOdece1.getId() == id1, komadOdece2.getId() == id2 , komadOdece2.getClass() == klasaOdece);
 end
 
+rule "Izbrisi listu preporucenih"
+    salience -100
+    agenda-group "brisanjeListeKomb"
+    when
+        $preporuceniKomadi : PreporuceniKomadi();
+    then
+        delete($preporuceniKomadi)
+        System.out.println("Obrisana lista preporucenih");
+end
+
+rule "Izbrisi unet komad"
+    salience -100
+    agenda-group "brisanjeListeKomb"
+    when
+        $ulaz : KomadOdece()
+    then
+        delete($ulaz)
+        System.out.println("Obrisan ulaz");
+end
+
 

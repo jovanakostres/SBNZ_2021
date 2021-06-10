@@ -32,7 +32,7 @@
 
 
     <kbase name="cepOdbijen" eventProcessingMode="stream" packages="com.preporukaOK.rules.rulesCepOdbijen">
-        <ksession name="cepOdbijenRulesSession" clockType="realtime"/>
+        <ksession name="cepOdbijenRulesSession"/>
         <ksession name="cepOdbijenbRulesnPseudoClock" clockType="pseudo"/>
     </kbase>
 

@@ -1,0 +1,58 @@
+<div style="margin: auto; display: block;width: 97%;">
+    
+    <div style="display:flex; flex-direction: row; margin: 5px 1.5%;">
+        <form [formGroup]="myForm">
+        <mat-form-field color="accent" >
+            <mat-label>Deo</mat-label>
+            <mat-select  style="width: 150px;" formControlName = "delovi" (selectionChange)="changedTip($event.value)">
+                <mat-option *ngFor="let food of delovi;" [value]="food.value">
+                {{food.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field color="accent" style="margin-left: 10px;">
+            <mat-label>Boja</mat-label>
+            <mat-select  style="width: 150px;" formControlName = "colors" (ngModelChange)="changed()">
+                <mat-option *ngFor="let food of colors;" [value]="food.value">
+                {{food.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field color="accent" style="margin-left: 10px;">
+            <mat-label>Materijal</mat-label>
+            <mat-select  style="width: 150px;" formControlName = "materijali" (ngModelChange)="changed()">
+                <mat-option *ngFor="let food of materijali;" [value]="food.value">
+                {{food.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field color="accent" style="margin-left: 10px;">
+            <mat-label>Tip</mat-label>
+            <mat-select  style="width: 150px;" formControlName = "tipovi" (ngModelChange)="changed()">
+                <mat-option *ngFor="let food of tipovi[selektovanTip];" [value]="food.value">
+                {{food.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field color="accent" style="margin-left: 10px;">
+            <mat-label>Podtip</mat-label>
+            <mat-select  style="width: 150px;" formControlName = "podtipovi" (ngModelChange)="changed()">
+                <mat-option *ngFor="let food of podtipovi;" [value]="food.value">
+                {{food.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" style="margin-left: 15px;" (click) = onSubmit(myForm)>Filter</button>
+    </form>
+    </div>
+
+
+    <div fxLayout="row wrap" fxFlex.md="70"  fxLayoutWrap class="card-deck-container">
+      <div fxFlex *ngFor="let card of listaOdece" class="card-item">
+        <img  src='{{card.image}}'/>
+      </div>
+    
+      
+    </div> 
+    </div>

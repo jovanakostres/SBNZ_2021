@@ -1,14 +1,10 @@
 package com.ftn.PreporukaOdevneKombinacije.service;
 
-import com.ftn.PreporukaOdevneKombinacije.dto.IzabranoDTO;
-import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
-import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
-import com.ftn.PreporukaOdevneKombinacije.dto.VremeDTO;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
 import com.ftn.PreporukaOdevneKombinacije.model.*;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PodaciIzvestaj;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
-import com.ftn.PreporukaOdevneKombinacije.model.enums.Pol;
-import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranKomadOdeceEvent;
 import com.ftn.PreporukaOdevneKombinacije.model.event.IzabranaKombinacijaEvent;
 import com.ftn.PreporukaOdevneKombinacije.model.event.OdbijenKomadEvent;
@@ -19,8 +15,11 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.conf.ClockTypeOption;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonArray;
@@ -68,6 +67,7 @@ public class KomadOdeceService {
     @Autowired
     @Qualifier(value = "cepIzvestajKombRulesSession")
     private KieSession cepIzvestajKomb;
+
 
     public KomadOdece findOne(Long id) {
         return repository.findById(id).orElse(null);
@@ -136,41 +136,51 @@ public class KomadOdeceService {
         cepOdbijenKomad.insert(new OdbijenKomadEvent(komadOdece));
         cepOdbijenKomad.insert(komadOdece);
 
-        new Thread(new Runnable() {
-            public void run() {
-                cepOdbijenKomad.fireAllRules();
-            }
-        }).start();
+        cepOdbijenKomad.fireAllRules();
 
-        Thread.sleep(2000L);
-
+//        Thread.sleep(2000L);
+//
         System.out.println(komadOdece.isAktivan());
 
-        if(!komadOdece.isAktivan()){
-            repository.save(komadOdece);
-            Thread.sleep(2000L);
-            cepOdbijenKomad.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
-            cepOdbijenKomad.fireAllRules();
-            System.out.println(komadOdece.isAktivan());
-
-            repository.save(komadOdece);
-//            cepOdbijenKomad.dispose();
-        }
+//
+//        if(!komadOdece.isAktivan()){
+//            repository.save(komadOdece);
+//            //1 209 600 000
+////            Thread.sleep(1209600000);
+//            Thread.sleep(2000L);
+//            cepOdbijenKomad.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
+//            cepOdbijenKomad.fireAllRules();
+//            System.out.println(komadOdece.isAktivan());
+//
+//            repository.save(komadOdece);
+////            cepOdbijenKomad.dispose();
+//        }
 
         repository.save(komadOdece);
+    }
+
+    public void checkNeaktivnost() {
+
+        ArrayList<KomadOdece> neaktivniKomadi = (ArrayList<KomadOdece>) repository.findByAktivan(false);
+
+        if(neaktivniKomadi.size() > 0) {
+            for (KomadOdece komadOdece : neaktivniKomadi) {
+                cepOdbijenKomad.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
+                cepOdbijenKomad.insert(komadOdece);
+
+                cepOdbijenKomad.fireAllRules();
+
+                System.out.println(komadOdece.isAktivan());
+
+                repository.save(komadOdece);
+
+
+            }
+        }
+
 
 
     }
-
-//    public void saveIzabrano(IzabranoDTO izabranoDTO) {
-//        KieSession kieSession = kieContainer.newKieSession("gDPersRulesSession");
-//        kieSession.insert(new IzabranKomadOdeceEvent(gornjiDeoService.findOne(izabranoDTO.getIdGornjiDeo())));
-//        kieSession.insert(new IzabranKomadOdeceEvent(donjiDeoService.findOne(izabranoDTO.getIdDonjiDeo())));
-//        kieSession.insert(new IzabranKomadOdeceEvent(jaknaService.findOne(izabranoDTO.getIdJakna())));
-//        kieSession.insert(new IzabranKomadOdeceEvent(obucaService.findOne(izabranoDTO.getIdObuca())));
-//
-//        kieSession.fireAllRules();
-//    }
 
     public void izabraniKomadi(IzabranoDTO izabranoDTO) {
 
@@ -282,6 +292,29 @@ public class KomadOdeceService {
 
     }
 
+
+    public PreporuceniKomadi getMostComb(Long id) {
+
+//        cepIzvestaj.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
+
+        PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
+        cepIzvestajKomb.insert(findOne(id));
+        cepIzvestajKomb.insert(preporuceniKomadi);
+
+        cepIzvestajKomb.fireAllRules();
+
+        return preporuceniKomadi;
+
+    }
+
+    public void deleteListPreporucenihKomb() {
+
+        cepIzvestajKomb.getAgenda().getAgendaGroup( "brisanjeListeKomb" ).setFocus();
+
+        cepIzvestajKomb.fireAllRules();
+
+    }
+
     public void deleteListPreporucenih() {
 
         cepIzvestaj.getAgenda().getAgendaGroup( "brisanjeListe" ).setFocus();
@@ -331,5 +364,129 @@ public class KomadOdeceService {
     }
 
 
+    public List<KomadOdece> findAll() {
+        return repository.findAll();
+    }
 
+    public List<KomadOdece> filterOdeca(FilterDTO filterDTO, User user) {
+        KieSession queryFilter = kieContainer.newKieSession("queryKomadOdeceRulesSession");
+
+        List<KomadOdece> komadOdeces = user.getKomadi();
+
+        Class klasa;
+
+        switch (filterDTO.getDeo()) {
+            case "GORNJIDEO":
+                klasa = GornjiDeo.class;
+                break;
+            case "DONJIDEO":
+                klasa = DonjiDeo.class;
+                break;
+            case "JAKNA":
+                klasa = Jakna.class;
+                break;
+            case "OBUCA":
+                klasa = Obuca.class;
+                break;
+            default:
+                klasa = KomadOdece.class;
+        }
+
+        if(!filterDTO.getDeo().equals("SVE")) {
+            for (KomadOdece komadOdece : komadOdeces) {
+                queryFilter.insert(komadOdece);
+            }
+            QueryResults results = queryFilter.getQueryResults("getDelovi", klasa);
+            komadOdeces = new ArrayList<>();
+            for (QueryResultsRow resultsRow : results) {
+                KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
+                komadOdeces.add(komadOdece);
+            }
+        }
+
+        queryFilter.fireAllRules();
+
+        if(!filterDTO.getBoja().equals("SVE")) {
+            for (KomadOdece komadOdece : komadOdeces) {
+                queryFilter.insert(komadOdece);
+            }
+            QueryResults results = queryFilter.getQueryResults("getKomadOdeceByBoja", Boja.valueOf(filterDTO.getBoja()));
+            komadOdeces = new ArrayList<>();
+            for (QueryResultsRow resultsRow : results) {
+                KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
+                komadOdeces.add(komadOdece);
+            }
+        }
+
+        queryFilter.fireAllRules();
+
+        if(!filterDTO.getMaterijal().equals("SVE")) {
+            for (KomadOdece komadOdece : komadOdeces) {
+                queryFilter.insert(komadOdece);
+            }
+            QueryResults results = queryFilter.getQueryResults("getKomadOdeceByMaterijal", Materijal.valueOf(filterDTO.getMaterijal()));
+            komadOdeces = new ArrayList<>();
+            for (QueryResultsRow resultsRow : results) {
+                KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
+                komadOdeces.add(komadOdece);
+            }
+        }
+
+        queryFilter.fireAllRules();
+
+        if(!filterDTO.getTip().equals("SVE")) {
+            for (KomadOdece komadOdece : komadOdeces) {
+                queryFilter.insert(komadOdece);
+            }
+            QueryResults results = null;
+            switch (filterDTO.getDeo()) {
+                case "DONJIDEO":
+                    results = queryFilter.getQueryResults("getDonjiDeoByTip", DonjiDeoEnum.valueOf(filterDTO.getTip()));
+                    break;
+                case "JAKNA":
+                    results = queryFilter.getQueryResults("getJaknaByTip", JaknaEnum.valueOf(filterDTO.getTip()));
+                    break;
+                case "OBUCA":
+                    results = queryFilter.getQueryResults("getObucaByTip", ObucaEnum.valueOf(filterDTO.getTip()));
+                    break;
+                default:
+                    results = queryFilter.getQueryResults("getGornjiDeoByTip", GornjiDeoEnum.valueOf(filterDTO.getTip()));
+            }
+
+            komadOdeces = new ArrayList<>();
+            for (QueryResultsRow resultsRow : results) {
+                KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
+                komadOdeces.add(komadOdece);
+            }
+        }
+
+        queryFilter.fireAllRules();
+
+        if(!filterDTO.getPodtip().equals("SVE")) {
+            for (KomadOdece komadOdece : komadOdeces) {
+                queryFilter.insert(komadOdece);
+            }
+            QueryResults results = null;
+            switch (filterDTO.getDeo()) {
+                case "DONJIDEO":
+                    results = queryFilter.getQueryResults("getDonjiDeoByPodTip", OdecaPodTip.valueOf(filterDTO.getPodtip()));
+                    break;
+                case "JAKNA":
+                    results = queryFilter.getQueryResults("getJaknaByPodTip", OdecaPodTip.valueOf(filterDTO.getPodtip()));
+                    break;
+                default:
+                    results = queryFilter.getQueryResults("getGornjiDeoByPodTip", OdecaPodTip.valueOf(filterDTO.getPodtip()));
+            }
+
+            komadOdeces = new ArrayList<>();
+            for (QueryResultsRow resultsRow : results) {
+                KomadOdece komadOdece = (KomadOdece) resultsRow.get("$komad");
+                komadOdeces.add(komadOdece);
+            }
+        }
+
+        queryFilter.dispose();
+
+        return komadOdeces;
+    }
 }
