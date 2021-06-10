@@ -1,0 +1,72 @@
+<div style="margin: auto; display: block;width: 97%;">
+    <mat-card>
+        <form [formGroup]="myForm">
+            <div fxLayout="column">
+                <mat-form-field color="accent" class="full-width-input">
+                    <mat-label>Deo</mat-label>
+                    <mat-select formControlName="delovi" (selectionChange)="changedTip($event.value)">
+                        <mat-option *ngFor="let food of delovi;" [value]="food.value">
+                            {{food.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column">
+                <mat-form-field color="accent" class="full-width-input">
+                    <mat-label>Boja</mat-label>
+                    <mat-select formControlName="colors">
+                        <mat-option *ngFor="let food of colors;" [value]="food.value">
+                            {{food.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+
+            <div fxLayout="column">
+                <mat-form-field color="accent" class="full-width-input">
+                    <mat-label>Materijal</mat-label>
+                    <mat-select formControlName="materijali">
+                        <mat-option *ngFor="let food of materijali;" [value]="food.value">
+                            {{food.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column">
+                <mat-form-field color="accent" class="full-width-input">
+                    <mat-label>Tip</mat-label>
+                    <mat-select formControlName="tipovi">
+                        <mat-option *ngFor="let food of tipovi[selektovanTip];" [value]="food.value">
+                            {{food.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column">
+                <mat-form-field color="accent" class="full-width-input">
+                    <mat-label>Podtip</mat-label>
+                    <mat-select formControlName="podtipovi">
+                        <mat-option *ngFor="let food of podtipovi;" [value]="food.value">
+                            {{food.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column">
+                <mat-form-field color="accent" class="full-width-input">
+                    <mat-label>Vreme</mat-label>
+                    <mat-select formControlName="vremena">
+                        <mat-option *ngFor="let food of vremena;" [value]="food.value">
+                            {{food.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="column"><input type="file" #fileUpload id="fileUpload" name="fileUpload" accept="image/*"
+                    (change)="handleUpload($event)" /></div>
+
+            <button mat-raised-button color="primary" (click)=onSubmit(myForm)>Dodaj</button>
+        </form>
+    </mat-card>
+</div>

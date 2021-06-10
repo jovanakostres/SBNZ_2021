@@ -43,7 +43,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece-loggedin-user/add-komad-odece-loggedin-user.component';
 import { RatingModule } from 'ng-starrating';
 import { ResultsOpsteComponent } from './components/results-opste/results-opste.component';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -68,7 +68,6 @@ import { ResultsOpsteComponent } from './components/results-opste/results-opste.
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    NoopAnimationsModule,
     MatToolbarModule,
     MatTableModule,
     GooglePlaceModule,
@@ -89,6 +88,7 @@ import { ResultsOpsteComponent } from './components/results-opste/results-opste.
     MatDialogModule,
     MatRadioModule,
     RatingModule,
+    MatProgressSpinnerModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

@@ -1,0 +1,26 @@
+.full-width-input {
+    width: 100%;
+ }
+
+ mat-card {
+    width: 400px;
+    margin: 40px auto;
+    position: relative;
+    overflow: auto;
+
+    button {
+        float: right;
+    }
+ }
+
+
+ ul{
+    padding: 0;  
+    li {  
+    
+      margin: 0;  
+      padding: 0;  
+      list-style: none;
+      padding-left: 0pt;  
+    }
+ }

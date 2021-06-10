@@ -17,6 +17,17 @@ public class KomadiMapper implements MapperInterface<KomadOdece, OdecaAddAdminDT
         return new Obuca(dto.getBoja(), dto.getBojaIntenzitet(), dto.getMaterijal(), dto.getVreme(), dto.getPrioritet(), dto.getKoeficijentOdabira(), dto.getImage(), dto.getPol(), dto.getObucaTip(), dto.getStikla());
     }
 
+
+    public KomadOdece toEntityUser(OdecaAddAdminDTO dto) {
+        if(dto.getTip().equalsIgnoreCase("GORNJIDEO"))
+            return new GornjiDeo(dto.getBoja(), dto.getMaterijal(), dto.getVreme(), 0,1, dto.getImage(), true, dto.getOdecaPodTip(), dto.getOdecaTip());
+        if(dto.getTip().equalsIgnoreCase("DONJIDEO"))
+            return new DonjiDeo(dto.getBoja(), dto.getMaterijal(), dto.getVreme(), 0, 1, dto.getImage(), true, dto.getOdecadTip(), dto.getOdecaPodTip());
+        if(dto.getTip().equalsIgnoreCase("JAKNA"))
+            return new Jakna(dto.getBoja(), dto.getMaterijal(), dto.getVreme(), 0, 1, dto.getImage(), true, dto.getOdecajTip(), dto.getOdecaPodTip());
+        return new Obuca(dto.getBoja(), dto.getMaterijal(), dto.getVreme(), 0, 1, dto.getImage(), true, dto.getObucaTip());
+    }
+
     @Override
     public OdecaAddAdminDTO toDto(KomadOdece entity) {
         if(entity.getClass() == GornjiDeo.class)

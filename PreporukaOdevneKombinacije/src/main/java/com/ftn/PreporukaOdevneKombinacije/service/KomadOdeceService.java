@@ -27,6 +27,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -72,7 +73,8 @@ public class KomadOdeceService {
     public KomadOdece findOne(Long id) {
         return repository.findById(id).orElse(null);
     }
-    public KomadOdece create(KomadOdece komadOdece){
+
+    public KomadOdece create(KomadOdece komadOdece) {
         return repository.save(komadOdece);
     }
 
@@ -87,13 +89,13 @@ public class KomadOdeceService {
         List<Jakna> jaknaList = new ArrayList<>();
         List<Obuca> obucaList = new ArrayList<>();
 
-        for (KomadOdece komadOdece : user.getKomadi()){
+        for (KomadOdece komadOdece : user.getKomadi()) {
             if (komadOdece instanceof GornjiDeo && komadOdece.isAktivan())
                 gornjiDeoList.add((GornjiDeo) komadOdece);
             if (komadOdece instanceof DonjiDeo && komadOdece.isAktivan())
                 donjiDeoList.add((DonjiDeo) komadOdece);
             if (komadOdece instanceof Jakna && komadOdece.isAktivan())
-                jaknaList.add((Jakna) komadOdece );
+                jaknaList.add((Jakna) komadOdece);
             if (komadOdece instanceof Obuca && komadOdece.isAktivan())
                 obucaList.add((Obuca) komadOdece);
         }
@@ -105,10 +107,10 @@ public class KomadOdeceService {
             reader.close();
             JsonObject jsonObject = new JsonParser().parse(resenje).getAsJsonObject();
             float temp = Float.parseFloat(jsonObject.getAsJsonObject("main").get("temp").toString());
-            JsonArray jArray =  jsonObject.getAsJsonArray("weather");//getAsJsonObject("symbol");
+            JsonArray jArray = jsonObject.getAsJsonArray("weather");//getAsJsonObject("symbol");
             String weather = jArray.get(0).getAsJsonObject().get("main").toString();
             unosDTO.setTemperatura(temp);
-            if(weather.equals("Thunderstorm") || weather.equals("Drizzle") || weather.equals("Rain") || weather.equals("Snow"))
+            if (weather.equals("Thunderstorm") || weather.equals("Drizzle") || weather.equals("Rain") || weather.equals("Snow"))
                 unosDTO.setVreme(Vreme.VLAZNO);
             else
                 unosDTO.setVreme(Vreme.SUVO);
@@ -117,10 +119,10 @@ public class KomadOdeceService {
         }
 //        vreme end
 
-        preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeo(unosDTO,user,gornjiDeoList, preporuceniKomadi);
-        preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeo(unosDTO,user,donjiDeoList, preporuceniKomadi);
-        preporuceniKomadi = jaknaService.getPreporucenaJakna(unosDTO,user,jaknaList, preporuceniKomadi);
-        preporuceniKomadi = obucaService.getPreporuceniDonjiDeo(unosDTO,user,obucaList, preporuceniKomadi);
+        preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeo(unosDTO, user, gornjiDeoList, preporuceniKomadi);
+        preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeo(unosDTO, user, donjiDeoList, preporuceniKomadi);
+        preporuceniKomadi = jaknaService.getPreporucenaJakna(unosDTO, user, jaknaList, preporuceniKomadi);
+        preporuceniKomadi = obucaService.getPreporuceniDonjiDeo(unosDTO, user, obucaList, preporuceniKomadi);
 
         return preporuceniKomadi;
     }
@@ -131,7 +133,7 @@ public class KomadOdeceService {
 //        config.setOption( ClockTypeOption.get("realtime") );
 //        KieSession session = kieContainer.newKieSession( "cepOdbijenRulesSession", null, config);
 
-        cepOdbijenKomad.getAgenda().getAgendaGroup( "deaktiviranje" ).setFocus();
+        cepOdbijenKomad.getAgenda().getAgendaGroup("deaktiviranje").setFocus();
 
         cepOdbijenKomad.insert(new OdbijenKomadEvent(komadOdece));
         cepOdbijenKomad.insert(komadOdece);
@@ -163,9 +165,9 @@ public class KomadOdeceService {
 
         ArrayList<KomadOdece> neaktivniKomadi = (ArrayList<KomadOdece>) repository.findByAktivan(false);
 
-        if(neaktivniKomadi.size() > 0) {
+        if (neaktivniKomadi.size() > 0) {
             for (KomadOdece komadOdece : neaktivniKomadi) {
-                cepOdbijenKomad.getAgenda().getAgendaGroup( "aktiviranje" ).setFocus();
+                cepOdbijenKomad.getAgenda().getAgendaGroup("aktiviranje").setFocus();
                 cepOdbijenKomad.insert(komadOdece);
 
                 cepOdbijenKomad.fireAllRules();
@@ -179,68 +181,43 @@ public class KomadOdeceService {
         }
 
 
-
     }
 
     public void izabraniKomadi(IzabranoDTO izabranoDTO) {
 
-        cepIzvestaj.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
+        cepIzvestaj.getAgenda().getAgendaGroup("7danaNajvise").setFocus();
 
-        if(izabranoDTO.getIdGornjiDeo() != -1){
-            KomadOdece gornjiDeo = findOne(izabranoDTO.getIdGornjiDeo());
-            gornjiDeo.setKoeficijentOdabira(gornjiDeo.getKoeficijentOdabira() + gornjiDeo.getKoeficijentOdabira() * 3/100);
-            cepIzvestaj.insert(new IzabranKomadOdeceEvent(gornjiDeo, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
-            repository.save(gornjiDeo);
-        }
-        if(izabranoDTO.getIdDonjiDeo() != -1){
-            KomadOdece donjiDeo = findOne(izabranoDTO.getIdDonjiDeo());
-            donjiDeo.setKoeficijentOdabira(donjiDeo.getKoeficijentOdabira() + donjiDeo.getKoeficijentOdabira() * 3/100);
-            cepIzvestaj.insert(new IzabranKomadOdeceEvent(donjiDeo, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
-            repository.save(donjiDeo);
-        }
-        if(izabranoDTO.getIdJakna() != -1){
-            KomadOdece jakna = findOne(izabranoDTO.getIdJakna());
-            jakna.setKoeficijentOdabira(jakna.getKoeficijentOdabira() + jakna.getKoeficijentOdabira() * 3/100);
-            cepIzvestaj.insert(new IzabranKomadOdeceEvent(jakna, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
-            repository.save(jakna);
-        }
-        if(izabranoDTO.getIdObuca() != -1){
-            KomadOdece obuca = findOne(izabranoDTO.getIdObuca());
-            obuca.setKoeficijentOdabira(obuca.getKoeficijentOdabira() + obuca.getKoeficijentOdabira() * 3/100);
-            cepIzvestaj.insert(new IzabranKomadOdeceEvent(obuca, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
-            repository.save(obuca);
-        }
+        changeCoef(izabranoDTO.getIdGornjiDeo());
+        changeCoef(izabranoDTO.getIdDonjiDeo());
+        changeCoef(izabranoDTO.getIdJakna());
+        changeCoef(izabranoDTO.getIdObuca());
 
         cepIzvestaj.fireAllRules();
 
     }
 
+    public void changeCoef(Long id) {
+        KomadOdece komadOdece = findOne(id);
+        komadOdece.setKoeficijentOdabira(komadOdece.getKoeficijentOdabira() + komadOdece.getKoeficijentOdabira() * 2 / 100);
+        cepIzvestaj.insert(new IzabranKomadOdeceEvent(komadOdece, String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli())));
+        repository.save(komadOdece);
+
+    }
+
     public void izabraniKomadiKomb(IzabranoDTO izabranoDTO) {
 
-        if(izabranoDTO.getIdGornjiDeo() != -1){
-            if (izabranoDTO.getIdDonjiDeo() != -1){
-                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdDonjiDeo())));
-            }
-            if (izabranoDTO.getIdJakna() != -1){
-                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdJakna())));
-            }
-            if (izabranoDTO.getIdObuca() != -1){
-                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdObuca())));
-            }
-        }
-        if(izabranoDTO.getIdDonjiDeo() != -1){
-            if (izabranoDTO.getIdJakna() != -1){
-                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdDonjiDeo()), findOne(izabranoDTO.getIdJakna())));
-            }
-            if (izabranoDTO.getIdObuca() != -1){
-                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdDonjiDeo()), findOne(izabranoDTO.getIdObuca())));
-            }
-        }
-        if(izabranoDTO.getIdJakna() != -1){
-            if (izabranoDTO.getIdObuca() != -1){
-                cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdJakna()), findOne(izabranoDTO.getIdObuca())));
-            }
-        }
+
+        cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdDonjiDeo())));
+
+        cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdJakna())));
+
+        cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdGornjiDeo()), findOne(izabranoDTO.getIdObuca())));
+
+        cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdDonjiDeo()), findOne(izabranoDTO.getIdJakna())));
+
+        cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdDonjiDeo()), findOne(izabranoDTO.getIdObuca())));
+
+        cepIzvestajKomb.insert(new IzabranaKombinacijaEvent(findOne(izabranoDTO.getIdJakna()), findOne(izabranoDTO.getIdObuca())));
 
         cepIzvestajKomb.fireAllRules();
 
@@ -248,7 +225,7 @@ public class KomadOdeceService {
 
     public PodaciIzvestaj get24Report(User userDetails) {
 
-        cepIzvestaj.getAgenda().getAgendaGroup( "24sataSvePreporucivano" ).setFocus();
+        cepIzvestaj.getAgenda().getAgendaGroup("24sataSvePreporucivano").setFocus();
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
         VremeDTO vremeDTO = new VremeDTO();
@@ -264,7 +241,7 @@ public class KomadOdeceService {
 
     public PodaciIzvestaj get7Report(User userDetails) {
 
-        cepIzvestaj.getAgenda().getAgendaGroup( "7danaSvePreporucivano" ).setFocus();
+        cepIzvestaj.getAgenda().getAgendaGroup("7danaSvePreporucivano").setFocus();
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
         VremeDTO vremeDTO = new VremeDTO();
@@ -280,7 +257,7 @@ public class KomadOdeceService {
 
     public PreporuceniKomadi get7Most(User userDetails) {
 
-        cepIzvestaj.getAgenda().getAgendaGroup( "7danaNajvise" ).setFocus();
+        cepIzvestaj.getAgenda().getAgendaGroup("7danaNajvise").setFocus();
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
         cepIzvestaj.insert(userDetails);
@@ -309,7 +286,7 @@ public class KomadOdeceService {
 
     public void deleteListPreporucenihKomb() {
 
-        cepIzvestajKomb.getAgenda().getAgendaGroup( "brisanjeListeKomb" ).setFocus();
+        cepIzvestajKomb.getAgenda().getAgendaGroup("brisanjeListeKomb").setFocus();
 
         cepIzvestajKomb.fireAllRules();
 
@@ -317,7 +294,7 @@ public class KomadOdeceService {
 
     public void deleteListPreporucenih() {
 
-        cepIzvestaj.getAgenda().getAgendaGroup( "brisanjeListe" ).setFocus();
+        cepIzvestaj.getAgenda().getAgendaGroup("brisanjeListe").setFocus();
 
         cepIzvestaj.fireAllRules();
 
@@ -333,8 +310,8 @@ public class KomadOdeceService {
         List<Jakna> jaknaList = new ArrayList<>();
         List<Obuca> obucaList = new ArrayList<>();
 
-        for (KomadOdece komadOdece : getKomadiById()){
-            if(komadOdece.getPol()!= unosDTO.getPol())
+        for (KomadOdece komadOdece : getKomadiById()) {
+            if (komadOdece.getPol() != unosDTO.getPol())
                 continue;
             if (komadOdece instanceof GornjiDeo)
                 gornjiDeoList.add((GornjiDeo) komadOdece);
@@ -347,12 +324,12 @@ public class KomadOdeceService {
         }
 
         System.out.println(gornjiDeoList.size());
-        preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeoOpste(unosDTO,gornjiDeoList,preporuceniKomadi);
+        preporuceniKomadi = gornjiDeoService.getPreporuceniGornjiDeoOpste(unosDTO, gornjiDeoList, preporuceniKomadi);
         System.out.println(donjiDeoList.size());
-        preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeoOpste(unosDTO,donjiDeoList,preporuceniKomadi);
+        preporuceniKomadi = donjiDeoService.getPreporuceniDonjiDeoOpste(unosDTO, donjiDeoList, preporuceniKomadi);
         System.out.println(jaknaList.size());
-        preporuceniKomadi = jaknaService.getPreporucenaJaknaOpste(unosDTO,jaknaList,preporuceniKomadi);
-        preporuceniKomadi = obucaService.getPreporuceniObuca(unosDTO,obucaList, preporuceniKomadi);
+        preporuceniKomadi = jaknaService.getPreporucenaJaknaOpste(unosDTO, jaknaList, preporuceniKomadi);
+        preporuceniKomadi = obucaService.getPreporuceniObuca(unosDTO, obucaList, preporuceniKomadi);
 
         return preporuceniKomadi;
     }
@@ -363,7 +340,7 @@ public class KomadOdeceService {
 
     }
 
-	public void addKomad(KomadOdece ko) {
+    public void addKomad(KomadOdece ko) {
         repository.save(ko);
     }
 
@@ -395,7 +372,7 @@ public class KomadOdeceService {
                 klasa = KomadOdece.class;
         }
 
-        if(!filterDTO.getDeo().equals("SVE")) {
+        if (!filterDTO.getDeo().equals("SVE")) {
             for (KomadOdece komadOdece : komadOdeces) {
                 queryFilter.insert(komadOdece);
             }
@@ -409,7 +386,7 @@ public class KomadOdeceService {
 
         queryFilter.fireAllRules();
 
-        if(!filterDTO.getBoja().equals("SVE")) {
+        if (!filterDTO.getBoja().equals("SVE")) {
             for (KomadOdece komadOdece : komadOdeces) {
                 queryFilter.insert(komadOdece);
             }
@@ -423,7 +400,7 @@ public class KomadOdeceService {
 
         queryFilter.fireAllRules();
 
-        if(!filterDTO.getMaterijal().equals("SVE")) {
+        if (!filterDTO.getMaterijal().equals("SVE")) {
             for (KomadOdece komadOdece : komadOdeces) {
                 queryFilter.insert(komadOdece);
             }
@@ -437,7 +414,7 @@ public class KomadOdeceService {
 
         queryFilter.fireAllRules();
 
-        if(!filterDTO.getTip().equals("SVE")) {
+        if (!filterDTO.getTip().equals("SVE")) {
             for (KomadOdece komadOdece : komadOdeces) {
                 queryFilter.insert(komadOdece);
             }
@@ -465,7 +442,7 @@ public class KomadOdeceService {
 
         queryFilter.fireAllRules();
 
-        if(!filterDTO.getPodtip().equals("SVE")) {
+        if (!filterDTO.getPodtip().equals("SVE")) {
             for (KomadOdece komadOdece : komadOdeces) {
                 queryFilter.insert(komadOdece);
             }
@@ -488,7 +465,7 @@ public class KomadOdeceService {
             }
         }
 
-        if(!filterDTO.getPol().equals("SVE")) {
+        if (!filterDTO.getPol().equals("SVE")) {
             for (KomadOdece komadOdece : komadOdeces) {
                 queryFilter.insert(komadOdece);
             }

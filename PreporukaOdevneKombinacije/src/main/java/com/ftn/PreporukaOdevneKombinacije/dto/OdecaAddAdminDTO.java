@@ -1,5 +1,7 @@
 package com.ftn.PreporukaOdevneKombinacije.dto;
 
+import com.ftn.PreporukaOdevneKombinacije.model.DonjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.model.Jakna;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 
@@ -48,6 +50,8 @@ public class OdecaAddAdminDTO {
     private Stikla stikla;
 
     private String tip;
+
+    private String tipKomad;
 
     public OdecaAddAdminDTO(){}
 
@@ -111,6 +115,47 @@ public class OdecaAddAdminDTO {
         this.obucaTip = obucaTip;
         this.stikla = stikla;
         this.tip = tip;
+    }
+
+    public OdecaAddAdminDTO(Boja boja, Materijal materijal, Vreme vreme, String image,String tipKomad,String tip, OdecaPodTip odecaPodTip) {
+        this.boja = boja;
+        this.materijal = materijal;
+        this.vreme = vreme;
+        this.image = image;
+        this.odecaPodTip = odecaPodTip;
+        this.tip = tip;
+        if(tip.equals("GORNJIDEO")){
+            this.odecaTip = GornjiDeoEnum.valueOf(tipKomad);
+        }
+        else if(tip.equals("DoNJIDEO")){
+            this.odecadTip = DonjiDeoEnum.valueOf(tipKomad);
+        }
+        if(tip.equals("JAKNA")){
+            this.odecajTip = JaknaEnum.valueOf(tipKomad);
+        }
+        if(tip.equals("OBUCA")){
+            this.obucaTip = ObucaEnum.valueOf(tipKomad);
+        }
+    }
+
+    public OdecaAddAdminDTO(Boja boja, Materijal materijal, Vreme vreme, String image,String tipKomad,String tip) {
+        this.boja = boja;
+        this.materijal = materijal;
+        this.vreme = vreme;
+        this.image = image;
+        this.tip = tip;
+        if(tip.equals("GORNJIDEO")){
+            this.odecaTip = GornjiDeoEnum.valueOf(tipKomad);
+        }
+        else if(tip.equals("DoNJIDEO")){
+            this.odecadTip = DonjiDeoEnum.valueOf(tipKomad);
+        }
+        if(tip.equals("JAKNA")){
+            this.odecajTip = JaknaEnum.valueOf(tipKomad);
+        }
+        if(tip.equals("OBUCA")){
+            this.obucaTip = ObucaEnum.valueOf(tipKomad);
+        }
     }
 
     public Boja getBoja() {
@@ -279,5 +324,13 @@ public class OdecaAddAdminDTO {
 
     public void setTip(String tip) {
         this.tip = tip;
+    }
+
+    public String getTipKomad() {
+        return tipKomad;
+    }
+
+    public void setTipKomad(String tipKomad) {
+        this.tipKomad = tipKomad;
     }
 }

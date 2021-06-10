@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AddKomadUser } from '../model/addKomadUser';
 import { FilterOdeca } from '../model/filter';
 import { IzabranaKombinacija } from '../model/izabranaKombinacija';
 import { PodaciIzvestaj } from '../model/podaciIzvestaj';
@@ -126,6 +127,18 @@ export class KomadOdeceLogedinService {
 		};
 
 		return this.http.post<PreporuceniKomad[]>( this.newsPath + "/filter", podaci , httpOptions);
+  }
+
+  postUnosKomad(podaci : AddKomadUser) : Observable<any>{
+    let httpOptions = {};
+
+		httpOptions = {
+			headers: this.headers,
+			observe: 'response',
+
+		};
+
+		return this.http.post<any>( this.newsPath, podaci , httpOptions);
   }
 
 }

@@ -1,5 +1,11 @@
 <div class = "glavni" *ngIf="dataSourceActive == 0">
-    <form [formGroup]="myForm">
+    
+    <div *ngIf="isLoading" style="text-align: center;">
+        <p style="color : black; font-size: 20px; font-family: 'Courier New', Courier, monospace;">Loading</p>
+    <mat-progress-spinner color="accent" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <form [formGroup]="myForm" *ngIf="!isLoading">
         <ng-container *ngIf="step == 1" >
             <mat-form-field color="accent">
                 <mat-label>Dresscode</mat-label>

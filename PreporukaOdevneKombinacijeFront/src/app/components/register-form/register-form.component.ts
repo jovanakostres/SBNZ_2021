@@ -19,6 +19,7 @@ export class RegisterFormComponent implements OnInit {
   dataSource: PreporuceniKomadi = null;
   dataSourceActive : number = 0;
   checkedNumber = 0;
+  isLoading = false;
   dresscode = [
     {value: 'LEZERAN', viewValue: 'LEZERAN'},
     {value: 'SPORTSKI', viewValue: 'SPORTSKI'},
@@ -58,6 +59,8 @@ export class RegisterFormComponent implements OnInit {
 
 
   onSubmit(form) {
+    this.isLoading = true;
+
     var fa = ["",""];
     var z = 0;
     length = this.colors.length;
@@ -73,6 +76,7 @@ export class RegisterFormComponent implements OnInit {
 
     this.unosService.getCombination(unos).subscribe(
       result => {
+        this.isLoading= false;
         this.dataSource = result.body; 
         this.dataSourceActive = 1;
         console.log("OK");

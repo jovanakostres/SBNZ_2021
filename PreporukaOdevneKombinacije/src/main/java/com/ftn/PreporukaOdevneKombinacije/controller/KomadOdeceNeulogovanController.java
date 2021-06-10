@@ -5,7 +5,6 @@ import com.ftn.PreporukaOdevneKombinacije.dto.OdecaAddAdminDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.PreporuceniKomadiOpsteDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UnosNeulogovanDTO;
-import com.ftn.PreporukaOdevneKombinacije.helper.GornjiDeoMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.KomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiOpsteMapper;

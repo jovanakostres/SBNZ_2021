@@ -1,17 +1,16 @@
 package com.ftn.PreporukaOdevneKombinacije.controller;
 
 import com.ftn.PreporukaOdevneKombinacije.dto.*;
-import com.ftn.PreporukaOdevneKombinacije.helper.GornjiDeoMapper;
+import com.ftn.PreporukaOdevneKombinacije.helper.KomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.helper.PreporuceniKomadiMapper;
 import com.ftn.PreporukaOdevneKombinacije.model.GornjiDeo;
+import com.ftn.PreporukaOdevneKombinacije.model.Jakna;
 import com.ftn.PreporukaOdevneKombinacije.model.KomadOdece;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PodaciIzvestaj;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
-import com.ftn.PreporukaOdevneKombinacije.model.enums.Boja;
-import com.ftn.PreporukaOdevneKombinacije.model.enums.DressCode;
-import com.ftn.PreporukaOdevneKombinacije.model.enums.Vreme;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.service.GornjiDeoService;
 import com.ftn.PreporukaOdevneKombinacije.service.KomadOdeceService;
 import com.ftn.PreporukaOdevneKombinacije.service.UserService;
@@ -39,7 +38,7 @@ public class KomadOdeceController {
 
     private PreporuceniKomadiMapper preporuceniKomadiMapper;
 
-    private GornjiDeoMapper gornjiDeoMapper;
+    private KomadiMapper komadiMapper;
 
     @PostMapping("/personalized_recommendation")
     public ResponseEntity<?> getPreporukaPersonalizovano(@RequestBody UnosDTO unosDTO) {
@@ -83,17 +82,31 @@ public class KomadOdeceController {
         }
     }
 
-    @PostMapping("upper_part")
-    public ResponseEntity<?> createGornjiDeo(@RequestBody GornjiDeoUnosDTO gornjiDeoUnosDTO) {
+    @PostMapping
+    public ResponseEntity<?> createKomad(@RequestBody OdecaAddAdminDTO odecaAddAdminDTO) {
         try {
             User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            GornjiDeo gornjiDeo = gornjiDeoMapper.toEntity(gornjiDeoUnosDTO);
-            gornjiDeo.setKorisnik(userDetails);
-            GornjiDeo created = gornjiDeoService.create(gornjiDeo);
-            userDetails.getKomadi().add(created);
+            switch (odecaAddAdminDTO.getTip()) {
+                case "GORNJIDEO":
+                    odecaAddAdminDTO.setOdecaTip(GornjiDeoEnum.valueOf(odecaAddAdminDTO.getTipKomad()));
+                    break;
+                case "DONJIDEO":
+                    odecaAddAdminDTO.setOdecadTip(DonjiDeoEnum.valueOf(odecaAddAdminDTO.getTipKomad()));
+                    break;
+                case "JAKNA":
+                    odecaAddAdminDTO.setOdecajTip(JaknaEnum.valueOf(odecaAddAdminDTO.getTipKomad()));
+                    break;
+                case "OBUCA":
+                    odecaAddAdminDTO.setObucaTip(ObucaEnum.valueOf(odecaAddAdminDTO.getTipKomad()));
+                    break;
+            }
+            KomadOdece ko = komadiMapper.toEntityUser(odecaAddAdminDTO);
+            ko.setKorisnik(userDetails);
+            ko.setAktivan(true);
+            komadOdeceService.addKomad(ko);
+            userDetails.getKomadi().add(ko);
             userService.update(userDetails);
             return new ResponseEntity<>(
-                    gornjiDeoMapper.toDto(created),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             //e.printStackTrace();
@@ -184,15 +197,15 @@ public class KomadOdeceController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getGornjiDeo(@PathVariable("id") Long gornjiDeoId) {
-        GornjiDeo gornjiDeo = gornjiDeoService.findOne(gornjiDeoId);
-        if(gornjiDeo == null){
-            return new ResponseEntity<>("Error! Comment not found!",HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(gornjiDeoMapper.toDto(gornjiDeo),HttpStatus.OK);
-        }
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<?> getGornjiDeo(@PathVariable("id") Long gornjiDeoId) {
+//        GornjiDeo gornjiDeo = gornjiDeoService.findOne(gornjiDeoId);
+//        if(gornjiDeo == null){
+//            return new ResponseEntity<>("Error! Comment not found!",HttpStatus.NOT_FOUND);
+//        }else{
+//            return new ResponseEntity<>(gornjiDeoMapper.toDto(gornjiDeo),HttpStatus.OK);
+//        }
+//    }
 
     @GetMapping
     public ResponseEntity<?> getOdeca() {
@@ -212,6 +225,6 @@ public class KomadOdeceController {
 
     public KomadOdeceController(){
         preporuceniKomadiMapper = new PreporuceniKomadiMapper();
-        gornjiDeoMapper = new GornjiDeoMapper();
+        komadiMapper = new KomadiMapper();
     }
 }

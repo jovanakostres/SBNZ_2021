@@ -315,6 +315,8 @@ rule "ECB - Davanje bodova za crnu i belu"
     no-loop
     salience 290
     when
+        $unos : UnosDTO( $bojeUnos : boje );
+        not (Boja(name == "CRNA" || name == "BELA") from $bojeUnos);
         $obuca : Obuca( boja == Boja.CRNA || boja == Boja.BELA);
         $list: List( size > 0 ) from collect(Obuca( boja == Boja.CRNA || boja == Boja.BELA))
     then
