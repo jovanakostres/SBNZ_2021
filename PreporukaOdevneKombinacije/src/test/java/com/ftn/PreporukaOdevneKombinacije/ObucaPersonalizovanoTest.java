@@ -40,8 +40,10 @@ public class ObucaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(0, preporuceniKomadi.getPreporucenaObuca().size() );
@@ -65,12 +67,14 @@ public class ObucaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(1, preporuceniKomadi.getPreporucenaObuca().size() );
-        assertEquals(Double.valueOf(90), preporuceniKomadi.getPreporucenaObuca().get(0).getPoeni());
+        assertEquals(Double.valueOf(61), preporuceniKomadi.getPreporucenaObuca().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -94,8 +98,10 @@ public class ObucaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnosBlackTie());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -107,7 +113,7 @@ public class ObucaPersonalizovanoTest {
         assertTrue(ruleNames.contains("D - Dodavanje bodova za materijal"));
         assertTrue(ruleNames.contains("E2 - Biranje boje ako dresscode utice"));
         assertEquals(1, preporuceniKomadi.getPreporucenaObuca().size() );
-        assertEquals(Double.valueOf(95), preporuceniKomadi.getPreporucenaObuca().get(0).getPoeni());
+        assertEquals(Double.valueOf(84), preporuceniKomadi.getPreporucenaObuca().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -135,8 +141,10 @@ public class ObucaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -150,14 +158,12 @@ public class ObucaPersonalizovanoTest {
         assertTrue(ruleNames.contains("E1 - Biranje boje obuce ako dresscode ne utice"));
         assertTrue(ruleNames.contains("D1 - 2 - Biranje materijala prema tipu obuce - cizme, cipele"));
 
-        assertEquals(3, preporuceniKomadi.getPreporucenaObuca().size() );
+        assertEquals(2, preporuceniKomadi.getPreporucenaObuca().size() );
 
         Optional<PreporucenaObuca> gd = preporuceniKomadi.getPreporucenaObuca().stream().filter(element -> element.getObuca().getId().equals(1L)).findFirst();
-        assertEquals(Double.valueOf(101), gd.get().getPoeni());
+        assertEquals(Double.valueOf(67), gd.get().getPoeni());
         gd = preporuceniKomadi.getPreporucenaObuca().stream().filter(element -> element.getObuca().getId().equals(4L)).findFirst();
-        assertEquals(Double.valueOf(91), gd.get().getPoeni());
-        gd = preporuceniKomadi.getPreporucenaObuca().stream().filter(element -> element.getObuca().getId().equals(2L)).findFirst();
-        assertEquals(Double.valueOf(86), gd.get().getPoeni());
+        assertEquals(Double.valueOf(62), gd.get().getPoeni());
 
         kieSession.dispose();
     }

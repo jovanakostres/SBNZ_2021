@@ -219,7 +219,7 @@ rule "C2 - 2 - Biranje tipa odece i materijala prema dresscodu - sportski"
     	insert(new TipOdeceIzabran(GornjiDeoEnum.DUKS));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
-        System.out.println("C2 - 1");
+        System.out.println("C2 - 2");
 end
 
 rule "C2 - 3 - Biranje tipa odece i materijala prema dresscodu - formalan"
@@ -259,7 +259,7 @@ rule "C2 - 4 - Biranje tipa odece i materijala prema dresscodu - izlazak"
         insert(new MaterijalIzabran(Materijal.SVILA));
         insert(new MaterijalIzabran(Materijal.KOZA));
         insert(new MaterijalIzabran(Materijal.CIPKA));
-        System.out.println("C2 - 1");
+        System.out.println("C2 - 4");
 end
 
 rule "C2 - 5 - Biranje tipa odece i materijala prema dresscodu - blacktie"
@@ -277,7 +277,7 @@ rule "C2 - 5 - Biranje tipa odece i materijala prema dresscodu - blacktie"
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SVILA));
-        System.out.println("C2 - 3");
+        System.out.println("C2 - 5");
 end
 
 rule "C - Dodavanje bodova za tip odece"

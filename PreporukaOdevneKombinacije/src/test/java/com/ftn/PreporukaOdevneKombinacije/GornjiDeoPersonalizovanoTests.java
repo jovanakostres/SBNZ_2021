@@ -41,8 +41,10 @@ public class GornjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(0, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
@@ -66,12 +68,14 @@ public class GornjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(1, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
-        assertEquals(Double.valueOf(90), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
+        assertEquals(Double.valueOf(61), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -85,7 +89,7 @@ public class GornjiDeoPersonalizovanoTests {
         kieSession.addEventListener(agendaEventListener);
 
         kieSession.insert(user);
-        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
+        kieSession.insert(new GornjiDeo(Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.KOSULJA));
 
         insertTipTela(kieSession);
         insertPodTip(kieSession);
@@ -95,8 +99,10 @@ public class GornjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnosBlackTie());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -108,7 +114,7 @@ public class GornjiDeoPersonalizovanoTests {
         assertTrue(ruleNames.contains("C - Dodavanje bodova za tip odece"));
         assertTrue(ruleNames.contains("E2 - Biranje boje ako dresscode utice"));
         assertEquals(1, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
-        assertEquals(Double.valueOf(105), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
+        assertEquals(Double.valueOf(96), preporuceniKomadi.getPreporuceniGornjiDelovi().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -136,8 +142,10 @@ public class GornjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -154,9 +162,9 @@ public class GornjiDeoPersonalizovanoTests {
         assertEquals(2, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
 
         Optional<PreporuceniGornjiDeo> gd = preporuceniKomadi.getPreporuceniGornjiDelovi().stream().filter(element -> element.getGornjiDeo().getId().equals(1L)).findFirst();
-        assertEquals(Double.valueOf(99), gd.get().getPoeni());
+        assertEquals(Double.valueOf(74), gd.get().getPoeni());
         gd = preporuceniKomadi.getPreporuceniGornjiDelovi().stream().filter(element -> element.getGornjiDeo().getId().equals(3L)).findFirst();
-        assertEquals(Double.valueOf(99), gd.get().getPoeni());
+        assertEquals(Double.valueOf(81), gd.get().getPoeni());
 
         kieSession.dispose();
     }
@@ -187,7 +195,7 @@ public class GornjiDeoPersonalizovanoTests {
 
     public List<GornjiDeo> createGornjiDelovi(){
         List<GornjiDeo> gornjiDeoList = new ArrayList<>();
-        gornjiDeoList.add(new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.MAJICA_KRATKI));
+        gornjiDeoList.add(new GornjiDeo(1L, Boja.BELA, Materijal.PAMUK,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.TUNIKA));
         gornjiDeoList.add(new GornjiDeo(2L, Boja.CRNA, Materijal.PAMUK,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.DUKS));
         gornjiDeoList.add(new GornjiDeo(3L, Boja.CRVENA, Materijal.POLIESTER,0,Vreme.VLAZNO,  1, "", true, OdecaPodTip.USKA, GornjiDeoEnum.MAJICA_DUGI));
         gornjiDeoList.add(new GornjiDeo(4L, Boja.NARANDZASTA, Materijal.TEKSAS,0,Vreme.SUVO,  1, "", true, OdecaPodTip.SIROKA, GornjiDeoEnum.KOSULJA));

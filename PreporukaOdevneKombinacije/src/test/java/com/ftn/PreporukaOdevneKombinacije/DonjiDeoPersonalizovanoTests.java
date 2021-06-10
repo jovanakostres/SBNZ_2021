@@ -38,8 +38,9 @@ public class DonjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(0, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
@@ -63,12 +64,13 @@ public class DonjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(1, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
-        assertEquals(Double.valueOf(95), preporuceniKomadi.getPreporuceniDonjiDelovi().get(0).getPoeni());
+        assertEquals(Double.valueOf(66), preporuceniKomadi.getPreporuceniDonjiDelovi().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -92,8 +94,9 @@ public class DonjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
         kieSession.insert(createUnosBlackTie());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -105,7 +108,7 @@ public class DonjiDeoPersonalizovanoTests {
         assertTrue(ruleNames.contains("C - Dodavanje bodova za tip odece"));
         assertTrue(ruleNames.contains("E2 - Biranje boje ako dresscode utice"));
         assertEquals(1, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
-        assertEquals(Double.valueOf(100), preporuceniKomadi.getPreporuceniDonjiDelovi().get(0).getPoeni());
+        assertEquals(Double.valueOf(96), preporuceniKomadi.getPreporuceniDonjiDelovi().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -133,8 +136,10 @@ public class DonjiDeoPersonalizovanoTests {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -151,9 +156,9 @@ public class DonjiDeoPersonalizovanoTests {
         assertEquals(2, preporuceniKomadi.getPreporuceniDonjiDelovi().size() );
 
         Optional<PreporuceniDonjiDeo> gd = preporuceniKomadi.getPreporuceniDonjiDelovi().stream().filter(element -> element.getDonjiDeo().getId().equals(1L)).findFirst();
-        assertEquals(Double.valueOf(96), gd.get().getPoeni());
+        assertEquals(Double.valueOf(80), gd.get().getPoeni());
         gd = preporuceniKomadi.getPreporuceniDonjiDelovi().stream().filter(element -> element.getDonjiDeo().getId().equals(4L)).findFirst();
-        assertEquals(Double.valueOf(92), gd.get().getPoeni());
+        assertEquals(Double.valueOf(79), gd.get().getPoeni());
 
         kieSession.dispose();
     }
@@ -175,7 +180,7 @@ public class DonjiDeoPersonalizovanoTests {
     }
 
     public UnosDTO createUnos(){
-        return new UnosDTO(15, Vreme.SUVO, "Beograd", DressCode.LEZERAN, new ArrayList<Boja>() {{add(Boja.CRVENA); add(Boja.BELA);}});
+        return new UnosDTO(15, Vreme.SUVO, "Beograd", DressCode.LEZERAN, new ArrayList<Boja>() {{add(Boja.PLAVA); add(Boja.BELA);}});
     }
 
     public UnosDTO createUnosBlackTie(){
@@ -184,8 +189,8 @@ public class DonjiDeoPersonalizovanoTests {
 
     public List<DonjiDeo> createDonjiDelovi(){
         List<DonjiDeo> donjiDeoList = new ArrayList<>();
-        donjiDeoList.add(new DonjiDeo(1L, Boja.BELA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.SIROKA));
-        donjiDeoList.add(new DonjiDeo(2L, Boja.BRAON, Materijal.SOMOT, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.KRATKA_SUKNJA ,OdecaPodTip.USKA));
+        donjiDeoList.add(new DonjiDeo(1L, Boja.PLAVA, Materijal.TEKSAS, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.PANTALONE ,OdecaPodTip.USKA));
+        donjiDeoList.add(new DonjiDeo(2L, Boja.BRAON, Materijal.SOMOT, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.KRATKA_SUKNJA ,OdecaPodTip.SIROKA));
         donjiDeoList.add(new DonjiDeo(3L, Boja.ZELENA, Materijal.PAMUK, Vreme.SUVO, 0,  1, "", true, DonjiDeoEnum.TRENERKA ,OdecaPodTip.SIROKA));
         donjiDeoList.add(new DonjiDeo(4L, Boja.CRNA, Materijal.POLIESTER, Vreme.VLAZNO, 0,  1, "", true, DonjiDeoEnum.HELANKE ,OdecaPodTip.USKA));
         return donjiDeoList;

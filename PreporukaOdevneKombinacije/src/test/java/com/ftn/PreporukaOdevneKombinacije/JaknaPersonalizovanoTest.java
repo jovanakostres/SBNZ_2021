@@ -40,8 +40,10 @@ public class JaknaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(0, preporuceniKomadi.getPreporuceneJakne().size() );
@@ -65,12 +67,14 @@ public class JaknaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         assertEquals(1, preporuceniKomadi.getPreporuceneJakne().size() );
-        assertEquals(Double.valueOf(95), preporuceniKomadi.getPreporuceneJakne().get(0).getPoeni());
+        assertEquals(Double.valueOf(75), preporuceniKomadi.getPreporuceneJakne().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -94,8 +98,10 @@ public class JaknaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnosBlackTie());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -107,7 +113,7 @@ public class JaknaPersonalizovanoTest {
         assertTrue(ruleNames.contains("D - Dodavanje bodova za materijal"));
         assertTrue(ruleNames.contains("E2 - Biranje boje ako dresscode utice"));
         assertEquals(1, preporuceniKomadi.getPreporuceneJakne().size() );
-        assertEquals(Double.valueOf(70), preporuceniKomadi.getPreporuceneJakne().get(0).getPoeni());
+        assertEquals(Double.valueOf(85), preporuceniKomadi.getPreporuceneJakne().get(0).getPoeni());
 
         kieSession.dispose();
     }
@@ -135,8 +141,10 @@ public class JaknaPersonalizovanoTest {
         insertOdecaTip(kieSession);
 
         PreporuceniKomadi preporuceniKomadi = new PreporuceniKomadi();
-        kieSession.insert(preporuceniKomadi);
+
         kieSession.insert(createUnos());
+        kieSession.fireAllRules();
+        kieSession.insert(preporuceniKomadi);
         kieSession.fireAllRules();
 
         List<Match> activations = agendaEventListener.getMatchList();
@@ -153,9 +161,9 @@ public class JaknaPersonalizovanoTest {
         assertEquals(2, preporuceniKomadi.getPreporuceneJakne().size() );
 
         Optional<PreporucenaJakna> gd = preporuceniKomadi.getPreporuceneJakne().stream().filter(element -> element.getJakna().getId().equals(1L)).findFirst();
-        assertEquals(Double.valueOf(106), gd.get().getPoeni());
+        assertEquals(Double.valueOf(90), gd.get().getPoeni());
         gd = preporuceniKomadi.getPreporuceneJakne().stream().filter(element -> element.getJakna().getId().equals(4L)).findFirst();
-        assertEquals(Double.valueOf(103), gd.get().getPoeni());
+        assertEquals(Double.valueOf(92), gd.get().getPoeni());
 
         kieSession.dispose();
     }
