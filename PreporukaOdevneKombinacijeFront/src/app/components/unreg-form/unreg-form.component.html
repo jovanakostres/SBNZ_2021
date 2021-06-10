@@ -47,20 +47,26 @@
             </mat-form-field>
         </ng-container>
         <ng-container *ngIf="step == 3" >
-            <mat-form-field>
-                <mat-label>Boja koze</mat-label>
-                <mat-radio-group formControlName = "bojaKoze">
-                    <mat-radio-button *ngFor="let boja of bojakoze;" [value]="boja.value">{{boja.viewValue}}</mat-radio-button>
-                  </mat-radio-group>
-                <!--<mat-select  formControlName = "bojaKoze" (ngModelChange)="changed()">
-                    <mat-option *ngFor="let boja of bojakoze;" [value]="boja.value">
-                    {{boja.viewValue}}
-                    </mat-option>
-                </mat-select>-->
-                <mat-error>
-                    Please provide a valid title
-                  </mat-error>
-            </mat-form-field>
+            
+                <mat-label>Boja koze</mat-label>                
+                <br>
+                <input type="radio" name="gender" [value] = "SUMMER" (click)="check('SUMMER')" >
+                <label style="height: 100px; width: 100px; background-color: rgb(238,207,187); color: rgb(238,207,187);">ds</label>
+                <label style="height: 100px; width: 100px; background-color: rgb(205,149,118); color: rgb(205,149,118);">ds</label>
+                <br>
+                <input type="radio" name="gender" [value] = "SPRING" (click)="check('SPRING')">
+                <label style="height: 100px; width: 100px; background-color: rgb(254,213,187); color: rgb(254,213,187);">ds</label>
+                <label style="height: 100px; width: 100px; background-color: rgb(195,153,125); color: rgb(195,153,125);">ds</label>
+                <br>
+                <input type="radio" name="gender" [value] = "AUTUMN" (click)="check('AUTUMN')">
+                <label style="height: 100px; width: 100px; background-color: rgb(246,181,152); color: rgb(246,181,152);">ds</label>
+                <label style="height: 100px; width: 100px; background-color: rgb(239,201,189); color: rgb(239,201,189);">ds</label>
+                <br>
+                <input type="radio" name="gender" [value] = "WINTER" (click)="check('WINTER')">
+                <label style="height: 100px; width: 100px; background-color: rgb(254,210,199); color: rgb(254,210,199);">ds</label>
+                <label style="height: 100px; width: 100px; background-color: rgb(233,215,203); color: rgb(233,215,203);">ds</label>
+                    
+                
         </ng-container>
         <ng-container *ngIf="step == 4" >
             <mat-form-field>
@@ -94,7 +100,7 @@
     </form>
 </div>
 
-<app-results-personalized
+<app-results-opste
   *ngIf="dataSource"
   [data]="dataSource">
-</app-results-personalized> 
+</app-results-opste> 

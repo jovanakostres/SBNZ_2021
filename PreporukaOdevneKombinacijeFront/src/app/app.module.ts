@@ -41,6 +41,8 @@ import { PrikazOdeceComponent } from './components/prikaz-odece/prikaz-odece.com
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece-loggedin-user/add-komad-odece-loggedin-user.component';
+import { RatingModule } from 'ng-starrating';
+import { ResultsOpsteComponent } from './components/results-opste/results-opste.component';
 
 
 @NgModule({
@@ -57,8 +59,9 @@ import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece
     HomeAdminComponent,
     Aktivnost7DanaComponent,
     DialogBoxComponentComponent,
+    AddKomadOdeceLoggedinUserComponent,
     PrikazOdeceComponent,
-    AddKomadOdeceLoggedinUserComponent
+    ResultsOpsteComponent
   ],
   imports: [
     CommonModule,
@@ -85,6 +88,7 @@ import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece
     MatDividerModule,
     MatDialogModule,
     MatRadioModule,
+    RatingModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: JSON.parse(localStorage.getItem('currentUser') || '{"token":""}')?.token,

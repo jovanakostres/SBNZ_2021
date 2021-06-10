@@ -1,0 +1,45 @@
+<div style="display:flex; flex-direction: row; margin-top: 0px; margin-bottom: 0px; margin-left: 16px; margin-right: 16px;">
+    <div>
+        <h2 style=" color: #73cb90;">Izabrani komadi: </h2>
+    </div>
+</div>
+
+<div style="float: left; display:flex; flex-direction: column; width: 50%;">
+    <div style="display:flex; flex-direction: row;">
+        <mat-card class="example-card" >
+            <img mat-card-image src='{{gornjiDeo.image}}'/>  
+        </mat-card>
+        <mat-card class="example-card" >
+            <img mat-card-image src='{{donjiDeo.image}}'/>        
+        </mat-card>
+    </div>
+    <div style="display:flex; flex-direction: row; float: left;">
+        <mat-card class="example-card" >   
+            <img mat-card-image src='{{jakna.image}}'/>     
+        </mat-card>
+        <mat-card class="example-card" >
+            <img mat-card-image src='{{obuca.image}}'/>        
+        </mat-card>
+    </div>
+</div>
+
+<div style="float: left; display:flex; flex-direction: column; width: 50%;">
+    <div style="float: left; display:flex; flex-direction: column;  margin-left: 15px;">
+        <mat-card class="example-card" style="height: 20px;">  
+            Preporucena paleta boja      
+        </mat-card>
+        <mat-card style="width: 500px;"> 
+            <img mat-card-image src='{{this.data.image}}'/>       
+        </mat-card>
+    </div>
+    <div style="float: left; display:flex; flex-direction: column; background-color: darksalmon; margin-left: 15px;">
+        <mat-card class="example-card" style="height: 20px;">  
+            Tips & Tricks    
+        </mat-card>
+        <mat-card style="width: 500px;"> 
+            {{this.data.tips}}       
+        </mat-card>
+    </div>  
+</div>   
+   
+  

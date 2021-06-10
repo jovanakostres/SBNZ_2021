@@ -1,0 +1,101 @@
+package com.preporukaOK.rules.rulesTips
+
+import com.ftn.PreporukaOdevneKombinacije.model.*;
+import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
+import com.ftn.PreporukaOdevneKombinacije.dto.*;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.*;
+
+import java.util.List;
+import java.util.ArrayList;
+
+declare TipTelaIzabran
+	tipTela: TipTela
+end
+
+rule "A1 - Tip tela - trougao"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO(kukovi >= ramena + 5/100 * kukovi);
+        $tips : TipsTricks();
+    then
+    	insert(new TipTelaIzabran(TipTela.TROUGAO));
+    	modify($tips) {getPros().add("Dole tamno, V izrez, majice sa horizontalnim prugama.\n");}
+    	modify($tips) {getPros().add("Modeli pantalona: FLARED, SKINY; modeli suknji: PENCIL, ALINE\n");}
+        modify($tips) {getCons().add("Sirok gornji deo, kapri pantalone");}
+        System.out.println("Tip tela - trougao");
+end
+
+rule "A2 - Tip tela - pravougaonik"
+    salience 490
+    when
+        $unos : UnosNeulogovanDTO( ramena <= 25/100 * ramena + struk, ramena <= 5/100 * ramena + kukovi);
+        not (TipTelaIzabran());
+        $tips : TipsTricks();
+    then
+    	insert(new TipTelaIzabran(TipTela.PRAVOUGAONIK));
+    	modify($tips) {getPros().add("Lagani materijali, izrezi sa detaljima.\n");}
+    	modify($tips) {getPros().add("Modeli pantalona: STRAIGHT; modeli suknji: PLEATED, TULIP\n");}
+    	modify($tips) {getCons().add("Kockasti izrezi");}
+        System.out.println("Tip tela - pravougaonik");
+end
+
+rule "A3 - Tip tela - obrnuti trougao"
+    salience 500
+    when
+        $unos : UnosNeulogovanDTO( ramena >= kukovi + 5/100 * ramena);
+        not (TipTelaIzabran());
+        $tips : TipsTricks();
+    then
+    	insert(new TipTelaIzabran(TipTela.OB_TROUGAO));
+    	modify($tips) {getPros().add("Donji deo tamniji od gornjeg, V izrez");}
+    	modify($tips) {getPros().add("Modeli pantalona: STRAIGHT, BAGGY; modeli suknji: PLEATED, TULIP\n");}
+        modify($tips) {getCons().add("Gornji delovi koji sire u ramenima npr majice sa puf rukavima.");}
+        System.out.println("Tip tela - ob trougao");
+end
+
+rule "A4 - Tip tela - pescani sat"
+     salience 500
+     when
+         $unos : UnosNeulogovanDTO( ramena > 25/100 * ramena + struk, ramena  <= 5/100 * ramena + kukovi);
+         not (TipTelaIzabran());
+         $tips : TipsTricks();
+     then
+     	insert(new TipTelaIzabran(TipTela.PES_SAT));
+     	modify($tips) {getPros().add("Odeca koja istice struk");}
+     	modify($tips) {getPros().add("Modeli pantalona: FLARED, SKINY; modeli suknji: WRAP, TRUMPET\n");}
+        modify($tips) {getCons().add("Donji delovi koji sire.");}
+        System.out.println("Tip tela - pescani sat");
+ end
+
+rule "A5 - Tip tela - krug"
+     salience 480
+     when
+         not(TipTelaIzabran());
+         $tips : TipsTricks();
+     then
+        modify($tips) {getPros().add("Tamni gornji delovi");}
+        modify($tips) {getPros().add("Modeli pantalona: BOOTCUT, SKINY; modeli suknji: PENCIL, WRAP, ALINE\n");}
+        modify($tips) {getCons().add("Odeca sa detaljima na stomaku");}
+        System.out.println("Tip tela - krug");
+end
+
+rule "B1 nisko"
+    salience 400
+    when
+        $unos : UnosNeulogovanDTO(visina < 165);
+        $tips : TipsTricks();
+    then
+        modify($tips) {getPros().add("Odeca iste boje, bez velikog kontrasta. Duboki struk, suknje i pantalone mini ili maxi.");}
+        System.out.println("B1 nisko");
+end
+
+rule "B2 visoko"
+    salience 400
+    when
+        $unos : UnosNeulogovanDTO(visina > 175);
+        $tips : TipsTricks();
+    then
+        modify($tips) {getPros().add("Siroki kais ili pojas. Veliki printovi na odeci.");}
+        System.out.println("B2 visiko");
+end
+

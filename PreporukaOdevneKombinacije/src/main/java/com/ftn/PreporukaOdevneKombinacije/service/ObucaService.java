@@ -8,6 +8,7 @@ import com.ftn.PreporukaOdevneKombinacije.model.Obuca;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniGornjiDeo;
 import com.ftn.PreporukaOdevneKombinacije.model.drlModel.PreporuceniKomadi;
+import com.ftn.PreporukaOdevneKombinacije.model.drlModel.TipsTricks;
 import com.ftn.PreporukaOdevneKombinacije.model.enums.*;
 import com.ftn.PreporukaOdevneKombinacije.repository.DonjiDeoRepository;
 import com.ftn.PreporukaOdevneKombinacije.repository.ObucaRepository;
@@ -16,6 +17,7 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -187,5 +189,17 @@ public class ObucaService {
 
         kieSession.dispose();
         return preporuceniKomadi;
+    }
+
+    public String getTips(UnosNeulogovanDTO unosDTO) {
+        KieSession kieSession = kieContainer.newKieSession("tipsPersRulesSession");
+        TipsTricks tips = new TipsTricks();
+
+        kieSession.insert(unosDTO);
+        kieSession.insert(tips);
+        kieSession.fireAllRules();
+
+        kieSession.dispose();
+        return tips.toString();
     }
 }

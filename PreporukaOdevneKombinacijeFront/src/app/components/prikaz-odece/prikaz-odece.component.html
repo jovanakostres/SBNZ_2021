@@ -34,7 +34,15 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field color="accent" style="margin-left: 10px;">
+        <mat-form-field color="accent" style="margin-left: 10px;" *ngIf = "praviadmin">
+            <mat-label>Pol</mat-label>
+            <mat-select  style="width: 150px;" (ngModelChange)="changed()" formControlName = "pol">
+                <mat-option *ngFor="let food of pol;" [value]="food.value">
+                {{food.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field color="accent" style="margin-left: 10px;" *ngIf = "!praviadmin">
             <mat-label>Podtip</mat-label>
             <mat-select  style="width: 150px;" formControlName = "podtipovi" (ngModelChange)="changed()">
                 <mat-option *ngFor="let food of podtipovi;" [value]="food.value">
@@ -42,7 +50,6 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-
         <button mat-raised-button color="primary" style="margin-left: 15px;" (click) = onSubmit(myForm)>Filter</button>
     </form>
     </div>

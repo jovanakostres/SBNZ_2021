@@ -7,6 +7,7 @@ public class FilterDTO {
     private String materijal;
     private String tip;
     private String podtip;
+    private String pol ;
 
     public FilterDTO() {
     }
@@ -39,6 +40,15 @@ public class FilterDTO {
         this.materijal = materijal;
         this.tip = tip;
         this.podtip = podtip;
+    }
+
+    public FilterDTO(String deo, String boja, String materijal, String tip, String podtip, String pol) {
+        this.deo = deo;
+        this.boja = boja;
+        this.materijal = materijal;
+        this.tip = tip;
+        this.podtip = podtip;
+        this.pol = pol;
     }
 
     public String getDeo() {
@@ -79,5 +89,13 @@ public class FilterDTO {
 
     public void setPodtip(String podtip) {
         this.podtip = podtip;
+    }
+
+    public String getPol() {
+        return pol;
+    }
+
+    public void setPol(String pol) {
+        this.pol = pol;
     }
 }

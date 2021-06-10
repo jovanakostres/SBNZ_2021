@@ -253,15 +253,15 @@ rule "D - Dodavanje bodova za dubinu odece"
                         );
     then
     	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $donjiDeo));
-        System.out.println("E bodovi");
+        System.out.println("D bodovi");
 end
 
-rule "E - Biranje komada prema koeficijentu preporuke"
-	salience -10
+rule "G1 - Biranje komada prema koeficijentu preporuke"
+	salience ($poeni*10)
 	lock-on-active
     when
     	$donjiDeo : DonjiDeo();
-    	 accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
+    	accumulate($koef : KoeficijentPreporuke($b4:Double.valueOf(bodovi * komad.getKoeficijentOdabira()) ), $ukupneVrednosti : sumPerItem($koef) );
     	Number($avg : doubleValue) from accumulate( $d : Double() from $ukupneVrednosti ,
                        	average($d) );
         $poeni : Double(this >= $avg) from accumulate(
@@ -280,6 +280,7 @@ rule "Brisanje poena nakon odabira"
 	no-loop
 	when
 		$koeficijentPreporuke:KoeficijentPreporuke();
+		$preporuceniKomadi : PreporuceniKomadi();
 	then
 		delete($koeficijentPreporuke);
 end
