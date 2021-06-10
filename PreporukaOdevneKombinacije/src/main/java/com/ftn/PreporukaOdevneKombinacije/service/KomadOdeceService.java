@@ -363,6 +363,9 @@ public class KomadOdeceService {
 
     }
 
+	public void addKomad(KomadOdece ko) {
+        repository.save(ko);
+    }
 
     public List<KomadOdece> findAll() {
         return repository.findAll();

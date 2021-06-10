@@ -17,13 +17,25 @@ export class KomadOpsteService {
 
     getCombination(unos : UnosNeul) : Observable<any>{
         let httpOptions = {};
-    
-            httpOptions = {
-                headers: this.headers,
-                observe: 'response',
-    
-            };
-    
-            return this.http.post<UnosNeul>( this.newsPath + "/recommendation/", unos, httpOptions);
-      }
+
+        httpOptions = {
+            headers: this.headers,
+            observe: 'response',
+
+        };
+
+        return this.http.post<UnosNeul>( this.newsPath + "/recommendation/", unos, httpOptions);
+    }
+
+    addKomad(unos : Object) : Observable<any>{
+        let httpOptions = {};
+
+        httpOptions = {
+            headers: this.headers,
+            observe: 'response',
+
+        };
+
+        return this.http.post<Object>( this.newsPath + "/add/", unos, httpOptions);
+    }
 }

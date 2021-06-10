@@ -31,7 +31,6 @@ import { ResultsPersonalizedComponent } from './components/results-personalized/
 import { MatIconModule} from '@angular/material/icon';
 import { Aktivnost24SataComponent } from './components/aktivnost24-sata/aktivnost24-sata.component';
 import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
-import { HomeAdminComponent } from './home-admin/home-admin.component'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Aktivnost7DanaComponent } from './components/aktivnost7-dana/aktivnost7-dana.component';
 import { DialogBoxComponentComponent } from './components/dialog-box-component/dialog-box-component.component';
@@ -39,6 +38,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PrikazOdeceComponent } from './components/prikaz-odece/prikaz-odece.component';
+import { HomeAdminComponent } from './components/home-admin/home-admin.component';
 
 @NgModule({
   declarations: [
