@@ -121,15 +121,19 @@ rule "B - Dodavanje bodova za podtip odece"
 
 end
 
-rule "C1 - 1 - Biranje tipa odece i materijala prema temperaturi > 20"
+rule "C1 - 1 - Biranje tipa odece i materijala prema temperaturi > 25"
     salience 400
     no-loop
     when
-        $unos : UnosDTO(temperatura > 20);
+        $unos : UnosDTO(temperatura > 25);
     then
     	insert(new TipOdeceIzabran(DonjiDeoEnum.SORC));
     	insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
     	insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.SORC));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
         insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
     	insert(new MaterijalIzabran(Materijal.LAN));
@@ -142,11 +146,14 @@ rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 20
     salience 400
     no-loop
     when
-        $unos : UnosDTO(temperatura <= 20, temperatura > 10);
+        $unos : UnosDTO(temperatura <= 25, temperatura > 10);
     then
     	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
     	insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
     	insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
+    	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SOMOT));
@@ -161,8 +168,9 @@ rule "C1 - 3 - Biranje tipa odece i materijala prema temperaturi < 10"
     when
         $unos : UnosDTO(temperatura <= 10);
     then
+        insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
     	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
-    	insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
+    	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SOMOT));
@@ -185,7 +193,6 @@ rule "C2 - 1 - Biranje tipa odece i materijala prema dresscodu - lezeran"
         insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
         insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
         insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
     	insert(new MaterijalIzabran(Materijal.LAN));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
@@ -204,8 +211,9 @@ rule "C2 - 2 - Biranje tipa odece i materijala prema dresscodu - sportski"
     then
     	insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
         insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.TRENERKA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.HELANKE));
         insert(new TipOdeceIzabran(DonjiDeoEnum.SORC));
-        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         System.out.println("C2 - 2");
@@ -220,8 +228,8 @@ rule "C2 - 3 - Biranje tipa odece i materijala prema dresscodu - formalan"
     	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
     	insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
         insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
-    	insert(new MaterijalIzabran(Materijal.PAMUK));
-        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
         insert(new MaterijalIzabran(Materijal.SOMOT));
         insert(new MaterijalIzabran(Materijal.VUNA));
         insert(new MaterijalIzabran(Materijal.SVILA));
@@ -240,12 +248,19 @@ rule "C2 - 4 - Biranje tipa odece i materijala prema dresscodu - izlazak"
         insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
         insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
         insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
-    	insert(new MaterijalIzabran(Materijal.PAMUK));
-        insert(new MaterijalIzabran(Materijal.POLIESTER));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKE_PANTALONE));
         insert(new MaterijalIzabran(Materijal.SOMOT));
         insert(new MaterijalIzabran(Materijal.SVILA));
         insert(new MaterijalIzabran(Materijal.KOZA));
         insert(new MaterijalIzabran(Materijal.CIPKA));
+        insert(new MaterijalIzabran(Materijal.TEKSAS));
         System.out.println("C2 - 4");
 end
 
@@ -256,6 +271,12 @@ rule "C2 - 5 - Biranje tipa odece i materijala prema dresscodu - blacktie"
         $unos : UnosDTO(dressCode == DressCode.BLACKTIE);
     then
     	insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
+        insert(new TipOdeceIzabran(DonjiDeoEnum.PANTALONE));
         insert(new TipOdeceIzabran(DonjiDeoEnum.KRATKA_SUKNJA));
         insert(new TipOdeceIzabran(DonjiDeoEnum.MAXI_SUKNJA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
@@ -332,8 +353,8 @@ rule "D - Dodavanje bodova za materijal"
                            count(1)
         );
     then
-    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $donjiDeo));
-        System.out.println("D , id odece : " + $donjiDeo.getId() + "  broj bodova : " + (20 + 5 * $brojponavljanja) );
+    	insert(new KoeficijentPreporuke(20 + 2 * $brojponavljanja, $donjiDeo));
+        System.out.println("D , id odece : " + $donjiDeo.getId() + "  broj bodova : " + (20 + 2 * $brojponavljanja) );
 end
 
 
@@ -361,14 +382,26 @@ rule "E1 - Biranje boje odece ako dresscode ne utice"
         not Marker(uniqueIdentifier == "E1")
     then
     	insert(new BojaIzabran( $b ));
-    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $donjiDeo));
-        System.out.println("E1 , id odece : " + $donjiDeo.getId() + "  broj bodova : " + (10 + 5 / $list.size()) );
+    	insert(new KoeficijentPreporuke(5 + 5 / $list.size(), $donjiDeo));
+        System.out.println("E1 , id odece : " + $donjiDeo.getId() + "  broj bodova : " + (5 + 5 / $list.size()) );
 end
+
+rule "ECB - Davanje bodova za crnu i belu"
+    no-loop
+    salience 290
+    when
+        $donjiDeo : DonjiDeo( boja == Boja.CRNA || boja == Boja.BELA);
+        $list: List( size > 0 ) from collect(DonjiDeo( boja == Boja.CRNA || boja == Boja.BELA))
+    then
+    	insert(new KoeficijentPreporuke(2 + 5 / $list.size(), $donjiDeo));
+        System.out.println("ECB");
+end
+
 
 rule "F - Dodavanje bodova za prilagodjenost vremenu"
     salience 250
         when
-            $unos : UnosDTO($vremeUnos : vreme );
+            $unos : UnosDTO($vremeUnos : vreme == Vreme.VLAZNO );
             $donjiDeo : DonjiDeo( vreme == $vremeUnos);
             $list: List( size > 0 ) from collect(DonjiDeo( vreme == $vremeUnos ))
         then

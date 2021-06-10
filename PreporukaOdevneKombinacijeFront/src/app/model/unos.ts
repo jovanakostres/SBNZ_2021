@@ -1,10 +1,10 @@
 export class Unos{
     mesto: string;
-    dresscode: string;
+    dressCode: string;
     boje : string[];
 
     constructor(dresscode:string, mesto: string, boje :string[]){
-        this.dresscode = dresscode;
+        this.dressCode = dresscode;
         this.mesto = mesto;
         this.boje = boje;
     }

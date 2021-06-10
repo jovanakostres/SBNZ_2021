@@ -45,7 +45,8 @@ public class KomadOdeceController {
     public ResponseEntity<?> getPreporukaPersonalizovano(@RequestBody UnosDTO unosDTO) {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //User user = userService.findOne(1L);
-        PreporuceniKomadi prep = komadOdeceService.getPreporukaPersonalizovano(new UnosDTO(25, Vreme.SUVO, "Novi Sad", DressCode.LEZERAN, new ArrayList<Boja>() {{ add(Boja.LJUBICASTA); add(Boja.BELA);}}), userDetails);
+        //PreporuceniKomadi prep = komadOdeceService.getPreporukaPersonalizovano(new UnosDTO(25, Vreme.SUVO, "Novi Sad", DressCode.LEZERAN, new ArrayList<Boja>() {{ add(Boja.LJUBICASTA); add(Boja.BELA);}}), userDetails);
+        PreporuceniKomadi prep = komadOdeceService.getPreporukaPersonalizovano(unosDTO, userDetails);
         if(prep.getPreporuceniGornjiDelovi().size() <= 0){
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
         }else{

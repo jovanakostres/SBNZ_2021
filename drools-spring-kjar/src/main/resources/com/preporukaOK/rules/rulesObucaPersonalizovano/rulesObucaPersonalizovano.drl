@@ -88,11 +88,11 @@ rule "A5 - Tip tela - krug"
 end
 
 
-rule "C1 - 1 - Biranje tipa obuce i materijala prema temperaturi > 20"
+rule "C1 - 1 - Biranje tipa obuce i materijala prema temperaturi > 25"
     salience 400
     no-loop
     when
-        $unos : UnosDTO(temperatura > 20);
+        $unos : UnosDTO(temperatura > 25);
     then
     	insert(new TipOdeceIzabran(ObucaEnum.SANDALE));
     	insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
@@ -107,7 +107,7 @@ rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 20
     salience 400
     no-loop
     when
-        $unos : UnosDTO(temperatura <= 20, temperatura > 10);
+        $unos : UnosDTO(temperatura <= 25, temperatura > 10);
     then
     	insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
         insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
@@ -158,6 +158,7 @@ rule "C2 - 2 - Biranje tipa obuce i materijala prema dresscodu - sportski"
         $unos : UnosDTO(dressCode == DressCode.SPORTSKI);
     then
         insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
+        insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.PAMUK));
         System.out.println("C2 - 2");
@@ -170,6 +171,8 @@ rule "C2 - 3 - Biranje tipa obuce i materijala prema dresscodu - formalan"
         $unos : UnosDTO(dressCode == DressCode.FORMALAN);
     then
     	insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+        insert(new TipOdeceIzabran(ObucaEnum.CIZME));
         insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.KOZA));
@@ -185,9 +188,10 @@ rule "C2 - 4 - Biranje tipa obuce i materijala prema dresscodu - izlazak"
         $unos : UnosDTO(dressCode == DressCode.IZLAZAK);
     then
     	insert(new TipOdeceIzabran(ObucaEnum.CIZME));
-        insert(new TipOdeceIzabran(ObucaEnum.PATIKE));
         insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
         insert(new TipOdeceIzabran(ObucaEnum.SANDALE));
+        insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.GUMA));
         insert(new MaterijalIzabran(Materijal.KOZA));
@@ -201,6 +205,10 @@ rule "C2 - 5 - Biranje tipa obuce i materijala prema dresscodu - blacktie"
         $unos : UnosDTO(dressCode == DressCode.BLACKTIE);
     then
     	insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+        insert(new TipOdeceIzabran(ObucaEnum.CIZME));
+        insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
+        insert(new TipOdeceIzabran(ObucaEnum.CIZME));
         insert(new TipOdeceIzabran(ObucaEnum.CIPELE));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.GUMA));
@@ -270,8 +278,8 @@ rule "D - Dodavanje bodova za materijal"
                            count(1)
         );
     then
-    	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $obuca));
-        System.out.println("D , id obuce : " + $obuca.getId() + "  broj bodova : " + (20 + 5 * $brojponavljanja) );
+    	insert(new KoeficijentPreporuke(20 + 2 * $brojponavljanja, $obuca));
+        System.out.println("D , id obuce : " + $obuca.getId() + "  broj bodova : " + (20 + 2 * $brojponavljanja) );
 end
 
 
@@ -299,14 +307,25 @@ rule "E1 - Biranje boje obuce ako dresscode ne utice"
         not Marker(uniqueIdentifier == "E1")
     then
     	insert(new BojaIzabran( $b ));
-    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $obuca));
-        System.out.println("E1 , id obuce : " + $obuca.getId() + "  broj bodova : " + (10 + 5 / $list.size()) );
+    	insert(new KoeficijentPreporuke(5 + 5 / $list.size(), $obuca));
+        System.out.println("E1 , id obuce : " + $obuca.getId() + "  broj bodova : " + (5 + 5 / $list.size()) );
+end
+
+rule "ECB - Davanje bodova za crnu i belu"
+    no-loop
+    salience 290
+    when
+        $obuca : Obuca( boja == Boja.CRNA || boja == Boja.BELA);
+        $list: List( size > 0 ) from collect(Obuca( boja == Boja.CRNA || boja == Boja.BELA))
+    then
+    	insert(new KoeficijentPreporuke(2 + 5 / $list.size(), $obuca));
+        System.out.println("ECB");
 end
 
 rule "F - Dodavanje bodova za prilagodjenost vremenu"
     salience 250
         when
-            $unos : UnosDTO($vremeUnos : vreme );
+            $unos : UnosDTO($vremeUnos : vreme == Vreme.VLAZNO);
             $obuca : Obuca( vreme == $vremeUnos);
             $list: List( size > 0 ) from collect(Obuca( vreme == $vremeUnos ))
         then

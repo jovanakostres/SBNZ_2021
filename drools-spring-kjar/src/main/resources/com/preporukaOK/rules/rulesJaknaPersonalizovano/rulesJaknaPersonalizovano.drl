@@ -121,15 +121,16 @@ rule "B - Dodavanje bodova za podtip odece"
 
 end
 
-rule "C1 - 1 - Biranje tipa odece i materijala prema temperaturi > 20"
+rule "C1 - 1 - Biranje tipa odece i materijala prema temperaturi > 25"
     salience 400
     no-loop
     when
-        $unos : UnosDTO(temperatura > 20);
+        $unos : UnosDTO(temperatura > 25);
     then
     	insert(new TipOdeceIzabran(JaknaEnum.PRSLUK));
     	insert(new TipOdeceIzabran(JaknaEnum.KARDIGAN));
     	insert(new TipOdeceIzabran(JaknaEnum.TRENERKA));
+    	insert(new TipOdeceIzabran(JaknaEnum.SAKO));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
     	insert(new MaterijalIzabran(Materijal.LAN));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
@@ -142,7 +143,7 @@ rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 20
     salience 400
     no-loop
     when
-        $unos : UnosDTO(temperatura <= 20, temperatura > 10);
+        $unos : UnosDTO(temperatura <= 25, temperatura > 10);
     then
     	insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
     	insert(new TipOdeceIzabran(JaknaEnum.KARDIGAN));
@@ -167,6 +168,15 @@ rule "C1 - 3 - Biranje tipa odece i materijala prema temperaturi < 10"
     	insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
         insert(new TipOdeceIzabran(JaknaEnum.MONTON));
        	insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
+       	insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+       	insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+        insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
+        insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+        insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+        insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
+        insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.PLIS));
@@ -208,6 +218,14 @@ rule "C2 - 2 - Biranje tipa odece i materijala prema dresscodu - sportski"
         insert(new TipOdeceIzabran(JaknaEnum.TRENERKA));
         insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
         insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+        insert(new TipOdeceIzabran(JaknaEnum.PRSLUK));
+        insert(new TipOdeceIzabran(JaknaEnum.TRENERKA));
+        insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
+        insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
+        insert(new TipOdeceIzabran(JaknaEnum.PRSLUK));
+        insert(new TipOdeceIzabran(JaknaEnum.TRENERKA));
+        insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
+        insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));
         System.out.println("C2 - 2");
@@ -222,12 +240,9 @@ rule "C2 - 3 - Biranje tipa odece i materijala prema dresscodu - formalan"
     	insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
         insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
         insert(new TipOdeceIzabran(JaknaEnum.SAKO));
-        insert(new TipOdeceIzabran(JaknaEnum.JAKNA_PRELAZNI));
         insert(new TipOdeceIzabran(JaknaEnum.KARDIGAN));
         insert(new TipOdeceIzabran(JaknaEnum.MONTON));
         insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
-    	insert(new MaterijalIzabran(Materijal.PAMUK));
-        insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SOMOT));
         insert(new MaterijalIzabran(Materijal.VUNA));
         insert(new MaterijalIzabran(Materijal.SVILA));
@@ -247,8 +262,6 @@ rule "C2 - 4 - Biranje tipa odece i materijala prema dresscodu - izlazak"
         insert(new TipOdeceIzabran(JaknaEnum.ZIMSKA_JAKNA));
         insert(new TipOdeceIzabran(JaknaEnum.MONTON));
         insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
-    	insert(new MaterijalIzabran(Materijal.PAMUK));
-        insert(new MaterijalIzabran(Materijal.POLIESTER));
         insert(new MaterijalIzabran(Materijal.SOMOT));
         insert(new MaterijalIzabran(Materijal.SVILA));
         insert(new MaterijalIzabran(Materijal.KOZA));
@@ -264,6 +277,14 @@ rule "C2 - 5 - Biranje tipa odece i materijala prema dresscodu - blacktie"
         $unos : UnosDTO(dressCode == DressCode.BLACKTIE);
     then
     	insert(new TipOdeceIzabran(JaknaEnum.SAKO));
+        insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+        insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
+        insert(new TipOdeceIzabran(JaknaEnum.SAKO));
+        insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
+        insert(new TipOdeceIzabran(JaknaEnum.MONTON));
+        insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
+        insert(new TipOdeceIzabran(JaknaEnum.SAKO));
         insert(new TipOdeceIzabran(JaknaEnum.KAPUT));
         insert(new TipOdeceIzabran(JaknaEnum.MONTON));
         insert(new TipOdeceIzabran(JaknaEnum.BUNDA));
@@ -340,7 +361,7 @@ rule "D - Dodavanje bodova za materijal"
         );
     then
     	insert(new KoeficijentPreporuke(20 + 5 * $brojponavljanja, $jakna));
-        System.out.println("D , id odece : " + $jakna.getId() + "  broj bodova : " + (20 + 5 * $brojponavljanja) );
+        System.out.println("D , id odece : " + $jakna.getId() + "  broj bodova : " + (20 + 2 * $brojponavljanja) );
 end
 
 
@@ -368,14 +389,24 @@ rule "E1 - Biranje boje odece ako dresscode ne utice"
         not Marker(uniqueIdentifier == "E1")
     then
     	insert(new BojaIzabran( $b ));
-    	insert(new KoeficijentPreporuke(10 + 5 / $list.size(), $jakna));
-        System.out.println("E1 , id odece : " + $jakna.getId() + "  broj bodova : " + (10 + 5 / $list.size()) );
+    	insert(new KoeficijentPreporuke(5 + 5 / $list.size(), $jakna));
+        System.out.println("E1 , id odece : " + $jakna.getId() + "  broj bodova : " + (5 + 5 / $list.size()) );
 end
 
+rule "ECB - Davanje bodova za crnu i belu"
+    no-loop
+    salience 290
+    when
+        $jakna : Jakna( boja == Boja.CRNA || boja == Boja.BELA);
+        $list: List( size > 0 ) from collect(Jakna( boja == Boja.CRNA || boja == Boja.BELA))
+    then
+    	insert(new KoeficijentPreporuke(2 + 5 / $list.size(), $jakna));
+        System.out.println("ECB");
+end
 rule "F - Dodavanje bodova za prilagodjenost vremenu"
     salience 250
         when
-            $unos : UnosDTO($vremeUnos : vreme );
+            $unos : UnosDTO($vremeUnos : vreme == Vreme.VLAZNO );
             $jakna : Jakna( vreme == $vremeUnos);
             $list: List( size > 0 ) from collect(Jakna( vreme == $vremeUnos ))
         then

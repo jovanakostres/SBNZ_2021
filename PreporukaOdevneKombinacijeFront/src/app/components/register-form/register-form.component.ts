@@ -23,7 +23,6 @@ export class RegisterFormComponent implements OnInit {
     {value: 'LEZERAN', viewValue: 'LEZERAN'},
     {value: 'SPORTSKI', viewValue: 'SPORTSKI'},
     {value: 'BLACKTIE', viewValue: 'BLACKTIE'},
-    {value: 'SPORTSKI', viewValue: 'SPORTSKI'},
     {value: 'IZLAZAK', viewValue: 'IZLAZAK'},
     {value: 'ODMOR', viewValue: 'ODMOR'},
     {value: 'FORMALAN', viewValue: 'FORMALAN'}

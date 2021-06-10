@@ -40,6 +40,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PrikazOdeceComponent } from './components/prikaz-odece/prikaz-odece.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece-loggedin-user/add-komad-odece-loggedin-user.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import {MatRadioModule} from '@angular/material/radio';
     HomeAdminComponent,
     Aktivnost7DanaComponent,
     DialogBoxComponentComponent,
-    PrikazOdeceComponent
+    PrikazOdeceComponent,
+    AddKomadOdeceLoggedinUserComponent
   ],
   imports: [
     CommonModule,

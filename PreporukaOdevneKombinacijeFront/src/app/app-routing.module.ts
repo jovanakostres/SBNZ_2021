@@ -11,6 +11,7 @@ import { UnregFormComponent } from './components/unreg-form/unreg-form.component
 import { AuthentificationService } from './service/authentification.service';
 import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-odece.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
+import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece-loggedin-user/add-komad-odece-loggedin-user.component';
 
 const routes: Routes = [
   { 
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'prikaz', // child route path
         component: PrikazOdeceComponent, // child route component that the router renders
+      },
+      {
+        path: 'dodaj-komad', // child route path
+        component: AddKomadOdeceLoggedinUserComponent, // child route component that the router renders
       },
     ],
   },
