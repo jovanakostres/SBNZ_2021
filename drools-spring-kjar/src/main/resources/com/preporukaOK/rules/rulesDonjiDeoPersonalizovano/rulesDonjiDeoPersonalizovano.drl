@@ -142,7 +142,7 @@ rule "C1 - 1 - Biranje tipa odece i materijala prema temperaturi > 25"
         System.out.println("C1 - 1");
 end
 
-rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 20"
+rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 25"
     salience 400
     no-loop
     when

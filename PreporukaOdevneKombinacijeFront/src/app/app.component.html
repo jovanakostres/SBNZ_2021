@@ -1,13 +1,14 @@
 <mat-toolbar class="md-medium-tall" style="margin-top: 20px;" color="primary">
   <mat-toolbar-row>
     <ng-container *ngIf="loggedIn(); else elseNotDone">
-    <a class="text-class" [routerLink]="'/home-user'">Sistem za preporuku odevne kombinacije</a>
+    <a class="text-class" [routerLink]="'/home-user/clothes'">Sistem za preporuku odevne kombinacije</a>
   </ng-container>
   <ng-template #elseNotDone>
     <a class="text-class" [routerLink]="'/'">Sistem za preporuku odevne kombinacije</a>
   </ng-template>
     <span class="menu-spacer"></span>
     <div>      
+      <button mat-raised-button color="primary" *ngIf="!loggedIn()"> Registruj se </button>
       <button mat-raised-button color="accent" *ngIf="!loggedIn()" [routerLink]="'/login'"> Log in </button>
       <button mat-raised-button color="accent" *ngIf="loggedIn()" (click)="logout()"> Log out </button>          
     </div>

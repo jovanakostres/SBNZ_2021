@@ -143,7 +143,7 @@ rule "C1 - 1 - Biranje tipa odece prema i materijala prema temperaturi > 25"
         System.out.println("C1 - 1");
 end
 
-rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 20"
+rule "C1 - 2 - Biranje tipa odece i materijala prema temperaturi izmedju 10 i 25"
     salience 400
     no-loop
     when
@@ -193,8 +193,6 @@ rule "C2 - 1 - Biranje tipa odece i materijala prema dresscodu - lezeran"
     then
     	insert(new TipOdeceIzabran(GornjiDeoEnum.MAJICA_KRATKI));
     	insert(new TipOdeceIzabran(GornjiDeoEnum.MAJICA_BRETELE));
-    	insert(new TipOdeceIzabran(GornjiDeoEnum.BLUZA));
-    	insert(new TipOdeceIzabran(GornjiDeoEnum.TUNIKA));
     	insert(new TipOdeceIzabran(GornjiDeoEnum.DUKS));
     	insert(new TipOdeceIzabran(GornjiDeoEnum.DZEMPER));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
@@ -215,7 +213,6 @@ rule "C2 - 2 - Biranje tipa odece i materijala prema dresscodu - sportski"
     then
     	insert(new TipOdeceIzabran(GornjiDeoEnum.MAJICA_KRATKI));
     	insert(new TipOdeceIzabran(GornjiDeoEnum.MAJICA_BRETELE));
-    	insert(new TipOdeceIzabran(GornjiDeoEnum.MAJICA_DUGI));
     	insert(new TipOdeceIzabran(GornjiDeoEnum.DUKS));
     	insert(new MaterijalIzabran(Materijal.PAMUK));
         insert(new MaterijalIzabran(Materijal.POLIESTER));

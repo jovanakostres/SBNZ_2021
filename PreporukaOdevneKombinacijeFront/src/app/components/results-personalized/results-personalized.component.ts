@@ -101,7 +101,7 @@ export class ResultsPersonalizedComponent implements OnInit {
       result => {
         console.log("OK");
         this._snackBar.open("Uspešno izabrana kombinacija!", "Close");
-        this.router.navigate(['/home-user']);
+        this.router.navigate(['/home-user/clothes']);
       },
       err => {
         console.log("ERROR");

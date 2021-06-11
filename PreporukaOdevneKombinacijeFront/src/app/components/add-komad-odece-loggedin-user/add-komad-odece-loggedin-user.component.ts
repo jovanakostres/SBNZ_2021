@@ -137,7 +137,7 @@ export class AddKomadOdeceLoggedinUserComponent implements OnInit {
     this.combService.postUnosKomad(unos).subscribe(
       result => {
         console.log("OK");
-        this.router.navigate(['/home-user/prikaz']);
+        this.router.navigate(['/home-user/clothes']);
       },
       err => {
         console.log("ERROR");

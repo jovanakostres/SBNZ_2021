@@ -159,12 +159,14 @@ public class GornjiDeoPersonalizovanoTests {
         assertTrue(ruleNames.contains("E1 - Biranje boje odece ako dresscode ne utice"));
         assertTrue(ruleNames.contains("D1 - 2 - Biranje materijala prema tipu odece - kosulja, bluza, tunika"));
 
-        assertEquals(2, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
+        assertEquals(3, preporuceniKomadi.getPreporuceniGornjiDelovi().size() );
 
         Optional<PreporuceniGornjiDeo> gd = preporuceniKomadi.getPreporuceniGornjiDelovi().stream().filter(element -> element.getGornjiDeo().getId().equals(1L)).findFirst();
-        assertEquals(Double.valueOf(74), gd.get().getPoeni());
+        assertEquals(Double.valueOf(69), gd.get().getPoeni());
         gd = preporuceniKomadi.getPreporuceniGornjiDelovi().stream().filter(element -> element.getGornjiDeo().getId().equals(3L)).findFirst();
         assertEquals(Double.valueOf(81), gd.get().getPoeni());
+        gd = preporuceniKomadi.getPreporuceniGornjiDelovi().stream().filter(element -> element.getGornjiDeo().getId().equals(2L)).findFirst();
+        assertEquals(Double.valueOf(69), gd.get().getPoeni());
 
         kieSession.dispose();
     }

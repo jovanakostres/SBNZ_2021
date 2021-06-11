@@ -24,19 +24,19 @@ const routes: Routes = [
     component: HomeLoggedinUserComponent,
     children: [
       {
-        path: 'aktivnost24', // child route path
+        path: 'activity24', // child route path
         component: Aktivnost24SataComponent, // child route component that the router renders
       },
       {
-        path: 'aktivnost7', // child route path
+        path: 'activity7', // child route path
         component: Aktivnost7DanaComponent, // child route component that the router renders
       },
       {
-        path: 'prikaz', // child route path
+        path: 'clothes', // child route path
         component: PrikazOdeceComponent, // child route component that the router renders
       },
       {
-        path: 'dodaj-komad', // child route path
+        path: 'add-clothes', // child route path
         component: AddKomadOdeceLoggedinUserComponent, // child route component that the router renders
       },
     ],
