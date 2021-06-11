@@ -19,4 +19,20 @@ public class UserService {
         return repository.save(user);
     }
 
+    public User create(User entity){
+        User existUserMail = repository.findByUsername(entity.getUsername());
+        User user = null;
+        try{
+            if (existUserMail != null) {
+                throw new Exception("Email already exists");
+            }
+            user = repository.save(entity);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
 }

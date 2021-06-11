@@ -65,6 +65,27 @@ public class KomadOdeceNeulogovanController {
         }
     }
 
+    @PostMapping("/recommendation-ulogovan")
+    public ResponseEntity<?> getPreporukaPersonalizovanoUlogovan(@RequestBody UnosNeulogovanDTO unosDTO) {
+        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        unosDTO.setKukovi(userDetails.getKukovi());
+        unosDTO.setRamena(userDetails.getRamena());
+        unosDTO.setStruk(userDetails.getStruk());
+        unosDTO.setVisina(userDetails.getVisina());
+        PreporuceniKomadi prep = komadOdeceService.getPreporukaOpste(unosDTO);
+        if(prep==null){
+            return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
+        }else{
+            PreporuceniKomadiOpsteDTO preporuceniKomadiOpsteDTO = preporuceniKomadiMapper.toDto(prep);
+            Long id = Long.parseLong(String.valueOf(unosDTO.getBojaKoze().ordinal()));
+            SlikeBojaKoze sbk = slikeService.findById(id);
+            preporuceniKomadiOpsteDTO.setImage(sbk.getImage());
+            String tips = komadOdeceService.getTips(unosDTO);
+            preporuceniKomadiOpsteDTO.setTips(tips);
+            return new ResponseEntity<>(preporuceniKomadiOpsteDTO,HttpStatus.OK);
+        }
+    }
+
     @PostMapping("/add")
     public ResponseEntity<?> addKomadOdece(@RequestBody OdecaAddAdminDTO unosDTO) {
         User user = userService.findOne(2L);

@@ -1,0 +1,68 @@
+<mat-card>
+<mat-card-content>
+
+    <form class="reactiveForm" [formGroup] = "registrationForm" (submit) = "onSubmit()">
+      <h2>Sign up</h2>
+        <div fxLayout="column">
+          <mat-form-field class="full-width-input">
+            <input matInput placeholder="Email" name="email" formControlName="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required>
+            <mat-label>Required to fill in</mat-label>
+          </mat-form-field>
+    
+          <mat-form-field class="full-width-input">
+            <input matInput type="password" placeholder="Password" name="password" formControlName="password" required>
+            <mat-label>Required to fill in</mat-label>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Obim ramena</mat-label>
+            <input matInput type="text" formControlName="ramena" placeholder="ramena"  />
+            <mat-error>
+                Dozvoljeni samo numericki karakteri!
+            </mat-error>
+          </mat-form-field>
+          <br>
+          <mat-form-field>
+              <mat-label>Obim struka</mat-label>
+              <input matInput type="text" formControlName="struk" placeholder="struk"  />
+              <mat-error>
+                  Dozvoljeni samo numericki karakteri!
+              </mat-error>
+          </mat-form-field>
+          <br>
+          <mat-form-field>
+              <mat-label>Obim kukova</mat-label>
+              <input matInput type="text" formControlName="kukovi" placeholder="kukovi"  />
+              <mat-error>
+                  Dozvoljeni samo numericki karakteri!
+              </mat-error>
+          </mat-form-field>
+          <br>
+          <mat-form-field>
+              <mat-label>Visina</mat-label>
+              <input matInput type="text" formControlName="visina" placeholder="visina" />
+              <mat-error>
+                  Dozvoljeni samo numericki karakteri!
+              </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Pol</mat-label>
+            <mat-select formControlName = "pol">
+                <mat-option *ngFor="let p of pol;" [value]="p.value">
+                {{p.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error>
+                Please select
+              </mat-error>
+        </mat-form-field>
+        </div>
+        
+        <button mat-raised-button color="primary" id = "registerBtn" [disabled] = "registrationForm.invalid">Sign up</button>
+        <mat-error name="errorRegister" *ngIf=wrong style="margin-top: 5%;">
+          The username or email are already used.
+        </mat-error>    
+    </form>
+
+</mat-card-content>
+</mat-card>

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { UserReg } from '../model/userregister';
 import { JwtUtilsService } from './jwt-utils.service';
 
 export interface AuthResponseData {
@@ -30,7 +31,7 @@ export class User {
   providedIn: 'root'
 })
 export class AuthentificationService {
-  
+    
   private readonly loginPath = 'https://localhost:8080/auth/login';
   private readonly registrationPath = 'https://localhost:8080/auth/sign-up';
   private readonly registerAdminPath = 'https://localhost:8080/auth/sign-up-admin';
@@ -89,6 +90,13 @@ export class AuthentificationService {
     }
     if (this.getToken() != '' ) return true;
     else return false;
+  }
+
+  signup(user : UserReg){
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<UserReg>(this.registrationPath, JSON.stringify(user), {headers}).pipe(
+      map((res: any) => { return true; })).pipe(
+        catchError((error: any) => {return throwError('Not created'); }));
   }
 
   getCurrentUser() {

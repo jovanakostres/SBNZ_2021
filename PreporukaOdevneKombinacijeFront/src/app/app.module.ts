@@ -44,6 +44,9 @@ import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece
 import { RatingModule } from 'ng-starrating';
 import { ResultsOpsteComponent } from './components/results-opste/results-opste.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { RegisterComponent } from './components/register/register.component';
+import { PreporukaUlogovanComponent } from './components/preporuka-ulogovan/preporuka-ulogovan.component';
+
 
 @NgModule({
   declarations: [
@@ -61,7 +64,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     DialogBoxComponentComponent,
     AddKomadOdeceLoggedinUserComponent,
     PrikazOdeceComponent,
-    ResultsOpsteComponent
+    RegisterComponent,
+    ResultsOpsteComponent,
+    PreporukaUlogovanComponent
   ],
   imports: [
     CommonModule,

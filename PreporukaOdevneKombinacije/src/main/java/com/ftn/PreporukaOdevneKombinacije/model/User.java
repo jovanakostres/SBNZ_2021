@@ -33,7 +33,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private int visina;
 
-    @Column(nullable = false)
+    @Column
     private int kilaza;
 
     @Column(nullable = false)
@@ -73,6 +73,16 @@ public class User implements UserDetails {
         this.struk = struk;
         this.bojaKoze = bojaKoze;
         this.komadi = komadi;
+    }
+
+    public User(String username, String password, Pol pol, int visina, int ramena, int kukovi, int struk) {
+        this.username = username;
+        this.password = password;
+        this.pol = pol;
+        this.visina = visina;
+        this.ramena = ramena;
+        this.kukovi = kukovi;
+        this.struk = struk;
     }
 
     public User() {}

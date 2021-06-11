@@ -1,8 +1,10 @@
 package com.ftn.PreporukaOdevneKombinacije.controller;
 
 
+import com.ftn.PreporukaOdevneKombinacije.dto.UserDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UserLoginDTO;
 import com.ftn.PreporukaOdevneKombinacije.dto.UserTokenStateDTO;
+import com.ftn.PreporukaOdevneKombinacije.helper.UserMapper;
 import com.ftn.PreporukaOdevneKombinacije.model.User;
 import com.ftn.PreporukaOdevneKombinacije.security.TokenUtils;
 import com.ftn.PreporukaOdevneKombinacije.service.KomadOdeceService;
@@ -44,6 +46,11 @@ public class AuthenticationController {
     @Autowired
     private KomadOdeceService komadOdeceService;
 
+    private UserMapper userMapper;
+
+    public AuthenticationController() {
+        this.userMapper = new UserMapper();
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody UserLoginDTO authenticationRequest,
@@ -63,6 +70,16 @@ public class AuthenticationController {
         komadOdeceService.checkNeaktivnost();
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenStateDTO(user.getId(), jwt, expiresIn));
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserDTO userRequest) throws Exception {
+        try {
+            User user = this.userService.create(userMapper.toEntity(userRequest));
+            return new ResponseEntity<>("User successfully registered.", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

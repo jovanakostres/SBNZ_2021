@@ -13,6 +13,8 @@ import { AddKomadOdeceComponent } from './components/add-komad-odece/add-komad-o
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
 import { AddKomadOdeceLoggedinUserComponent } from './components/add-komad-odece-loggedin-user/add-komad-odece-loggedin-user.component';
 import { ResultsOpsteComponent } from './components/results-opste/results-opste.component';
+import { RegisterComponent } from './components/register/register.component';
+import { PreporukaUlogovanComponent } from './components/preporuka-ulogovan/preporuka-ulogovan.component';
 
 const routes: Routes = [
   { 
@@ -49,6 +51,8 @@ const routes: Routes = [
   { path: "home-admin", component: HomeAdminComponent },
   { path: "add-odeca", component: AddKomadOdeceComponent },
   { path: "home-admin/prikaz", component: PrikazOdeceComponent },
+  { path : "register", component : RegisterComponent},
+  { path : "home-user/preporuka-opste", component: PreporukaUlogovanComponent}
 ];
 
 @NgModule({

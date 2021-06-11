@@ -7,18 +7,38 @@
 <div style="float: left; display:flex; flex-direction: column; width: 50%;">
     <div style="display:flex; flex-direction: row;">
         <mat-card class="example-card" >
-            <img mat-card-image src='{{gornjiDeo.image}}'/>  
+            <img mat-card-image src='{{gornjiDeo.image}}'/> 
+            <mat-card-actions class="card-actions">
+                <button mat-icon-button color="warn" (click)="odbijKomad(gornjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countGD >= data.preporuceniGornjiDeoDTO.length - 1">
+                  <mat-icon class="icon-class-fill">clear</mat-icon>
+                </button>
+              </mat-card-actions> 
         </mat-card>
         <mat-card class="example-card" >
-            <img mat-card-image src='{{donjiDeo.image}}'/>        
+            <img mat-card-image src='{{donjiDeo.image}}'/>
+            <mat-card-actions class="card-actions">
+                <button mat-icon-button color="warn" (click)="odbijKomad(donjiDeo)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countDD >= data.preporuceniDonjiDeoDTO.length - 1">
+                  <mat-icon class="icon-class-fill">clear</mat-icon>
+                </button>
+              </mat-card-actions>        
         </mat-card>
     </div>
     <div style="display:flex; flex-direction: row; float: left;">
         <mat-card class="example-card" >   
-            <img mat-card-image src='{{jakna.image}}'/>     
+            <img mat-card-image src='{{jakna.image}}'/> 
+            <mat-card-actions class="card-actions">
+                <button mat-icon-button color="warn" (click)="odbijKomad(jakna)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countJakna >= data.preporucenaJaknaDTO.length - 1">
+                  <mat-icon class="icon-class-fill">clear</mat-icon>
+                </button>
+              </mat-card-actions>    
         </mat-card>
         <mat-card class="example-card" >
-            <img mat-card-image src='{{obuca.image}}'/>        
+            <img mat-card-image src='{{obuca.image}}'/> 
+            <mat-card-actions class="card-actions">
+                <button mat-icon-button color="warn" (click)="odbijKomad(obuca)" aria-label="Reject action" matTooltip="Odbijanje odevnog komada" [disabled]="countObuca >= data.preporucenaObucaDTO.length - 1">
+                  <mat-icon class="icon-class-fill">clear</mat-icon>
+                </button>
+              </mat-card-actions>       
         </mat-card>
     </div>
 </div>

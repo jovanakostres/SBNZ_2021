@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PreporuceniKomad } from '../model/preporuceniKomad';
 import { UnosNeul } from '../model/unosNeulogovan';
+import { UnosUlogovan } from '../model/unosUlogovan';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,18 @@ export class KomadOpsteService {
         };
 
         return this.http.post<UnosNeul>( this.newsPath + "/recommendation/", unos, httpOptions);
+    }
+
+    getCombinationUlogovan(unos : UnosUlogovan) : Observable<any>{
+        let httpOptions = {};
+
+        httpOptions = {
+            headers: this.headers,
+            observe: 'response',
+
+        };
+
+        return this.http.post<UnosNeul>( this.newsPath + "/recommendation-ulogovan/", unos, httpOptions);
     }
 
     addKomad(unos : Object) : Observable<any>{

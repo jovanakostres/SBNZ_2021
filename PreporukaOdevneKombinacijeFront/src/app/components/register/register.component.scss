@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=New+Tegomin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Niramit:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300&display=swap');
+
+.outer {
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    /*background-image: url("https://images.idgesg.net/images/article/2018/08/5_cryptography-and-data-protection-100768038-large.jpg");
+    //opacity: 0.9;
+    background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: cover;*/
+}
+  
+  .middle {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  
+  .inner {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    background-color: white;
+    opacity: 0.9;
+    border: 3px solid #1d694a;
+    margin-bottom: 100px;
+    border-radius: 25px;
+    font-size: 15px;
+  }
+
+* {
+    font-family: 'Sen', sans-serif;
+  }
+h2 {
+    font-family: 'Sen', sans-serif;
+    font-weight: bold;
+}
+
+ /* button {
+    font-family : inherit;
+    font-size: 1em;
+}*/
+  .center {
+      margin: auto;
+      text-align: center;
+  }
+
+  mat-form-field {
+      width: 70%;
+  }
+
+.myfonts {    
+    font-size: 16px;
+}
