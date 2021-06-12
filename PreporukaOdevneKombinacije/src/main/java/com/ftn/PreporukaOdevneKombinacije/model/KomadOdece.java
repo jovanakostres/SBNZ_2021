@@ -110,6 +110,18 @@ public abstract class KomadOdece {
         this.pol = pol;
     }
 
+    public KomadOdece(Long id, Boja boja, BojaIntenzitet bojaIntenzitet, Materijal materijal, Vreme vreme, int prioritet, double koeficijentOdabira, String image, Pol pol) {
+        this.boja = boja;
+        this.bojaIntenzitet = bojaIntenzitet;
+        this.materijal = materijal;
+        this.vreme = vreme;
+        this.prioritet = prioritet;
+        this.koeficijentOdabira = koeficijentOdabira;
+        this.image = image;
+        this.pol = pol;
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

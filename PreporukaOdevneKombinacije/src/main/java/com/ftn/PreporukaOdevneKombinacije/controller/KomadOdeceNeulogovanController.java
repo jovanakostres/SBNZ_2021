@@ -72,6 +72,7 @@ public class KomadOdeceNeulogovanController {
         unosDTO.setRamena(userDetails.getRamena());
         unosDTO.setStruk(userDetails.getStruk());
         unosDTO.setVisina(userDetails.getVisina());
+        unosDTO.setPol(userDetails.getPol());
         PreporuceniKomadi prep = komadOdeceService.getPreporukaOpste(unosDTO);
         if(prep==null){
             return new ResponseEntity<>("Error!", HttpStatus.NOT_FOUND);
